@@ -39,4 +39,12 @@ yang perlukan key — ia akan papar watermark.
 
 ## Selepas siap
 Beritahu saya apa yang berubah dalam satu perenggan pendek Bahasa Melayu,
-kemudian tunggu saya sahkan sebelum commit.
+
+Selepas setiap perubahan yang diminta:
+1. Jalankan semakan wajib di atas
+2. Naikkan versi dan kemas kini timestamp di footer
+3. git add, commit dengan mesej ringkas Bahasa Melayu, dan push
+4. Beritahu saya dalam satu perenggan apa yang berubah dan mesej commit yang digunakan
+
+Jangan tunggu kebenaran untuk commit. Kalau saya tak suka hasilnya,
+saya akan minta awak patah balik.
