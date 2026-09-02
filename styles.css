@@ -48,7 +48,9 @@ section+section{border-top:1px solid var(--line)}
 .hero .dates{font-size:1.15rem;font-weight:500}
 .hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
 .hero-grid div{min-width:0}
-.hero-grid b{display:block;font-size:1.35rem;font-weight:700;letter-spacing:-0.02em}
+.hero-grid b{display:flex;align-items:center;gap:7px;font-size:1.35rem;font-weight:700;letter-spacing:-0.02em}
+.hero-grid b svg{flex:none;width:18px;height:18px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.hero-grid b span{min-width:0;overflow-wrap:anywhere}
 .hero-grid span{color:var(--ink-2);font-size:.85rem}
 .countdown{display:inline-block;margin-top:14px;padding:6px 12px;border:1px solid var(--ink);border-radius:999px;font-weight:600;font-size:.95rem}
 
@@ -74,7 +76,10 @@ section+section{border-top:1px solid var(--line)}
 .map-ctl button[data-day="2"].on{background:var(--d2);border-color:var(--d2);color:#fff}
 .map-ctl button[data-day="3"].on{background:var(--d3);border-color:var(--d3);color:#fff}
 .map-ctl button[data-day="all"].on{background:var(--ink);border-color:var(--ink);color:#fff}
-.map-note{position:absolute;right:12px;top:12px;z-index:400;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.78rem;color:var(--ink-2);max-width:220px}
+.map-note{position:absolute;right:12px;top:12px;z-index:400;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:5px 5px 5px 10px;font-size:.78rem;color:var(--ink-2);max-width:220px}
+.map-note button{flex:none;display:flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink-3);cursor:pointer}
+.map-note button:hover,.map-note button:focus-visible{background:var(--paper);color:var(--ink)}
+.map-note button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .map-fallback{display:none;padding:40px 18px;text-align:center;color:var(--ink-2)}
 .leaflet-container{font-family:var(--font)}
 .pin{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:700;font-size:.8rem;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.35)}
@@ -89,15 +94,23 @@ section+section{border-top:1px solid var(--line)}
 .pp-links{display:flex;gap:6px;margin-top:8px}
 .pp-links a{flex:1;text-align:center;text-decoration:none;font-weight:600;font-size:.82rem;padding:6px 8px;border-radius:7px;border:1px solid var(--line);color:var(--ink)}
 .pp-links a.wz{background:#1EA5E6;border-color:#1EA5E6;color:#fff}
-.route-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.rsum{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+.rsum>summary{display:flex;align-items:center;gap:8px;padding:12px 14px;font-weight:600;cursor:pointer;list-style:none}
+.rsum>summary::-webkit-details-marker{display:none}
+.rsum>summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg);margin-left:auto;transition:transform .15s}
+.rsum[open]>summary::after{transform:rotate(-135deg)}
+.rsum>summary:focus-visible{outline:2px solid var(--d3);outline-offset:-2px;border-radius:var(--radius)}
+.route-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px}
 .route-sum div{padding:12px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);border-top:4px solid var(--line)}
 .route-sum div.d1{border-top-color:var(--d1)}.route-sum div.d2{border-top-color:var(--d2)}.route-sum div.d3{border-top-color:var(--d3)}
-.route-sum b{display:block;font-size:1.3rem;letter-spacing:-0.02em}
+.rs-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.rs-list li{font-size:.8rem;line-height:1.35}
+.rs-list i{display:block;font-style:normal;color:var(--ink-3);font-size:.74rem}
+.rs-list b{font-weight:600;font-size:.86rem;overflow-wrap:anywhere}
+.rs-list b em{font-style:normal;font-weight:500;color:var(--ink-2);font-size:.78rem}
+.rs-note{margin:10px 14px 14px;padding-top:10px;border-top:1px solid var(--line-2);color:var(--ink-2);font-size:.8rem}
+@media (max-width:560px){.route-sum{grid-template-columns:1fr}}
 .route-sum span{display:block;color:var(--ink-2);font-size:.82rem}
-.route-sum em{display:block;font-style:normal;font-size:.8rem;margin-top:6px}
-.route-sum u{display:block;text-decoration:none;font-size:.78rem;margin-top:6px;padding-top:6px;border-top:1px solid var(--line-2);color:var(--ink-2)}
-.route-sum em.tollfuel{color:var(--ink-3);font-size:.76rem;margin-top:4px;padding-top:6px;border-top:1px solid var(--line-2)}
-.insight{margin-top:14px;padding:14px 16px;background:var(--panel);border-left:4px solid var(--ink);border-radius:0 var(--radius) var(--radius) 0;font-size:.95rem}
 
 /* ============================================================
    TABS + TIMELINE
@@ -329,4 +342,9 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 footer{padding:28px 0 60px;color:var(--ink-3);font-size:.8rem;text-align:center}
 footer a{color:var(--ink-2)}
 #pagi-sabtu{scroll-margin-top:calc(var(--navh,52px) + 14px)}
+.to-top{position:fixed;right:14px;bottom:14px;z-index:55;display:flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.94);color:var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(20,35,46,.16);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .15s,transform .15s,visibility .15s}
+.to-top.on{opacity:1;visibility:visible;transform:none}
+.to-top svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.to-top:hover,.to-top:focus-visible{background:#fff;border-color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){.to-top{transition:none}}
 :focus-visible{outline:2px solid var(--d3);outline-offset:2px}

@@ -7,8 +7,8 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 12.05 pagi',
-    version: 'v1.3'
+    updated: '3 September 2026, 12.19 pagi',
+    version: 'v1.4'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
@@ -140,7 +140,7 @@ const DATA = {
     {
       n:1, date:'2026-09-12', label:'Sabtu, 12 Sept', short:'Sabtu',
       intro:'Satu-satunya hari kita keluar pulau, dan hari paling banyak memandu. Kampung Agong di Penaga tutup 6.00 ptg dan tiada peluang kedua, jadi buffer trafik jambatan wajib dipegang.',
-      km:129, tol:'Tol RM14 (2 kereta masuk pulau) + minyak ±RM54', azanFrom:'10:20',
+      km:129, toll:'RM14', tollNote:'2 kereta masuk pulau', fuel:'±RM54', azanFrom:'10:20',
       items:[
         { t:'04:30', type:'note',  title:'Bertolak dari rumah masing-masing', meta:'Awal sebab peraturan 3 jam. Lihat "Pagi Sabtu: cara ke KLIA2" untuk laluan setiap kumpulan.', metaLink:{ text:'Pagi Sabtu: cara ke KLIA2', href:'#pagi-sabtu' } },
         { t:'05:45', e:'08:45', type:'flight', title:'KLIA2 — check-in bagasi, Subuh, sarapan', place:'klia2', meta:'Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan.' },
@@ -166,7 +166,7 @@ const DATA = {
     {
       n:2, date:'2026-09-13', label:'Ahad, 13 Sept', short:'Ahad',
       intro:'Dua kereta berpecah pagi ini. Kereta 2 ke LTAPP ambil Halima & Kak Ayman, Kereta 1 terus ke sarapan, dan semua bertemu semula di Roti Bakar Hutton Lane sebelum 9.00 pg. Selepas itu semua tempat rapat dalam George Town kecuali Masjid Habib.',
-      km:31, tol:'Tiada tol + minyak ±RM20 (termasuk larian LTAPP)',
+      km:30, toll:'Tiada', fuel:'±RM20', fuelNote:'termasuk larian LTAPP',
       items:[
         { t:'07:30', type:'move2', title:'Kereta 2 (Syafi) ke LTAPP — ambil Halima & Kak Ayman', meta:'Homestay ke LTAPP 20 minit. Flight tiba 8.00 pg. Dari LTAPP terus ke tempat sarapan, sampai kira-kira 8.45.' },
         { t:'07:45', type:'move2', title:'Kereta 1 (Wafi) terus ke sarapan', meta:'Homestay ke Hutton Lane 12 minit.' },
@@ -191,7 +191,7 @@ const DATA = {
     {
       n:3, date:'2026-09-14', label:'Isnin, 14 Sept', short:'Isnin',
       intro:'Checkout awal walaupun homestay bagi sampai 12 tgh — beg terus masuk kereta, pagi lengang di George Town, dan Queensbay Mall di laluan ke lapangan terbang. Masa tiba LTAPP di bawah ialah masa sebenar yang dikira dari jarak jalan raya.',
-      km:24, tol:'Tiada tol + minyak ±RM10', azanTo:'17:15',
+      km:23, toll:'Tiada', fuel:'±RM10', azanTo:'17:15',
       items:[
         { t:'08:00', e:'08:30', type:'stop', title:'Checkout — beg masuk kereta', place:'homestay', meta:'Homestay benarkan sampai 12 tgh, tapi kita keluar awal supaya tak patah balik. Semak semua bilik, pengecas, ubat.' },
         { move:{ km:4, min:12 } },
@@ -289,13 +289,15 @@ const DATA = {
   },
 
   // Kos jalan raya
+  routeNote:'Waktu puncak dan trafik jambatan boleh tambah 15-20 minit.',
+
   jalan: {
-    km:'Laluan utama 184 km sebuah kereta (129 Hari 1 + 31 Hari 2 + 24 Hari 3). Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 403 km, iaitu 40 liter pada 10 liter setiap 100 km.',
+    km:'Laluan utama 182 km sebuah kereta (129 Hari 1 + 30 Hari 2 + 23 Hari 3). Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 399 km, iaitu 40 liter pada 10 liter setiap 100 km.',
     bahanapi:[
-      { jenis:'Diesel, subsidi BUDI', harga:'RM2.10', kereta:'RM42', total:'RM85' },
-      { jenis:'Diesel, harga pasaran', harga:'RM4.62', kereta:'RM93', total:'RM186' },
-      { jenis:'RON95, subsidi BUDI95', harga:'RM1.99', kereta:'RM40', total:'RM80' },
-      { jenis:'RON95, harga pasaran', harga:'RM3.82', kereta:'RM77', total:'RM154' }
+      { jenis:'Diesel, subsidi BUDI', harga:'RM2.10', kereta:'RM42', total:'RM84' },
+      { jenis:'Diesel, harga pasaran', harga:'RM4.62', kereta:'RM92', total:'RM184' },
+      { jenis:'RON95, subsidi BUDI95', harga:'RM1.99', kereta:'RM40', total:'RM79' },
+      { jenis:'RON95, harga pasaran', harga:'RM3.82', kereta:'RM76', total:'RM152' }
     ],
     tolrows:[
       { apa:'Jambatan Pulau Pinang, kelas 1', kadar:'RM7.00 sekali masuk', bila:'Hari 1 sahaja, balik dari Penaga', total:'RM14 (2 kereta)' },

@@ -22,9 +22,9 @@
     <div class="dates" id="hero-dates"></div>
     <div class="countdown" id="countdown"></div>
     <div class="hero-grid">
-      <div><b id="hero-pax"></b><span>orang, 7 kumpulan</span></div>
-      <div><b>3H 2M</b><span>Sabtu – Isnin</span></div>
-      <div><b>Jelutong</b><span>Karpal Singh Drive</span></div>
+      <div><b><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 5.6a3 3 0 0 1 0 5.6M17.5 19.5c0-2.4-1-4.2-2.6-5.2"/></svg><span id="hero-pax"></span></b><span>pax</span></div>
+      <div><b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg><span>3H 2M</span></b><span>Sabtu – Isnin</span></div>
+      <div><b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5v8.5a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1Z"/></svg><span>Jelutong</span></b><span>Karpal Singh Drive</span></div>
     </div>
   </div>
 </header>
@@ -59,11 +59,14 @@
       <button data-day="2">Hari 2</button>
       <button data-day="3">Hari 3</button>
     </div>
-    <div class="map-note" id="map-note">Garisan laluan mengikut jalan raya sebenar bila sambungan ada.</div>
+    <div class="map-note" id="map-note"><span id="map-note-text">Garisan ikut jalan sebenar</span><button type="button" id="map-note-x" aria-label="Tutup nota peta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   </div>
   <div class="wrap">
-    <div class="route-sum" id="route-sum"></div>
-    <div class="insight" id="route-insight"></div>
+    <details class="rsum">
+      <summary>Route Summary</summary>
+      <div class="route-sum" id="route-sum"></div>
+      <p class="rs-note" id="route-note"></p>
+    </details>
   </div>
 </section>
 
@@ -205,6 +208,8 @@
 <footer>
   <div class="wrap" id="foot"></div>
 </footer>
+
+<button type="button" class="to-top" id="to-top" aria-label="Naik ke atas" title="Naik ke atas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6.5 11.5L12 6l5.5 5.5"/></svg></button>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="data.js"></script>

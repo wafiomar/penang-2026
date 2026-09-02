@@ -4,7 +4,10 @@ Satu halaman statik untuk 21 ahli keluarga. Trip 12–14 September 2026.
 Dihoskan di GitHub Pages dan Cloudflare Pages dari repo yang sama.
 
 ## Bahasa
-Semua teks yang dipaparkan mesti dalam Bahasa Melayu. Termasuk komen dalam kod.
+Bahasa Melayu untuk semua ayat dan penerangan.
+Istilah Inggeris yang lazim digunakan orang Malaysia dibenarkan bila ia
+lebih jelas: Day 1/2/3, pax, seat, check-in, Plan B, Route Summary.
+Jangan terjemah paksa istilah yang orang memang guna dalam Inggeris.
 
 ## Struktur
 Semua data trip berada dalam blok `DATA` di bahagian atas skrip.
@@ -20,7 +23,7 @@ Guna waktu Malaysia.
 
 ## Semakan wajib sebelum lapor siap
 Jalankan ketiga-tiga ini setiap kali:
-1. Jarak setiap hari (`day.km`) mesti sama dengan jumlah semua `move.km` hari itu
+1. Jarak setiap hari (`day.km`) mesti sama dengan jumlah `move.km` yang BUKAN jalan kaki (abaikan segmen dengan `walk:true`), dibundarkan ke km terdekat
 2. Tiada aktiviti bermula sebelum aktiviti sebelumnya tamat campur masa memandu
 3. Jumlah orang dalam setiap senario kereta mesti sama dengan label `pax`
 Kalau ada yang tak padan, betulkan dahulu, kemudian beritahu apa yang dibetulkan.

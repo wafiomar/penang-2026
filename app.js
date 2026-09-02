@@ -22,6 +22,8 @@ function metaHtml(meta, link){
 const dur = min => min>=60 ? Math.floor(min/60)+' jam' + (min%60 ? ' '+min%60+' min' : '') : min+' min';
 const gmaps = p => `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
 const waze  = p => `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
+// Halaman Google Maps bagi lokasi itu, untuk baca ulasan dan waktu buka.
+const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`;
 const ICON = {
   car:'<svg viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-6h9L18 17M4 17v2M20 17v2M7 11l1-3h8l1 3"/><circle cx="8" cy="17" r="1.2"/><circle cx="16" cy="17" r="1.2"/></svg>',
   walk:'<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="M10 21l2-6 3 3v3M8 13l2-4 3-1 3 3 2 1M12 15l-3 6"/></svg>',
@@ -164,7 +166,7 @@ function popupHtml(p, d, item){
   return `<div>${d?`<div class="pp-day" style="color:var(--d${d})">Hari ${d}${when?', '+esc(when):''}</div>`:''}
   <div class="pp-title">${esc(p.name)}</div>
   <div class="pp-meta">${esc(p.addr||'')}${p.hours?'<br>Buka '+esc(p.hours):''}${p.cost?'<br>'+esc(p.cost):''}${p.note?'<br>'+esc(p.note):''}</div>
-  <div class="pp-links"><a class="wz" href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div></div>`;
+  <div class="pp-links"><a class="wz" href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a><a class="gp" href="${gprofile(p)}" target="_blank" rel="noopener">Google Profile</a></div></div>`;
 }
 async function fetchRoute(d, pts, color, lg, fallback){
   try{
@@ -175,20 +177,47 @@ async function fetchRoute(d, pts, color, lg, fallback){
     const route = j.routes && j.routes[0]; if(!route) throw new Error('no route');
     lg.removeLayer(fallback);
     L.geoJSON(route.geometry, { style:{ color, weight:4, opacity:.85 } }).addTo(lg);
-    const km = Math.round(route.distance/1000), min = Math.round(route.duration/60);
-    const el = $(`#rs-${d}`); if(el){ el.querySelector('b').textContent = km + ' km'; el.querySelector('em').textContent = 'Kira-kira ' + dur(min) + ' memandu (OSRM, tanpa trafik)'; }
+    const min = Math.round(route.duration/60);
+    const el = $(`#rs-${d} .rs-time`); if(el) el.innerHTML = `${esc(dur(min))} <em>(tanpa trafik)</em>`;
   }catch(err){
-    $('#map-note').textContent = 'Garisan putus-putus = anggaran terus, laluan jalan raya tak dapat dimuat.';
+    const nt = $('#map-note-text'); if(nt) nt.textContent = 'Garisan putus-putus, laluan jalan tak dapat dimuat';
   }
 }
 initMap();
 
 /* ============================================================
+   NOTA PETA + NAIK KE ATAS
+   ============================================================ */
+(function mapNote(){
+  const x = $('#map-note-x'); if(!x) return;
+  x.addEventListener('click', () => { $('#map-note').hidden = true; });
+})();
+
+(function toTop(){
+  const btn = $('#to-top'), peta = $('#peta'); if(!btn || !peta) return;
+  let tunggu = false;
+  // Muncul hanya selepas seksyen peta habis, supaya tidak bertindih kawalan peta.
+  const upd = () => { tunggu = false; btn.classList.toggle('on', peta.getBoundingClientRect().bottom < 0); };
+  window.addEventListener('scroll', () => { if(!tunggu){ tunggu = true; requestAnimationFrame(upd); } }, { passive:true });
+  window.addEventListener('resize', upd, { passive:true });
+  btn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+  upd();
+})();
+
+/* ============================================================
    ROUTE SUMMARY + INSIGHT
    ============================================================ */
 (function routeSum(){
-  $('#route-sum').innerHTML = DATA.days.map(d => `<div class="d${d.n}" id="rs-${d.n}"><span>Hari ${d.n}, ${esc(d.short)}</span><b>${d.km} km</b><em>${DATA.routes[d.n].length-1} pergerakan kereta</em><em class="tollfuel">${esc(d.tol)}</em></div>`).join('');
-  $('#route-insight').innerHTML = `<b>Corak laluan.</b> Hari 2 dan 3 rapat — semua dalam radius 12 km George Town dan Bayan Lepas, kecuali Masjid Habib di Tanjung Tokong. Hari 1 ialah satu-satunya hari keluar pulau: Kampung Agong di Penaga dan PakTeh Fruits di Bukit Mertajam, dua tempat yang bukan atas laluan sama, jadi bufer 10 minit di jambatan wajib dipegang.`;
+  // Masa memandu awal dikira dari segmen DATA (tanpa jalan kaki); OSRM ganti bila sambungan ada.
+  const driveMin = d => d.items.filter(i => i.move && !i.move.walk).reduce((a,i) => a + (i.move.min||0), 0);
+  const row = (label, val, note) => `<li><i>${esc(label)}</i><b>${esc(val)}${note?` <em>(${esc(note)})</em>`:''}</b></li>`;
+  $('#route-sum').innerHTML = DATA.days.map(d => `<div class="d${d.n}" id="rs-${d.n}"><span>Hari ${d.n}, ${esc(d.short)}</span><ul class="rs-list">`
+    + row('Total Distance', d.km + ' km')
+    + `<li><i>Estimated Driving Time</i><b class="rs-time">${esc(dur(driveMin(d)))} <em>(tanpa trafik)</em></b></li>`
+    + row('Toll', d.toll, d.tollNote)
+    + row('Fuel', d.fuel, d.fuelNote)
+    + `</ul></div>`).join('');
+  $('#route-note').textContent = DATA.routeNote;
 })();
 
 /* ============================================================
