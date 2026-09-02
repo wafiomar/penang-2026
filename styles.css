@@ -311,16 +311,25 @@ details.planb[open] summary::before{content:"–"}
 .car h3{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:1rem;flex-wrap:wrap}
 .car h3 .sug{font-weight:600;color:var(--d3);font-size:.78rem;margin-right:auto}
 .car h3 span{font-weight:500;color:var(--ink-2);font-size:.82rem}
-.car .drv{font-size:.82rem;color:var(--ink-2);margin:2px 0 10px}
+.car .cnote{font-size:.76rem;color:var(--ink-3);margin:4px 0 0;line-height:1.35}
+.car .drv{font-size:.82rem;color:var(--ink-2);margin:6px 0 10px}
+.car .cfoot{margin-top:9px;font-size:.78rem;color:var(--ink-2)}
 .car .drv b{color:var(--ink)}
-.cabin{border:2px solid var(--line);border-radius:22px 22px 12px 12px;padding:14px 10px 10px;background:var(--paper);position:relative}
+.cabin{border:2px solid var(--line);border-radius:22px 22px 12px 12px;padding:14px 8px 10px;background:var(--paper);position:relative}
+@media (max-width:420px){.car{padding:12px 10px}.cabin{padding:12px 6px 8px}.row{gap:4px}.seat{padding:5px 4px;font-size:.7rem}.seat b{font-size:.73rem}.seat small{font-size:.63rem}.row.kapten{grid-template-columns:1fr 14px 1fr}.lorong{margin:2px 3px}}
 .cabin::before{content:"";position:absolute;left:50%;top:-2px;transform:translateX(-50%);width:44%;height:8px;border-radius:0 0 8px 8px;background:var(--line)}
-.row{display:grid;gap:6px;margin-bottom:6px}
+.row{display:grid;gap:5px;margin-bottom:14px}
+.row:last-child{margin-bottom:0}
 .row.c2{grid-template-columns:1fr 1fr}
 .row.c3{grid-template-columns:1fr 1fr 1fr}
+/* Baris 3 = kerusi kapten, ada lorong jelas di tengah */
+.row.kapten{grid-template-columns:1fr 20px 1fr}
+.lorong{align-self:stretch;border-left:2px dashed var(--line);border-right:2px dashed var(--line);margin:2px 6px}
+/* Ruang kaki yang ditanda sebagai ruang stroller — bukan seat */
+.stroller{margin-bottom:6px;padding:5px 8px;border:1px dashed var(--ink-3);border-radius:7px;font-size:.66rem;font-weight:600;color:var(--ink-3);text-align:center;letter-spacing:.02em;background:repeating-linear-gradient(45deg,transparent,transparent 5px,rgba(138,150,160,.16) 5px,rgba(138,150,160,.16) 10px)}
 .seat{min-height:44px;border-radius:8px 8px 5px 5px;background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;padding:5px 6px;font-size:.74rem;line-height:1.15;display:flex;flex-direction:column;justify-content:center;color:var(--ink)}
 .seat.f{border-color:var(--g);border-bottom-color:var(--g);background:color-mix(in srgb,var(--g) 12%,#fff)}
-.seat b{font-weight:700;font-size:.78rem}
+.seat b{font-weight:700;font-size:.78rem;overflow-wrap:anywhere;hyphens:auto}
 .seat small{color:var(--ink-2);font-size:.68rem}
 .seat small.lap{color:var(--g);font-weight:700}
 .seat.empty{color:var(--ink-3);border-style:dashed;justify-content:center;text-align:center}

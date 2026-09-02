@@ -447,27 +447,39 @@ function planbHtml(list){
     $('#car-note').innerHTML = `<div class="day-intro d3"><b>${esc(sc.when)}.</b> ${esc(sc.note)}</div>`;
     $('#cars').innerHTML = sc.cars.map(c => {
       let n = 0;
-      const rows = DATA.carRows.map(cols => {
+      const pangku = [];
+      const rows = DATA.carRows.map((cols, ri) => {
         const cells = [];
         for(let k=0;k<cols;k++){
           const s = c.seats[n++] || '';
           if(s === 'BEG'){ cells.push(`<div class="seat bag">Beg</div>`); continue; }
           if(!s){ cells.push(`<div class="seat empty">kosong</div>`); continue; }
-          const [gid, nm, tag, extra] = s.split(':'); const g = G(gid);
+          const [gid, nm, tag, lap] = s.split(':'); const g = G(gid);
           const short = g.short || g.label;
           const sub = nm.split(' ').some(w => short.includes(w)) ? '' : short;
-          cells.push(`<div class="seat f" style="--g:${g.color}"><b>${esc(nm)}</b>${sub?`<small>${esc(sub)}</small>`:''}${extra?`<small class="lap">${esc(extra)}</small>`:''}${tag==='D'?'<span class="dv">Pemandu mula</span>':''}</div>`);
+          if(lap) pangku.push([lap, nm.split(' + ')[0]]);
+          cells.push(`<div class="seat f" style="--g:${g.color}"><b>${esc(nm)}</b>${sub?`<small>${esc(sub)}</small>`:''}${tag==='D'?'<span class="dv">Pemandu mula</span>':''}</div>`);
+          // Baris 3 ialah kerusi kapten — sisip lorong di tengah
+          if(cols===2 && ri===2 && k===0) cells.push(`<span class="lorong" aria-hidden="true"></span>`);
         }
-        return `<div class="row c${cols}">${cells.join('')}</div>`;
+        // Ruang stroller di hadapan baris yang ditanda (bukan seat, tidak dikira)
+        const band = (c.stroller === ri+1) ? `<div class="stroller">Ruang stroller</div>` : '';
+        return band + `<div class="row c${cols}${cols===2&&ri===2?' kapten':''}">${cells.join('')}</div>`;
       }).join('');
       const ppl = c.seats.filter(s => s && s!=='BEG').length + c.seats.filter(s => (s.split(':')[3]||'')).length;
       const bags = c.seats.filter(s => s==='BEG').length;
-      return `<div class="car"><h3>${esc(c.name)} <span class="sug">(Cadangan)</span><span>MPV 10 tempat</span></h3><div class="drv">Pemandu mula: <b>${esc(c.driver)}</b>. ${ppl} orang${bags?`, ${bags} ruang beg`:''}. Boleh ubah.</div><div class="cabin">${rows}</div></div>`;
+      const kaki = pangku.map(([a,b]) => `${esc(a)} dipangku oleh ${esc(b)}.`).join(' ');
+      return `<div class="car"><h3>${esc(c.name)} <span class="sug">(Cadangan)</span><span>Staria 10 seat</span></h3>`
+        + `<div class="cnote">${esc(DATA.carNote)}</div>`
+        + `<div class="drv">Pemandu mula: <b>${esc(c.driver)}</b>. ${ppl} orang${bags?`, ${bags} ruang beg`:''}. Boleh tukar.</div>`
+        + `<div class="cabin">${rows}</div>`
+        + (kaki ? `<div class="cfoot">${kaki}</div>` : '')
+        + `</div>`;
     }).join('');
     const t = sc.third;
     $('#own-car').innerHTML = t
-      ? `<span><i class="dot" style="background:${G(t.g).color}"></i><b>${esc(t.who)}</b> guna kenderaan sendiri. ${esc(t.text)} Pemandu: ${esc(t.driver)}.</span>`
-      : `<span class="muted">Semua dalam 2 MPV pada peringkat ini.</span>`;
+      ? `<span><i class="dot" style="background:${G(t.g).color}"></i><b>${esc(t.who)}</b> — ${esc(t.text)}</span>`
+      : `<span class="muted">Semua dalam 2 Staria pada peringkat ini.</span>`;
   }
   $('#legend').innerHTML = DATA.groups.map(g => `<span style="--g:${g.color}"><i></i>${esc(g.label)} (${g.pax})</span>`).join('');
 })();

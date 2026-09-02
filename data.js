@@ -7,8 +7,8 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 7.32 pagi',
-    version: 'v1.9'
+    updated: '3 September 2026, 7.46 pagi',
+    version: 'v2.0'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
@@ -231,27 +231,28 @@ const DATA = {
 
   // Kereta: layout MPV 10 tempat, 4 baris 2-3-2-3 (baris 1 = pemandu + 1).
   // Nilai seat: 'ID:Nama' atau 'ID:Nama:D' (pemandu mula), 'BEG' = ruang bagasi, '' = kosong.
+  carNote: 'Hyundai Staria 10 seat, diesel. Belum disahkan dengan syarikat sewa.',
   carRows: [2,3,2,3],
   carScenarios: [
     { id:'tiba', tab:'Ketibaan', sub:'15 orang', when:'Sabtu 12 Sept, dari LTAPP', pax:15,
-      note:'Baris belakang kedua-dua kereta dilipat untuk beg. Keluarga Muhd belum sertai — mereka jumpa kita di homestay.',
+      note:'Baris belakang kedua-dua kereta dilipat untuk beg. Keluarga Muhd belum join — mereka jumpa kita di homestay.',
       cars:[
-        { name:'Kereta 1', driver:'Wafi', seats:['F4:Wafi:D','F4:Nadian', 'F2:Hadi','F2:Kak Hajar','F2:Hud', 'F2:Hana','G2:Fatimah', 'BEG','BEG','BEG'] },
-        { name:'Kereta 2', driver:'Syafi', seats:['S1:Syafi:D','F3:Obi', 'F3:Kak Yusra::+ Annur (bayi, riba)','F3:Nasrullah','F3:Maryam', 'G2:Madno','G2:Fitri', 'BEG','BEG','BEG'] }
+        { name:'Kereta 1', driver:'Wafi', seats:['F4:Nadian','F4:Wafi:D', 'F2:Hadi','F2:Kak Hajar','F2:Hud', 'F2:Hana','G2:Fatimah', 'BEG','BEG','BEG'] },
+        { name:'Kereta 2', driver:'Syafi', stroller:2, seats:['F3:Obi','S1:Syafi:D', 'F3:Kak Yusra + Annur::Annur','F3:Nasrullah','F3:Maryam', 'G2:Madno','G2:Fitri', 'BEG','BEG','BEG'] }
       ] },
     { id:'cuti', tab:'Semasa bercuti', sub:'21 orang', when:'Sabtu petang – Isnin pagi', pax:21,
-      note:'Beg tinggal di homestay, jadi semua kerusi boleh diguna. 21 orang dalam 20 kerusi — muat sebab Annur masih bayi dan duduk di riba Kak Yusra.',
+      note:'Beg tinggal di homestay, jadi semua seat boleh diguna. 21 orang dalam 20 seat — muat sebab Annur dipangku Kak Yusra.',
       cars:[
-        { name:'Kereta 1', driver:'Wafi', seats:['F4:Wafi:D','F4:Nadian', 'F2:Hadi','F2:Kak Hajar','F2:Hud', 'F2:Hana','G2:Fatimah', 'G2:Fitri','G1:Halima','G1:Kak Ayman'] },
-        { name:'Kereta 2', driver:'Syafi', seats:['S1:Syafi:D','F3:Obi', 'F3:Kak Yusra::+ Annur (bayi, riba)','F3:Nasrullah','F3:Maryam', 'G2:Madno','F1:Muhd', 'F1:Kak Salina','F1:Khadijah','F1:Alisha'] }
+        { name:'Kereta 1', driver:'Wafi', seats:['F4:Nadian','F4:Wafi:D', 'F2:Hadi','F2:Kak Hajar','F2:Hud', 'F2:Hana','G2:Fatimah', 'G2:Fitri','G1:Halima','G1:Kak Ayman'] },
+        { name:'Kereta 2', driver:'Syafi', stroller:2, seats:['F3:Obi','S1:Syafi:D', 'F3:Kak Yusra + Annur::Annur','F3:Nasrullah','F3:Maryam', 'G2:Madno','F1:Muhd', 'F1:Kak Salina','F1:Khadijah','F1:Alisha'] }
       ] },
     { id:'balik', tab:'Berlepas', sub:'17 terbang', when:'Isnin 14 Sept, ke LTAPP', pax:17,
-      note:'Beg naik semula, jadi baris belakang Kereta 1 dilipat. Keluarga Muhd guna kereta sendiri untuk menghantar dan bawa beg yang berlebih.',
+      note:'Beg naik semula, jadi baris belakang Kereta 1 dilipat. Keluarga Muhd bawa kereta sendiri untuk hantar kita dan angkut beg yang tak muat.',
       cars:[
-        { name:'Kereta 1', driver:'Wafi', seats:['F4:Wafi:D','F4:Nadian', 'F2:Hadi','F2:Kak Hajar','F2:Hud', 'F2:Hana','G2:Fatimah', 'BEG','BEG','BEG'] },
-        { name:'Kereta 2', driver:'Syafi', seats:['S1:Syafi:D','F3:Obi', 'F3:Kak Yusra::+ Annur (bayi, riba)','F3:Nasrullah','F3:Maryam', 'G2:Madno','G2:Fitri', 'G1:Halima','G1:Kak Ayman','BEG'] }
+        { name:'Kereta 1', driver:'Wafi', seats:['F4:Nadian','F4:Wafi:D', 'F2:Hadi','F2:Kak Hajar','F2:Hud', 'F2:Hana','G2:Fatimah', 'BEG','BEG','BEG'] },
+        { name:'Kereta 2', driver:'Syafi', stroller:2, seats:['F3:Obi','S1:Syafi:D', 'F3:Kak Yusra + Annur::Annur','F3:Nasrullah','F3:Maryam', 'G2:Madno','G2:Fitri', 'G1:Halima','G1:Kak Ayman','BEG'] }
       ],
-      third:{ g:'F1', driver:'Muhd', who:'Keluarga Muhd', text:'Menghantar di LTAPP dan bawa beg yang tak muat.' } }
+      third:{ g:'F1', driver:'Muhd', who:'Keluarga Muhd', text:'Guna kenderaan sendiri pulang ke tanah besar.' } }
   ],
 
   stay: {
