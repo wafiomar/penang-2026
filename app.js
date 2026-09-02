@@ -281,7 +281,8 @@ function planbHtml(list){
   function renderDay(n){
     [...tabs.children].forEach(b => b.classList.toggle('on', +b.dataset.day===n));
     const day = DATA.days.find(d => d.n===n);
-    $('#day-intro').innerHTML = `<div class="day-intro d${n}"><b>Perkara paling penting hari ini</b>${esc(day.intro)}</div>`;
+    $('#day-intro').innerHTML = `<details class="day-intro d${n}"><summary>Perkara paling penting hari ini</summary>`
+      + `<ul>${day.intro.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>`;
     // Merge azan markers
     const pr = DATA.prayer[day.date] || {};
     const azan = ['subuh','zohor','asar','maghrib','isyak'].filter(k=>pr[k]).map(k => ({ azan:k, t:pr[k] }))

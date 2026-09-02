@@ -76,17 +76,25 @@
   <div class="wrap">
     <div class="sec-head">
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M8 17h6"/></svg>Jadual harian</h2>
-      <p>Masa di sini ialah masa sebenar yang dikira dari jarak jalan raya, bukan masa cita-cita. Waktu solat Pulau Pinang diselit pada tempatnya.</p>
+      <p>Masa di sini ialah masa sebenar yang dikira dari jarak jalan raya, bukan rekaan. Waktu solat Pulau Pinang diselit pada tempatnya.</p>
     </div>
     <div class="tabs" id="day-tabs"></div>
-    <div class="halalkey">
-      <b>Status halal</b>
-      <span><span class="bdg sijil"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/><path d="M9.2 12l2 2 3.6-3.8"/></svg>Sijil JAKIM</span> ada sijil halal Malaysia</span>
-      <span><span class="bdg muslim"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/></svg>Milik Muslim</span> tiada sijil, tetapi dikendalikan orang Islam</span>
-      <span><span class="bdg semak"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/><path d="M12 8.6v3.6M12 15.2v.5"/></svg>Semak</span> tiada sijil aktif, tanya di premis atau pilih Plan B</span>
+    <details class="halalkey">
+      <summary>Status halal</summary>
+      <table class="halal-tbl">
+        <thead><tr>
+          <th><span class="bdg sijil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/><path d="M9.2 12l2 2 3.6-3.8"/></svg>Sijil JAKIM</span></th>
+          <th><span class="bdg muslim"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/></svg>Milik Muslim</span></th>
+          <th><span class="bdg semak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/><path d="M12 8.6v3.6M12 15.2v.5"/></svg>Semak</span></th>
+        </tr></thead>
+        <tbody><tr>
+          <td>ada sijil halal Malaysia</td>
+          <td>tiada sijil, dikendalikan orang Islam</td>
+          <td>tiada sijil aktif, tanya di premis</td>
+        </tr></tbody>
+      </table>
       <em>Semak sendiri di halal.gov.my atau app Verify Halal sebelum pergi. Status boleh berubah.</em>
-    </div>
-    <div id="day-intro"></div>
+    </details>    <div id="day-intro"></div>
     <div class="tl" id="timeline"></div>
   </div>
 </section>
