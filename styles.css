@@ -158,6 +158,32 @@ section+section{border-top:1px solid var(--line)}
 .bdg svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .bdg.rate svg{fill:#D9A21B;stroke:none}
 .ti-meta{color:var(--ink-2);font-size:.88rem;margin-top:3px}
+.ti-lede{color:var(--ink-2);font-size:.88rem;margin-top:3px}
+.halal-note{margin-top:7px;padding:7px 10px;border-radius:8px;background:var(--warn-soft);color:var(--warn);font-size:.8rem;line-height:1.35}
+/* Butiran: senarai point form, satu ikon garis halus setiap kategori */
+.det{margin-top:8px}
+.det>summary{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--ink-2);cursor:pointer;list-style:none;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.det>summary::-webkit-details-marker{display:none}
+.det>summary::after{content:"";width:6px;height:6px;border-right:1.6px solid var(--ink-3);border-bottom:1.6px solid var(--ink-3);transform:rotate(45deg) translate(-1px,-1px)}
+.det[open]>summary::after{transform:rotate(-135deg)}
+.det>summary:focus-visible{outline:2px solid var(--d3);outline-offset:2px}
+.det-list{list-style:none;margin:8px 0 0;padding:10px 12px;display:grid;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+.det-list li{display:flex;align-items:flex-start;gap:9px;font-size:.84rem;line-height:1.4;color:var(--ink-2)}
+.det-list li svg{flex:none;width:15px;height:15px;margin-top:2px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.det-list li span{min-width:0;overflow-wrap:anywhere}
+.det-list b{color:var(--ink);font-weight:600}
+.det-list a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--line)}
+.det-list a:hover,.det-list a:focus-visible{text-decoration-color:currentColor}
+/* Plan B: kad ringkas, satu pandangan terus tahu nak ke mana */
+.pb-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.pb{padding:9px 11px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
+.pb-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pb-h a{font-weight:600;font-size:.88rem;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--line)}
+.pb-h a:hover,.pb-h a:focus-visible{text-decoration-color:currentColor}
+.pb-addr{display:block;margin-top:2px;color:var(--ink-3);font-size:.78rem}
+.pb p{margin-top:3px;color:var(--ink-2);font-size:.82rem;line-height:1.4}
+.pb-note{color:var(--ink-2);font-size:.82rem;line-height:1.45;background:var(--paper);border-style:dashed}
+
 .ti-cost{display:inline-block;margin-top:6px;font-size:.82rem;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--line-2)}
 .flag{display:inline-block;margin:6px 6px 0 0;font-size:.78rem;font-weight:600;padding:3px 8px;border-radius:6px}
 .flag.warn{background:var(--warn-soft);color:var(--warn)}
@@ -178,8 +204,6 @@ details.planb summary{cursor:pointer;list-style:none;display:inline-flex;align-i
 details.planb summary::-webkit-details-marker{display:none}
 details.planb summary::before{content:"+";font-weight:700}
 details.planb[open] summary::before{content:"–"}
-details.planb ul{margin:8px 0 0;padding-left:18px;color:var(--ink-2)}
-details.planb li{margin:2px 0}
 .solat-row{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line-2)}
 .solat-row .ti-time{font-weight:700}
 .solat-row .ti-body{font-size:.95rem}

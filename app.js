@@ -234,6 +234,37 @@ initMap();
   $('#route-note').textContent = DATA.routeNote;
 })();
 
+// Ikon garis halus untuk setiap kategori baris "Butiran".
+const DET_ICON = {
+  nama:'<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>',
+  alamat:'<path d="M9 4 3.5 6.2v13.3L9 17.3l6 2.2 5.5-2.2V4L15 6.2 9 4Z"/><path d="M9 4v13.3M15 6.2v13.3"/>',
+  telefon:'<path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2Z"/>',
+  waktu:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.2V12l3.2 2"/>',
+  ulasan:'<path d="M12 4.2l2.3 4.7 5.2.8-3.8 3.6.9 5.1-4.6-2.4-4.6 2.4.9-5.1L4.5 9.7l5.2-.8L12 4.2Z"/>',
+  istimewa:'<path d="M12 3.5l1.9 4.4 4.6.4-3.5 3 1.1 4.5L12 13.4 7.9 15.8 9 11.3l-3.5-3 4.6-.4L12 3.5Z"/><path d="M18.5 17.5l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7.7-1.6Z"/>',
+  tips:'<path d="M9.2 17.5h5.6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 1 3.4 9.8c-.6.5-.9 1.1-.9 1.8H9.5c0-.7-.3-1.3-.9-1.8A5.5 5.5 0 0 1 12 3.5Z"/>',
+  kos:'<circle cx="12" cy="12" r="8.5"/><path d="M14.4 9.3A2.9 2.9 0 0 0 9.7 10c0 2.5 4.8 1.5 4.8 4a2.9 2.9 0 0 1-4.8.8M12 7.3v1.3M12 15.3v1.3"/>',
+  nota:'<path d="M5.5 4.5h13v15h-13z"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>'
+};
+const det = (k, isi) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${DET_ICON[k]}</svg><span>${isi}</span></li>`;
+
+// Plan B: satu kad sebaris — nama berpaut, bintang Google, sebab pendek.
+function planbHtml(list){
+  return `<ul class="pb-list">` + list.map(x => {
+    if(x.text) return `<li class="pb pb-note">${esc(x.text)}</li>`;
+    const p = x.place ? DATA.places[x.place] : null;
+    const nama = x.name || (p && p.name) || '';
+    const alamat = x.addr || (p && p.addr) || '';
+    const rating = x.rating || (p && p.rating);
+    const ulasan = p && p.reviews;
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([nama, alamat].filter(Boolean).join(', '))}`;
+    const bintang = rating ? `<span class="bdg rate">${STAR}${rating.toFixed(1)}${ulasan?' · '+ulasan.toLocaleString('ms-MY'):''}</span>` : '';
+    return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
+         + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
+         + `${x.why?`<p>${esc(x.why)}</p>`:''}</li>`;
+  }).join('') + `</ul>`;
+}
+
 /* ============================================================
    TIMELINE
    ============================================================ */
@@ -280,21 +311,41 @@ initMap();
       const isStop = (it.type==='stop'||it.type==='meal') && it.place && DATA.markers[n].includes(it.place);
       const num = isStop ? `<span class="n">${++stopIdx}</span>` : '';
       const ic = TI_ICON[it.type] ? `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[it.type]}</svg></span>` : '';
-      const meta = [it.meta, p && p.addr && (it.type!=='note') ? p.addr : '', p && p.hours ? 'Buka ' + p.hours : '', p && p.note && it.type!=='note' ? p.note : ''].filter(Boolean);
-      const cost = p && p.cost ? `<div class="ti-cost">${esc(p.cost)}</div>` : '';
       let bdg = '';
       if(p && p.halal){ const h = HALAL[p.halal]; bdg += `<span class="bdg ${p.halal}"><svg viewBox="0 0 24 24" aria-hidden="true">${h.ic}</svg>${h.t}</span>`; }
       if(p && p.rating){ bdg += `<span class="bdg rate">${STAR}${p.rating.toFixed(1)} · ${p.reviews.toLocaleString('ms-MY')} ulasan</span>`; }
       const badges = bdg ? `<div class="badges">${bdg}</div>` : '';
       const flags = (it.flags||[]).map(f => `<span class="flag ${f.k}">${esc(f.v)}</span>`).join('');
-      const planB = it.planB && it.planB.length ? `<details class="planb"><summary>Plan B</summary><ul>${it.planB.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details>` : '';
+      const planB = it.planB && it.planB.length ? `<details class="planb"><summary>Plan B</summary>${planbHtml(it.planB)}</details>` : '';
       const links = p && p.kind!=='plane' && it.type!=='note' && it.type!=='move2' ? `<div class="ti-links"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>` : '';
+
+      // Item lokasi: satu baris ringkas sahaja, selebihnya dalam "Butiran".
+      let lede = '', butiran = '', metaP = '';
+      if(p && it.type!=='note'){
+        lede = p.tagline ? `<div class="ti-lede">${esc(p.tagline)}</div>` : '';
+        const baris = [];
+        baris.push(det('nama', `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(p.name)}</a>`));
+        if(p.addr)   baris.push(det('alamat', esc(p.addr)));
+        if(p.phone)  baris.push(det('telefon', `<a href="tel:${esc(p.phone.replace(/[^0-9+]/g,''))}">${esc(p.phone)}</a>`));
+        if(p.hours)  baris.push(det('waktu', esc(p.hours)));
+        if(p.rating) baris.push(det('ulasan', `Google review: ${p.rating.toFixed(1)} bintang · ${p.reviews.toLocaleString('ms-MY')} ulasan`));
+        if(p.special)baris.push(det('istimewa', `<b>Keistimewaan:</b> ${esc(p.special)}`));
+        if(p.tips)   baris.push(det('tips', `<b>Tips:</b> ${esc(p.tips)}`));
+        if(p.cost)   baris.push(det('kos', `<b>Kos:</b> ${esc(p.cost)}`));
+        if(it.meta)  baris.push(det('nota', `<b>Nota:</b> ${esc(it.meta)}`));
+        butiran = `<details class="det"><summary>Butiran</summary><ul class="det-list">${baris.join('')}</ul></details>`;
+      } else {
+        const meta = [it.meta, p && p.addr && (it.type!=='note') ? p.addr : '', p && p.hours ? 'Buka ' + p.hours : ''].filter(Boolean);
+        metaP = meta.length ? `<div class="ti-meta">${metaHtml(meta, it.metaLink)}</div>` : '';
+      }
+      const amaran = p && p.halalNote ? `<div class="halal-note">${esc(p.halalNote)}</div>` : '';
+      const cost = (!p || it.type==='note') && p && p.cost ? `<div class="ti-cost">${esc(p.cost)}</div>` : '';
+
       html += `<div class="ti d${n}">
         <div class="ti-time">${fmtT(it.t)}${it.e?`<span>– ${fmtT(it.e)}</span>`:''}</div>
         <div class="ti-body">
           <div class="ti-title">${ic}${num}<span>${esc(it.title)}</span></div>
-          ${meta.length?`<div class="ti-meta">${metaHtml(meta, it.metaLink)}</div>`:''}
-          ${badges}${cost}${flags?`<div>${flags}</div>`:''}${planB}${links}
+          ${lede}${metaP}${badges}${amaran}${cost}${flags?`<div>${flags}</div>`:''}${butiran}${planB}${links}
         </div></div>`;
     });
     $('#timeline').innerHTML = html;
