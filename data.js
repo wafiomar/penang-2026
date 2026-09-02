@@ -7,8 +7,8 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 12.19 pagi',
-    version: 'v1.4'
+    updated: '3 September 2026, 12.32 pagi',
+    version: 'v1.5'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
@@ -166,7 +166,7 @@ const DATA = {
     {
       n:2, date:'2026-09-13', label:'Ahad, 13 Sept', short:'Ahad',
       intro:'Dua kereta berpecah pagi ini. Kereta 2 ke LTAPP ambil Halima & Kak Ayman, Kereta 1 terus ke sarapan, dan semua bertemu semula di Roti Bakar Hutton Lane sebelum 9.00 pg. Selepas itu semua tempat rapat dalam George Town kecuali Masjid Habib.',
-      km:30, toll:'Tiada', fuel:'±RM20', fuelNote:'termasuk larian LTAPP',
+      km:30, toll:'—', fuel:'±RM20', fuelNote:'termasuk larian LTAPP',
       items:[
         { t:'07:30', type:'move2', title:'Kereta 2 (Syafi) ke LTAPP — ambil Halima & Kak Ayman', meta:'Homestay ke LTAPP 20 minit. Flight tiba 8.00 pg. Dari LTAPP terus ke tempat sarapan, sampai kira-kira 8.45.' },
         { t:'07:45', type:'move2', title:'Kereta 1 (Wafi) terus ke sarapan', meta:'Homestay ke Hutton Lane 12 minit.' },
@@ -191,7 +191,7 @@ const DATA = {
     {
       n:3, date:'2026-09-14', label:'Isnin, 14 Sept', short:'Isnin',
       intro:'Checkout awal walaupun homestay bagi sampai 12 tgh — beg terus masuk kereta, pagi lengang di George Town, dan Queensbay Mall di laluan ke lapangan terbang. Masa tiba LTAPP di bawah ialah masa sebenar yang dikira dari jarak jalan raya.',
-      km:23, toll:'Tiada', fuel:'±RM10', azanTo:'17:15',
+      km:23, toll:'—', fuel:'±RM10', azanTo:'17:15',
       items:[
         { t:'08:00', e:'08:30', type:'stop', title:'Checkout — beg masuk kereta', place:'homestay', meta:'Homestay benarkan sampai 12 tgh, tapi kita keluar awal supaya tak patah balik. Semak semua bilik, pengecas, ubat.' },
         { move:{ km:4, min:12 } },

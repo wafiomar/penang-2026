@@ -19,11 +19,13 @@ function metaHtml(meta, link){
   const frasa = esc(link.text);
   return html.includes(frasa) ? html.replace(frasa, () => `<a href="${link.href}">${frasa}</a>`) : html;
 }
+// Bentuk ringkas untuk sel jadual sempit: "2j 18m", "47m".
+const durShort = min => (min>=60 ? Math.floor(min/60)+'j' + (min%60 ? ' '+min%60+'m' : '') : min+'m');
 const dur = min => min>=60 ? Math.floor(min/60)+' jam' + (min%60 ? ' '+min%60+' min' : '') : min+' min';
 const gmaps = p => `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
 const waze  = p => `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
-// Halaman Google Maps bagi lokasi itu, untuk baca ulasan dan waktu buka.
-const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`;
+// Profil Google bagi tempat itu — cari ikut nama dan alamat, bukan koordinat.
+const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.name, p.addr].filter(Boolean).join(', '))}`;
 const ICON = {
   car:'<svg viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-6h9L18 17M4 17v2M20 17v2M7 11l1-3h8l1 3"/><circle cx="8" cy="17" r="1.2"/><circle cx="16" cy="17" r="1.2"/></svg>',
   walk:'<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="M10 21l2-6 3 3v3M8 13l2-4 3-1 3 3 2 1M12 15l-3 6"/></svg>',
@@ -56,6 +58,12 @@ const CHK_ICON = {
   snek:'<path d="M8 3h8l-1 5H9L8 3Z"/><path d="M9 8h6l1.4 11a2 2 0 0 1-2 2.2h-4.8A2 2 0 0 1 7.6 19L9 8Z"/>',
   beg:'<rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5v2M3.5 12h17"/>',
   tiket:'<path d="M3 8.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2.5 2.5 0 0 0 0 5v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2.5 2.5 0 0 0 0-5v-1Z"/><path d="M14 7.5v9"/>'
+};
+const RS_ICON = {
+  jarak:'<path d="M6.5 20.5c0-4 2-6 2-9a3.5 3.5 0 0 0-7 0c0 3 2 5 2 9M12 4.5h9M12 12h9M12 19.5h9"/>',
+  masa:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.2V12l3.2 2"/>',
+  tol:'<path d="M3 20.5v-9M21 20.5v-9M3 11.5h18M4.5 11.5l1.5-4h12l1.5 4M9 15.5h6"/>',
+  minyak:'<path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 12.5 5v15.5M3 20.5h11M6.5 9.5h4"/><path d="M12.5 9h3a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 0 3 0V8l-2.5-2.5"/>'
 };
 const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.6l5.9-.8z"/></svg>';
 
@@ -164,9 +172,9 @@ function initMap(){
 function popupHtml(p, d, item){
   const when = item ? (fmtT(item.t) + (item.e ? ' – ' + fmtT(item.e) : '')) : '';
   return `<div>${d?`<div class="pp-day" style="color:var(--d${d})">Hari ${d}${when?', '+esc(when):''}</div>`:''}
-  <div class="pp-title">${esc(p.name)}</div>
+  <div class="pp-title"><a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(p.name)}</a></div>
   <div class="pp-meta">${esc(p.addr||'')}${p.hours?'<br>Buka '+esc(p.hours):''}${p.cost?'<br>'+esc(p.cost):''}${p.note?'<br>'+esc(p.note):''}</div>
-  <div class="pp-links"><a class="wz" href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a><a class="gp" href="${gprofile(p)}" target="_blank" rel="noopener">Google Profile</a></div></div>`;
+  <div class="pp-links"><a class="wz" href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div></div>`;
 }
 async function fetchRoute(d, pts, color, lg, fallback){
   try{
@@ -178,7 +186,7 @@ async function fetchRoute(d, pts, color, lg, fallback){
     lg.removeLayer(fallback);
     L.geoJSON(route.geometry, { style:{ color, weight:4, opacity:.85 } }).addTo(lg);
     const min = Math.round(route.duration/60);
-    const el = $(`#rs-${d} .rs-time`); if(el) el.innerHTML = `${esc(dur(min))} <em>(tanpa trafik)</em>`;
+    const el = $(`#rs-time-${d}`); if(el) el.textContent = durShort(min);
   }catch(err){
     const nt = $('#map-note-text'); if(nt) nt.textContent = 'Garisan putus-putus, laluan jalan tak dapat dimuat';
   }
@@ -210,13 +218,19 @@ initMap();
 (function routeSum(){
   // Masa memandu awal dikira dari segmen DATA (tanpa jalan kaki); OSRM ganti bila sambungan ada.
   const driveMin = d => d.items.filter(i => i.move && !i.move.walk).reduce((a,i) => a + (i.move.min||0), 0);
-  const row = (label, val, note) => `<li><i>${esc(label)}</i><b>${esc(val)}${note?` <em>(${esc(note)})</em>`:''}</b></li>`;
-  $('#route-sum').innerHTML = DATA.days.map(d => `<div class="d${d.n}" id="rs-${d.n}"><span>Hari ${d.n}, ${esc(d.short)}</span><ul class="rs-list">`
-    + row('Total Distance', d.km + ' km')
-    + `<li><i>Estimated Driving Time</i><b class="rs-time">${esc(dur(driveMin(d)))} <em>(tanpa trafik)</em></b></li>`
-    + row('Toll', d.toll, d.tollNote)
-    + row('Fuel', d.fuel, d.fuelNote)
-    + `</ul></div>`).join('');
+  const lbl = (k, teks) => `<th scope="row"><svg viewBox="0 0 24 24" aria-hidden="true">${RS_ICON[k]}</svg>${esc(teks)}</th>`;
+  const sel = (fn) => DATA.days.map(d => `<td>${fn(d)}</td>`).join('');
+  $('#route-sum').innerHTML = `<table class="rs-tbl">`
+    + `<thead><tr><td></td>${DATA.days.map(d => `<th scope="col" class="d${d.n}">Day ${d.n}</th>`).join('')}</tr></thead><tbody>`
+    + `<tr>${lbl('jarak','Distance')}${sel(d => esc(d.km + ' km'))}</tr>`
+    + `<tr>${lbl('masa','Driving Time')}${DATA.days.map(d => `<td id="rs-time-${d.n}">${esc(durShort(driveMin(d)))}</td>`).join('')}</tr>`
+    + `<tr>${lbl('tol','Toll')}${sel(d => esc(d.toll))}</tr>`
+    + `<tr>${lbl('minyak','Fuel')}${sel(d => esc(d.fuel))}</tr>`
+    + `</tbody></table>`;
+  // Nota tol/minyak setiap hari tak muat dalam sel sempit, jadi diletak bawah jadual.
+  const kaki = DATA.days.map(d => { const bit = [d.tollNote && 'tol ' + d.tollNote, d.fuelNote && 'minyak ' + d.fuelNote].filter(Boolean);
+    return bit.length ? `Day ${d.n}: ${bit.join(', ')}` : null; }).filter(Boolean);
+  $('#route-foot').textContent = kaki.join('. ') + (kaki.length ? '.' : '');
   $('#route-note').textContent = DATA.routeNote;
 })();
 
