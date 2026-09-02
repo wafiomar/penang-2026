@@ -154,6 +154,8 @@ section+section{border-top:1px solid var(--line)}
 .ti-time{font-weight:700;font-size:1.05rem;line-height:1.2;letter-spacing:-0.01em}
 .ti-time span{display:block;font-weight:500;color:var(--ink-2);font-size:.8rem;margin-top:2px}
 .ti-title{font-weight:600;font-size:1.02rem;display:flex;align-items:flex-start;gap:8px}
+.ti-title a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--line)}
+.ti-title a:hover,.ti-title a:focus-visible{text-decoration-color:currentColor}
 .ti-title .ico{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;margin-top:1px}
 .ti-title .ico svg{width:15px;height:15px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .d1 .ti-title .ico{background:var(--d1-soft)}.d1 .ti-title .ico svg{stroke:var(--d1)}
@@ -183,6 +185,7 @@ section+section{border-top:1px solid var(--line)}
 .det-list li{display:flex;align-items:flex-start;gap:9px;font-size:.84rem;line-height:1.4;color:var(--ink-2)}
 .det-list li svg{flex:none;width:15px;height:15px;margin-top:2px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .det-list li span{min-width:0;overflow-wrap:anywhere}
+.det-list .bdg{margin-left:2px;vertical-align:middle}
 .det-list b{color:var(--ink);font-weight:600}
 .det-list a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--line)}
 .det-list a:hover,.det-list a:focus-visible{text-decoration-color:currentColor}

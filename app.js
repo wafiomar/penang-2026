@@ -246,6 +246,9 @@ const DET_ICON = {
   kos:'<circle cx="12" cy="12" r="8.5"/><path d="M14.4 9.3A2.9 2.9 0 0 0 9.7 10c0 2.5 4.8 1.5 4.8 4a2.9 2.9 0 0 1-4.8.8M12 7.3v1.3M12 15.3v1.3"/>',
   nota:'<path d="M5.5 4.5h13v15h-13z"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>'
 };
+const pilBintang = (rating, reviews) => rating
+  ? `<span class="bdg rate">${STAR}${rating.toFixed(1)}${reviews?' · '+reviews.toLocaleString('ms-MY')+' ulasan':''}</span>`
+  : '';
 const det = (k, isi) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${DET_ICON[k]}</svg><span>${isi}</span></li>`;
 
 // Plan B: satu kad sebaris — nama berpaut, bintang Google, sebab pendek.
@@ -256,9 +259,9 @@ function planbHtml(list){
     const nama = x.name || (p && p.name) || '';
     const alamat = x.addr || (p && p.addr) || '';
     const rating = x.rating || (p && p.rating);
-    const ulasan = p && p.reviews;
+    const ulasan = x.reviews || (p && p.reviews);
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([nama, alamat].filter(Boolean).join(', '))}`;
-    const bintang = rating ? `<span class="bdg rate">${STAR}${rating.toFixed(1)}${ulasan?' · '+ulasan.toLocaleString('ms-MY'):''}</span>` : '';
+    const bintang = pilBintang(rating, ulasan);
     return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
          + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
          + `${x.why?`<p>${esc(x.why)}</p>`:''}</li>`;
@@ -314,7 +317,7 @@ function planbHtml(list){
       const ic = TI_ICON[it.type] ? `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[it.type]}</svg></span>` : '';
       let bdg = '';
       if(p && p.halal){ const h = HALAL[p.halal]; bdg += `<span class="bdg ${p.halal}"><svg viewBox="0 0 24 24" aria-hidden="true">${h.ic}</svg>${h.t}</span>`; }
-      if(p && p.rating){ bdg += `<span class="bdg rate">${STAR}${p.rating.toFixed(1)} · ${p.reviews.toLocaleString('ms-MY')} ulasan</span>`; }
+      if(p && p.rating){ bdg += pilBintang(p.rating, p.reviews); }
       const badges = bdg ? `<div class="badges">${bdg}</div>` : '';
       const flags = (it.flags||[]).map(f => `<span class="flag ${f.k}">${esc(f.v)}</span>`).join('');
       const planB = it.planB && it.planB.length ? `<details class="planb"><summary>Plan B</summary>${planbHtml(it.planB)}</details>` : '';
@@ -329,12 +332,12 @@ function planbHtml(list){
         if(p.addr)   baris.push(det('alamat', esc(p.addr)));
         if(p.phone)  baris.push(det('telefon', `<a href="tel:${esc(p.phone.replace(/[^0-9+]/g,''))}">${esc(p.phone)}</a>`));
         if(p.hours)  baris.push(det('waktu', esc(p.hours)));
-        if(p.rating) baris.push(det('ulasan', `Google review: ${p.rating.toFixed(1)} bintang · ${p.reviews.toLocaleString('ms-MY')} ulasan`));
+        if(p.rating) baris.push(det('ulasan', `Google review: ${pilBintang(p.rating, p.reviews)}`));
         if(p.special)baris.push(det('istimewa', `<b>Keistimewaan:</b> ${esc(p.special)}`));
         if(p.tips)   baris.push(det('tips', `<b>Tips:</b> ${esc(p.tips)}`));
         if(p.cost)   baris.push(det('kos', `<b>Kos:</b> ${esc(p.cost)}`));
         if(it.meta)  baris.push(det('nota', `<b>Nota:</b> ${esc(it.meta)}`));
-        butiran = `<details class="det"><summary>Butiran</summary><ul class="det-list">${baris.join('')}</ul></details>`;
+        butiran = `<details class="det"><summary>Details</summary><ul class="det-list">${baris.join('')}</ul></details>`;
       } else {
         const meta = [it.meta, p && p.addr && (it.type!=='note') ? p.addr : '', p && p.hours ? 'Buka ' + p.hours : ''].filter(Boolean);
         metaP = meta.length ? `<div class="ti-meta">${metaHtml(meta, it.metaLink)}</div>` : '';
@@ -345,7 +348,7 @@ function planbHtml(list){
       html += `<div class="ti d${n}">
         <div class="ti-time">${fmtT(it.t)}${it.e?`<span>– ${fmtT(it.e)}</span>`:''}</div>
         <div class="ti-body">
-          <div class="ti-title">${ic}${num}<span>${esc(it.title)}</span></div>
+          <div class="ti-title">${ic}${num}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}</span></div>
           ${lede}${metaP}${badges}${amaran}${cost}${flags?`<div>${flags}</div>`:''}${butiran}${planB}${links}
         </div></div>`;
     });
