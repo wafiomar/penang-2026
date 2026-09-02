@@ -382,6 +382,14 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .check li{break-inside:avoid;display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line-2)}
 .check li .ci{flex:none;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--d3-soft);margin-top:1px}
 .check li .ci svg{width:15px;height:15px;fill:none;stroke:var(--d3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ucapan{margin:0;padding:72px 24px;text-align:center;font-size:clamp(1.6rem,6vw,2.4rem);font-weight:600;letter-spacing:-0.02em;line-height:1.25;color:var(--ink)}
+.ucapan:empty{display:none}
+.pb-hours{display:block;margin-top:3px;color:var(--ink-3);font-size:.78rem}
+.pb-note-kecil{margin-top:5px;padding-top:5px;border-top:1px solid var(--line-2);color:var(--ink-3);font-size:.78rem;line-height:1.4}
+.det-tips{margin:5px 0 0;padding-left:16px;display:grid;gap:4px}
+.det-tips li{line-height:1.4}
+.fr24{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--line)}
+.fr24:hover,.fr24:focus-visible{text-decoration-color:currentColor}
 footer{padding:28px 0 60px;color:var(--ink-3);font-size:.8rem;text-align:center}
 footer a{color:var(--ink-2)}
 #pagi-sabtu{scroll-margin-top:calc(var(--navh,52px) + 14px)}

@@ -85,6 +85,15 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 })();
 
 /* ============================================================
+   UCAPAN
+   ============================================================ */
+(function ucapan(){
+  const u = DATA.ucapan, el = $('#ucapan'); if(!u || !el) return;
+  const tukar = new Date(u.tarikh + 'T00:00:00+08:00');
+  el.textContent = new Date() >= tukar ? u.selepas : u.sebelum;
+})();
+
+/* ============================================================
    NAV highlight
    ============================================================ */
 (function nav(){
@@ -264,7 +273,9 @@ function planbHtml(list){
     const bintang = pilBintang(rating, ulasan);
     return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
          + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
-         + `${x.why?`<p>${esc(x.why)}</p>`:''}</li>`;
+         + `${alamat?'':''}${x.hours?`<span class="pb-hours">${esc(x.hours)}</span>`:''}`
+         + `${x.why?`<p>${esc(x.why)}</p>`:''}`
+         + `${x.note?`<p class="pb-note-kecil">${esc(x.note)}</p>`:''}</li>`;
   }).join('') + `</ul>`;
 }
 
@@ -334,7 +345,9 @@ function planbHtml(list){
         if(p.hours)  baris.push(det('waktu', esc(p.hours)));
         if(p.rating) baris.push(det('ulasan', `Google review: ${pilBintang(p.rating, p.reviews)}`));
         if(p.special)baris.push(det('istimewa', `<b>Keistimewaan:</b> ${esc(p.special)}`));
-        if(p.tips)   baris.push(det('tips', `<b>Tips:</b> ${esc(p.tips)}`));
+        if(p.tips)   baris.push(det('tips', Array.isArray(p.tips)
+          ? `<b>Tips:</b><ul class="det-tips">${p.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>`
+          : `<b>Tips:</b> ${esc(p.tips)}`));
         if(p.cost)   baris.push(det('kos', `<b>Kos:</b> ${esc(p.cost)}`));
         if(it.meta)  baris.push(det('nota', `<b>Nota:</b> ${esc(it.meta)}`));
         butiran = `<details class="det"><summary>Details</summary><ul class="det-list">${baris.join('')}</ul></details>`;
@@ -401,7 +414,7 @@ function planbHtml(list){
   const chip = w => { const [gid, nm] = w.split(':'); const g = G(gid); return `<span class="chip" style="--g:${g.color}">${esc(nm || g.label)}</span>`; };
   $('#board').innerHTML = DATA.flights.map(f => `<div class="board-row">
       <div class="t">${f.dep?fmtT(f.dep):'—'}${f.est?'<i class="est">anggaran</i>':''}<small>${esc(f.date)}</small></div>
-      <div><div class="r">${esc(f.fromName)} → ${esc(f.toName)} <span>${f.arr?'tiba '+fmtT(f.arr):''}${f.no?(f.arr?', ':'')+esc(f.no):''}</span></div>
+      <div><div class="r">${esc(f.fromName)} → ${esc(f.toName)} <span>${f.arr?'tiba '+fmtT(f.arr):''}${f.flightNo?(f.arr?', ':'')+`<a class="fr24" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}" target="_blank" rel="noopener">${esc(f.flightNo)}</a>`:''}</span></div>
         <div class="who">${f.who.map(chip).join('')}</div>
         ${f.note?`<div class="note">${esc(f.note)}</div>`:''}</div></div>`).join('');
   $('#cut-title').innerHTML = `<svg class="cut-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.6 1.6M9 2.4h6M18.6 6.4l1.4-1.4"/></svg>${esc(DATA.cutoff.title)}`;
