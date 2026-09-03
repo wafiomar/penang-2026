@@ -305,8 +305,8 @@ details.planb[open] summary::before{content:"–"}
 /* ============================================================
    CARS / SEATS
    ============================================================ */
-.cars{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:520px){.cars{grid-template-columns:1fr}}
+.cars{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:901px){.cars{grid-template-columns:1fr 1fr}}
 .car{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
 .car h3{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:1rem;flex-wrap:wrap}
 .car h3 .sug{font-weight:600;color:var(--d3);font-size:.78rem;margin-right:auto}
@@ -317,7 +317,10 @@ details.planb[open] summary::before{content:"–"}
 .car .drv b{color:var(--ink)}
 @media (max-width:420px){.car{padding:12px 10px}.seatkey{gap:3px 8px}.seatkey li{font-size:.73rem}}
 /* Seat map: satu SVG, skala penuh ikut lebar bekas */
-.carmap{display:block;width:100%;height:auto;max-width:320px;margin:10px auto 0}
+/* Telefon: lebar penuh supaya nama muat. Tablet: 380px. Desktop: 320px, dua lajur. */
+.carmap{display:block;width:100%;height:auto;margin:10px auto 0}
+@media (min-width:500px) and (max-width:900px){.carmap{max-width:380px}}
+@media (min-width:901px){.carmap{max-width:320px}}
 /* Cadangan kedudukan */
 .cadangan{margin-top:10px;border-top:1px solid var(--line-2);padding-top:9px}
 .cadangan>summary{display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:600;color:var(--ink-2);cursor:pointer;list-style:none}
