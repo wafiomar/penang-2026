@@ -49,7 +49,42 @@ const gmaps = p => `https://www.google.com/maps/dir/?api=1&destination=${p.lat},
 const waze  = p => `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
 // Profil Google bagi tempat itu — cari ikut nama dan alamat, bukan koordinat.
 const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.name, p.addr].filter(Boolean).join(', '))}`;
+// Satu penerbangan sedang di udara? Kira ikut waktu Malaysia (UTC+8) pada tarikh
+// sebenar penerbangan itu. Tiada waktu tiba bermakna kita tak boleh tahu — anggap tidak.
+function diUdara(f){
+  if(!f.iso || !f.dep || !f.arr) return false;
+  const ms = t => Date.parse(f.iso + 'T' + t + ':00+08:00');
+  const mula = ms(f.dep); let tamat = ms(f.arr);
+  if(tamat < mula) tamat += 864e5;               // merentas tengah malam
+  const kini = Date.now();
+  return kini >= mula && kini <= tamat;
+}
+// Nombor penerbangan sebagai pautan penjejakan langsung: ikon radar + titik LANGSUNG.
+function pautanFr24(f){
+  if(!f || !f.flightNo) return '';
+  return `<a class="fr24" data-flight="${esc(f.flightNo)}" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
+    + ` target="_blank" rel="noopener" title="Jejak penerbangan langsung" aria-label="Jejak penerbangan langsung ${esc(f.flightNo)}">`
+    + `${ICON.radar}<span>${esc(f.flightNo)}</span></a>`;
+}
+// Titik LANGSUNG disegarkan berkala, supaya ia muncul dan hilang sendiri
+// walaupun halaman dibiarkan terbuka merentas waktu berlepas dan mendarat.
+function segarLangsung(){
+  document.querySelectorAll('a.fr24[data-flight]').forEach(el => {
+    const f = DATA.flights.find(x => x.flightNo === el.dataset.flight);
+    const ada = el.nextElementSibling && el.nextElementSibling.classList.contains('fr-live');
+    const patut = !!f && diUdara(f);
+    if(patut && !ada){
+      const s = document.createElement('span');
+      s.className = 'fr-live'; s.title = 'Sedang di udara';
+      s.innerHTML = '<i></i>LANGSUNG';
+      el.after(s);
+    } else if(!patut && ada){ el.nextElementSibling.remove(); }
+  });
+}
+setInterval(segarLangsung, 30000);
+document.addEventListener('visibilitychange', () => { if(!document.hidden) segarLangsung(); });
 const ICON = {
+  radar:'<svg class="fr-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a6 6 0 0 1 6-6M12 12a10 10 0 0 1 10-10M12 12a2 2 0 0 1 2-2"/><circle cx="7" cy="17" r="2.2"/><path d="M2 22l3.4-3.4"/></svg>',
   car:'<svg viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-6h9L18 17M4 17v2M20 17v2M7 11l1-3h8l1 3"/><circle cx="8" cy="17" r="1.2"/><circle cx="16" cy="17" r="1.2"/></svg>',
   walk:'<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="M10 21l2-6 3 3v3M8 13l2-4 3-1 3 3 2 1M12 15l-3 6"/></svg>',
   home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
@@ -142,7 +177,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   const balik  = DATA.flights.filter(f => f.from === 'PEN');
   const baris1 = [];
   if(keLuar[0]){ const f = keLuar[0];
-    baris1.push(`<b>Pergi</b> ${esc(hariPendek(f.date))}${f.flightNo?', '+esc(f.flightNo):''}, ${esc(f.fromName)} ${fmtT(f.dep)} → ${esc(f.to)} ${fmtT(f.arr)}`); }
+    baris1.push(`<b>Pergi</b> ${esc(hariPendek(f.date))}${f.flightNo?', '+pautanFr24(f):''}, ${esc(f.fromName)} ${fmtT(f.dep)} → ${esc(f.to)} ${fmtT(f.arr)}`); }
   if(balik.length){
     const bit = balik.map(f => `${fmtT(f.dep)} (${f.who.length > 3 ? 'lain' : esc(nama(f).join(', '))})`).join(' dan ');
     baris1.push(`<b>Balik</b> ${esc(hariPendek(balik[0].date))}, ${bit}`); }
@@ -175,6 +210,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
     + `<section><h3>Homestay</h3><p>${esc(DATA.stay.addr)}</p>`
     + `<p>Check-in ${esc(bersih(DATA.stay.checkin))} · Check-out ${esc(bersih(DATA.stay.checkout))}</p>`
     + `<p>${esc(bilik[0])} bilik · ${esc(tingkat[0])} tingkat</p></section>`;
+  segarLangsung();
 
   const buka = () => { modal.hidden = false; document.body.style.overflow = 'hidden'; modal.querySelector('.rk-x').focus(); };
   const tutup = () => { modal.hidden = true; document.body.style.overflow = ''; };
@@ -206,7 +242,29 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
       if(window.scrollY + window.innerHeight >= de.scrollHeight - 2) cur = secs[secs.length-1];
       else cur = secs.find(s => s.getBoundingClientRect().top > L) || secs[0];
     }
-    links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#'+cur.id));
+    const aktif = links.find(l => l.getAttribute('href') === '#'+cur.id);
+    links.forEach(l => l.classList.toggle('on', l === aktif));
+    if(aktif && aktif !== tabTerakhir){ tabTerakhir = aktif; bawaKeTengah(aktif); }
+  }
+
+  // Skrol bar nav supaya tab aktif kelihatan, dengan ruang di kiri dan kanannya.
+  // Berhenti seketika kalau pengguna sedang skrol bar itu sendiri dengan jari.
+  const jalur = navEl.querySelector('.wrap');
+  let tabTerakhir = null, sentuh = 0;
+  ['pointerdown','touchstart','wheel'].forEach(ev =>
+    jalur.addEventListener(ev, () => { sentuh = Date.now(); }, { passive:true }));
+  function bawaKeTengah(el){
+    if(Date.now() - sentuh < 1200) return;          // tangan pengguna masih di situ
+    if(jalur.scrollWidth <= jalur.clientWidth) return; // tiada apa nak diskrol
+    const ruang = 16;
+    const kiri = el.offsetLeft - ruang;
+    const kanan = el.offsetLeft + el.offsetWidth + ruang;
+    let x = jalur.scrollLeft;
+    if(kiri < x) x = kiri;
+    else if(kanan > x + jalur.clientWidth) x = kanan - jalur.clientWidth;
+    else return;                                    // sudah kelihatan sepenuhnya
+    x = Math.max(0, Math.min(x, jalur.scrollWidth - jalur.clientWidth));
+    jalur.scrollTo({ left:x, behavior:'smooth' });
   }
 
   // Bina semula pemerhati bila saiz tetingkap berubah, sebab tinggi nav berubah.
@@ -436,6 +494,8 @@ function planbHtml(list){
       }
       const p = it.place ? P[it.place] : null;
       const isStop = (it.type==='stop'||it.type==='meal'||it.type==='rehat') && it.place && DATA.markers[n].includes(it.place);
+      const pf = it.flightRef ? DATA.flights.find(x => x.flightNo === it.flightRef) : null;
+      const fr = pf ? pautanFr24(pf) : '';
       const num = isStop ? `<button type="button" class="n" data-mday="${n}" data-mplace="${esc(it.place)}" aria-label="Tunjuk ${esc(p?p.name:it.title)} pada peta">${++stopIdx}</button>` : '';
       const cat = CAT[it.type];
       const ic = TI_ICON[it.type] ? `<span class="ico" style="--c:${cat?cat.color:'var(--ink-2)'}" title="${cat?esc(cat.label):''}"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[it.type]}</svg></span>` : '';
@@ -474,11 +534,12 @@ function planbHtml(list){
       html += `<div class="ti d${n}">
         <div class="ti-time">${fmtT(it.t)}${it.e?`<span>– ${fmtT(it.e)}</span>`:''}</div>
         <div class="ti-body">
-          <div class="ti-title">${ic}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}</span>${num}</div>
+          <div class="ti-title">${ic}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}${fr ? ' '+fr : ''}</span>${num}</div>
           ${lede}${metaP}${badges}${amaran}${cost}${flags?`<div>${flags}</div>`:''}${butiran}${planB}${links}
         </div></div>`;
     });
     $('#timeline').innerHTML = html;
+    segarLangsung();
     $('#timeline').querySelectorAll('button.n').forEach(b => b.addEventListener('click', () => {
       const d = b.dataset.mday, id = b.dataset.mplace, mk = MAP.marks[d + ':' + id];
       if(!mk || !MAP.map) return;
@@ -541,11 +602,12 @@ function planbHtml(list){
   const chip = w => { const [gid, nm] = w.split(':'); const g = G(gid); return `<span class="chip" style="--g:${g.color}">${esc(nm || g.label)}</span>`; };
   const baris = f => `<div class="board-row">
       <div class="t">${f.dep?fmtT(f.dep):'—'}${f.est?'<i class="est">anggaran</i>':''}<small>${esc(f.date)}</small></div>
-      <div><div class="r">${esc(f.fromName)} → ${esc(f.toName)} <span>${f.arr?'tiba '+fmtT(f.arr):''}${f.flightNo?(f.arr?', ':'')+`<a class="fr24" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}" target="_blank" rel="noopener">${esc(f.flightNo)}</a>`:''}</span></div>
+      <div><div class="r">${esc(f.fromName)} → ${esc(f.toName)} <span>${f.arr?'tiba '+fmtT(f.arr):''}${f.flightNo?(f.arr?', ':'')+pautanFr24(f):''}</span></div>
         <div class="who">${f.who.map(chip).join('')}</div>
         ${f.note?`<div class="note">${esc(f.note)}</div>`:''}</div></div>`;
   const kump = [['Pergi', DATA.flights.filter(f => f.to === 'PEN')], ['Balik', DATA.flights.filter(f => f.from === 'PEN')]];
   $('#board').innerHTML = kump.map(([nm, list]) => `<div class="board-grp">${esc(nm)}</div>` + list.map(baris).join('')).join('');
+  segarLangsung();
   $('#cut-title').innerHTML = `<svg class="cut-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.6 1.6M9 2.4h6M18.6 6.4l1.4-1.4"/></svg>${esc(DATA.cutoff.title)}`;
   $('#cutoff').innerHTML = DATA.cutoff.rows.map(c => `<div><b>${fmtT(c.t)}</b><span>${esc(c.l)}</span><em>${esc(c.d)}</em></div>`).join('');
   $('#cut-foot').textContent = DATA.cutoff.foot;

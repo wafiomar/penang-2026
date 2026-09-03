@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 10.48 pagi',
+    updated: '3 September 2026, 3.36 petang',
     toddler: 2,
-    version: 'v3.2'
+    version: 'v3.3'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -24,10 +24,10 @@ const DATA = {
   ],
 
   flights: [
-    { date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6154', who:['F2','F3','F4','G2','S1'], note:'Fitri & Fatimah tempahan berasingan, penerbangan sama masa. 15 orang.' },
-    { date:'13 Sept (Ahad)',  dep:'07:05', arr:'08:00', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'', who:['G1'], est:true, note:'Waktu berlepas 7.05 pg ialah anggaran — dikira dari waktu tiba 8.00 pg tolak 55 minit masa penerbangan. Sahkan pada tiket sebenar. Kereta 2 ambil mereka di LTAPP.' },
-    { date:'14 Sept (Isnin)', dep:'16:00', arr:'', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'', who:['G2:Fitri','G2:Fatimah'], note:'Fitri & Fatimah sahaja. Masa tiba dan nombor penerbangan: isi bila ada.' },
-    { date:'14 Sept (Isnin)', dep:'17:15', arr:'18:15', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'', who:['F2','F3','F4','G1','G2:Madno','S1'], note:'Semua yang lain. Nombor penerbangan balik: isi bila ada.' }
+    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6154', who:['F2','F3','F4','G2','S1'], note:'Fitri & Fatimah tempahan berasingan, penerbangan sama masa. 15 orang.' },
+    { iso:'2026-09-13', date:'13 Sept (Ahad)',  dep:'07:05', arr:'08:00', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'', who:['G1'], est:true, note:'Waktu berlepas 7.05 pg ialah anggaran — dikira dari waktu tiba 8.00 pg tolak 55 minit masa penerbangan. Sahkan pada tiket sebenar. Kereta 2 ambil mereka di LTAPP.' },
+    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'16:00', arr:'', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'', who:['G2:Fitri','G2:Fatimah'], note:'Fitri & Fatimah sahaja. Masa tiba dan nombor penerbangan: isi bila ada.' },
+    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'17:15', arr:'18:15', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'', who:['F2','F3','F4','G1','G2:Madno','S1'], note:'Semua yang lain. Nombor penerbangan balik: isi bila ada.' }
   ],
 
   cutoff: {
@@ -159,7 +159,7 @@ const DATA = {
       items:[
         { t:'04:30', type:'note',  title:'Bertolak dari rumah masing-masing', meta:'Awal sebab peraturan 3 jam. Lihat "Pagi Sabtu: cara ke KLIA2" untuk laluan setiap kumpulan.', metaLink:{ text:'Pagi Sabtu: cara ke KLIA2', href:'#pagi-sabtu' } },
         { t:'05:45', e:'08:45', type:'flight', title:'KLIA2 — check-in bagasi, Subuh, sarapan', place:'klia2', meta:'Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan.' },
-        { t:'09:25', type:'flight', title:'Berlepas AK6154', meta:'Tempoh 55 minit.' },
+        { t:'09:25', type:'flight', title:'Berlepas AK6154', flightRef:'AK6154', meta:'Tempoh 55 minit.' },
         { t:'10:20', type:'flight', title:'Tiba Pulau Pinang, ambil bagasi', place:'lta' },
         { t:'11:30', type:'move2', title:'Ambil kereta sewa di LTAPP', meta:'Kereta 1 starting driver Wafi, Kereta 2 starting driver Syafi. Semak kereta, ambil gambar sekeliling badan kereta sebelum bergerak.' },
         { move:{ km:3, min:6 } },
