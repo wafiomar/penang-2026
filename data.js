@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 9.24 pagi',
+    updated: '3 September 2026, 9.40 pagi',
     toddler: 2,
-    version: 'v2.6'
+    version: 'v2.7'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
@@ -44,58 +44,58 @@ const DATA = {
   klRule:'Setiap keluarga pilih satu pilihan sahaja. Dua pilihan bertanda "berkait" mengubah pilihan kumpulan lain — baca notanya sebelum pilih.',
   klSide: [
     { g:'F2', title:'Keluarga Hadi', sub:'4 orang', opts:[
-      { k:'A', name:'ERL dari Salak Tinggi', main:true, lines:[
+      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[["Pandu ke Salak Tinggi Park & Ride (berbumbung, 812 petak)","—","Parking Sab–Isn RM36 berbumbung / RM30 terbuka"],["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak 6–15"],["Naik tren 5.00 pg atau 5.30 pg","Tren pertama 5.00 pg","—"]], lines:[
         'Pandu ke Salak Tinggi Park & Ride (berbumbung, 812 petak). Parking Sabtu–Isnin lebih kurang RM36 berbumbung atau RM30 terbuka. Bayar Touch \u2019n Go atau kad.',
         'KLIA Transit ke KLIA2: 11 minit. RM4.90 dewasa, RM2.20 kanak-kanak 6–15 tahun, bawah 6 percuma.',
         'Hujung minggu tren setiap 30 minit, tren pertama 5.00 pg. Naik tren 5.00 pg atau 5.30 pg supaya sampai KLIA2 sebelum 6.00 pg.'
       ]},
-      { k:'B', name:'Ikut kereta Keluarga Wafi terus ke KLIA2', lines:[
+      { k:'B', name:'Ikut kereta Keluarga Wafi terus ke KLIA2', steps:[["Ikut kereta Keluarga Wafi terus ke KLIA2","—","Tiada tambang ERL"],["Sahkan kereta 7 tempat dan ruang beg untuk 6 orang","—","—"]], lines:[
         'Tanpa ERL langsung. Jimat masa dan tambang, tapi kereta jadi 6 orang.',
         'Perlu kereta 7 tempat dan ruang beg untuk 6 orang — sahkan dengan Wafi dahulu.'
       ], link:'Kalau Hadi pilih B: Keluarga Wafi guna Pilihan B atau C, dan Syafi guna Pilihan D.' }
     ]},
     { g:'F3', title:'Keluarga Obi', sub:'5 orang', opts:[
-      { k:'A', name:'ERL dari Salak Tinggi', main:true, lines:[
+      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[["Pandu ke Salak Tinggi Park & Ride","—","Parking Sab–Isn RM30–36"],["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak"],["Beli tiket tiga anak di kaunter atau mesin sebelum gate","—","—"],["Sasar tren 6.00 pg","6.00 pg","—"]], lines:[
         'Sama seperti Keluarga Hadi: Salak Tinggi Park & Ride, kemudian KLIA Transit 11 minit.',
         'Tambang RM4.90 dewasa, RM2.20 kanak-kanak. Tiga anak — beli tiket di kaunter atau mesin sebelum masuk gate.',
         'Sasar tren 6.00 pg.'
       ]},
-      { k:'B', name:'Pandu sendiri terus ke KLIA2', lines:[
+      { k:'B', name:'Pandu sendiri terus ke KLIA2', steps:[["Pandu sendiri terus ke KLIA2, 5 orang dan beg satu kereta","—","—"],["Parking Gateway@klia2","—","RM55 sehari, 3 hari ±RM165"],["Atau KLIA Long Term Car Park, shuttle setiap 10–15 minit","—","RM27–32 sehari"],["Bertolak dari rumah","±4.30 pg","—"]], lines:[
         '5 orang dan beg dalam satu kereta, tiada pindah-pindah beg di stesen.',
         'Parking Gateway@klia2 RM55 sehari, 3 hari lebih kurang RM165. Atau KLIA Long Term Car Park RM27–32 sehari dengan shuttle percuma setiap 10–15 minit.',
         'Bertolak dari rumah lebih kurang 4.30 pg supaya sampai KLIA2 sebelum 6.00 pg.'
       ]}
     ]},
     { g:'F4', title:'Keluarga Wafi + Syafi', sub:'3 orang', opts:[
-      { k:'A', name:'Salak Tinggi Park & Ride + ERL', main:true, lines:[
+      { k:'A', name:'Salak Tinggi Park & Ride + ERL', main:true, steps:[["Syafi carpool dengan Wafi dari Cyberjaya ke Salak Tinggi","—","—"],["Parking Salak Tinggi Park & Ride, 3 hari","—","±RM36"],["KLIA Transit ke KLIA2","11 minit","RM4.90 seorang sehala"]], lines:[
         'Parking lebih kurang RM36 untuk 3 hari, tambang RM4.90 seorang sehala.',
         'Syafi carpool dengan Wafi dari Cyberjaya ke Salak Tinggi.'
       ]},
-      { k:'B', name:'Parking Gateway@klia2', lines:[
+      { k:'B', name:'Parking Gateway@klia2', steps:[["Pandu terus ke KLIA2, jalan ke terminal, tiada tren","—","—"],["Parking Gateway@klia2","—","RM55 sehari, 3 hari ±RM165"]], lines:[
         'RM55 sehari, 3 hari lebih kurang RM165. Jalan terus ke terminal, tiada tren.'
       ]},
-      { k:'C', name:'KLIA Long Term Car Park', lines:[
+      { k:'C', name:'KLIA Long Term Car Park', steps:[["Pandu terus ke KLIA Long Term Car Park","—","RM27–32 sehari, 3 hari ±RM90"],["Shuttle percuma ke KLIA2","Setiap 10–15 minit","Percuma"]], lines:[
         'RM27–32 sehari, jadi lebih kurang RM90 untuk 3 hari. Shuttle percuma ke KLIA2 setiap 10–15 minit.'
       ]},
-      { k:'D', name:'Syafi naik ERL Putrajaya sendiri', lines:[
+      { k:'D', name:'Syafi naik ERL Putrajaya sendiri', steps:[["Parking Putrajaya Sentral","—","±RM12 sehari"],["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40"],["Tren pertama","5.22 pg","—"]], lines:[
         'Putrajaya Sentral ke KLIA2: 20 minit, RM9.40. Tren pertama 5.22 pg. Parking Putrajaya Sentral lebih kurang RM12 sehari.'
       ], link:'Guna D hanya kalau Keluarga Hadi pilih B. Ketika itu Keluarga Wafi akan pilih Pilihan B atau C.' }
     ]},
     { g:'G2', title:'Fitri, Madno & Fatimah', sub:'3 orang', opts:[
-      { k:'A', name:'ERL dari KL Sentral', main:true, lines:[
+      { k:'A', name:'ERL dari KL Sentral', main:true, steps:[["KLIA Ekspres tanpa henti dari KL Sentral","33 minit","RM55 dewasa sehala"],["Atau KLIA Transit","39 minit","RM55 dewasa sehala"],["KLIA Ekspres pertama 5.00 pg, tiba KLIA2 5.33 pg","5.00 pg","Tiket online 10% lebih murah"]], lines:[
         'KLIA Ekspres 33 minit tanpa henti, atau KLIA Transit 39 minit. RM55 dewasa sehala, tiket online 10% lebih murah.',
         'KLIA Ekspres pertama 5.00 pg dari KL Sentral, tiba KLIA2 5.33 pg — itu satu-satunya tren yang sempat untuk had 6.00 pg.'
       ]},
-      { k:'B', name:'Grab terus ke KLIA2', lines:[
+      { k:'B', name:'Grab terus ke KLIA2', steps:[["Grab terus ke KLIA2, turun di pintu berlepas Aras 3","—","Berubah ikut permintaan, biasanya lebih mahal daripada ERL untuk 3 orang"]], lines:[
         'Turun di pintu berlepas Aras 3. Kos berubah ikut permintaan, biasanya lebih mahal daripada ERL untuk 3 orang.'
       ]}
     ]},
     { g:'G1', title:'Halima & Kak Ayman', sub:'Ahad pagi, 2 orang', opts:[
-      { k:'A', name:'ERL dari Putrajaya', main:true, lines:[
+      { k:'A', name:'ERL dari Putrajaya', main:true, steps:[["Parking Putrajaya Sentral","—","±RM12 sehari"],["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40 dewasa"],["Tren pertama Ahad 5.22 pg, tiba KLIA2 5.42 pg","5.22 pg","—"]], lines:[
         'Putrajaya Sentral ke KLIA2: 20 minit, RM9.40 dewasa. Parking Putrajaya Sentral lebih kurang RM12 sehari.',
         'Tren pertama hari Ahad 5.22 pg, tiba KLIA2 5.42 pg — lebih kurang 1 jam 20 minit sebelum berlepas, memadai untuk cabin sahaja.'
       ]},
-      { k:'B', name:'Dihantar atau Grab terus ke KLIA2', lines:[
+      { k:'B', name:'Dihantar atau Grab terus ke KLIA2', steps:[["Dihantar atau Grab terus ke KLIA2","—","Tiada parking untuk dibayar"],["Boleh sampai lebih awal — pilih ini kalau ada bagasi check-in","—","—"]], lines:[
         'Tiada parking untuk dibayar dan boleh sampai lebih awal.',
         'Pilih ini kalau ada bagasi check-in, sebab ERL pertama terlalu lewat untuk saranan 3 jam.'
       ]}
@@ -118,7 +118,7 @@ const DATA = {
     klia2:     { name:"KLIA2", lat:2.7442, lng:101.6858, addr:"Sepang, Selangor", kind:"plane" },
     lta:       { name:"Lapangan Terbang Antarabangsa Pulau Pinang (LTAPP)", lat:5.296, lng:100.2752, addr:"Bayan Lepas", kind:"plane", tips:"Parking RM3 sejam, maksimum RM33 sehari." },
     homestay:  { name:"Homestay Karpal Singh Drive", lat:5.3967, lng:100.3279, addr:"12, Lebuh Sungai Pinang 3, Jelutong, 11600 George Town", kind:"home" },
-    beratur:   { name:"Nasi Kandar Beratur 786", lat:5.2993, lng:100.2671, addr:"1-1-11 Summerskye Residence, Jalan Sungai Tiram 8, Bayan Lepas", hours:"9.00 pg – 11.00 mlm, setiap hari", halal:"muslim", rating:4.2, reviews:1283, tagline:"Nasi kandar berhawa dingin, giliran bergerak laju", special:"Nasi kandar. Ayam goreng digoreng di depan.", tips:"6 minit dari LTAPP. Berhawa dingin, tempat duduk betul, tak seperti gerai asal yang panas. Giliran bergerak laju sebab ramai staf." },
+    beratur:   { short:"Beratur 786", name:"Nasi Kandar Beratur 786", lat:5.2993, lng:100.2671, addr:"1-1-11 Summerskye Residence, Jalan Sungai Tiram 8, Bayan Lepas", hours:"9.00 pg – 11.00 mlm, setiap hari", halal:"muslim", rating:4.2, reviews:1283, tagline:"Nasi kandar berhawa dingin, giliran bergerak laju", special:"Nasi kandar. Ayam goreng digoreng di depan.", tips:"6 minit dari LTAPP. Berhawa dingin, tempat duduk betul, tak seperti gerai asal yang panas. Giliran bergerak laju sebab ramai staf." },
     sofea:     { name:"Mentari Pagi by Sofea", lat:5.2978, lng:100.2641, addr:"Jalan Mahkamah, Bayan Lepas", hours:"8.00 pg – 1.00 tgh", halal:"muslim", rating:3.1, reviews:343, tagline:"Tiga minit dari LTAPP, tutup 1.00 tengah hari", tips:"3 minit dari LTAPP, jadi terus ke sini lepas ambil kereta. Tutup 1.00 tgh — kalau flight lewat atau kereta sewa lambat, terus guna Plan B." },
     queensbay: { name:"Queensbay Mall", lat:5.3331, lng:100.307, addr:"100, Persiaran Bayan Indah, Bayan Lepas", hours:"10.30 pg – 10.30 mlm", rating:4.4, reviews:26288, tagline:"Mall terbesar Pulau Pinang, ada surau dan medan selera", special:"Mall terbesar Pulau Pinang, berhawa dingin, ada surau dan medan selera besar.", tips:"12 minit ke LTAPP. Parking bertingkat percuma beberapa jam pertama.", short:"Queensbay" },
     kgagong:   { name:"Kampung Agong", lat:5.5396, lng:100.3791, addr:"841 Kampung Bakar Kapor, 13100 Penaga", hours:"9.00 pg – 6.00 ptg", rating:4.5, reviews:5928, cost:"RM10 dewasa, RM5 kanak-kanak 4–12 tahun, bawah 4 percuma. Sewa kostum tradisional RM30, slot terhad.", tagline:"Di tanah besar, seberang jambatan", tips:"Tanah besar, seberang jambatan. Panas tengah hari — bawa topi dan air.", short:"Kg Agong" },
@@ -164,17 +164,17 @@ const DATA = {
         { t:'10:20', type:'flight', title:'Tiba Pulau Pinang, ambil bagasi', place:'lta' },
         { t:'11:30', type:'move2', title:'Ambil kereta sewa di LTAPP', meta:'Kereta 1 starting driver Wafi, Kereta 2 starting driver Syafi. Semak kereta, ambil gambar sekeliling badan kereta sebelum bergerak.' },
         { move:{ km:3, min:6 } },
-        { t:'11:45', e:'12:45', type:'meal', title:'Makan tengah hari — Mentari Pagi by Sofea', place:'sofea', flags:[{k:'warn',v:'Tutup 1.00 tgh'}], planB:[{ name:"Arab Street", addr:"31-1-15, The CEO, Lebuh Nipah 5, Bayan Lepas", rating:4.9, reviews:193, hours:"11.00 pg – 11.00 mlm, Jumaat buka 2.00 ptg", why:"Masakan Arab halal, shawarma dan nasi mandi, porsi besar." }, { name:"Minah Restaurant", addr:"Jalan Sultan Azlan Shah, Taman Tun Sardon, Gelugor", rating:4.3, reviews:1300, hours:"9.00 pg – 4.00 ptg, tutup Isnin", why:"Masakan Melayu, banyak pilihan lauk dan ulam." }, { place:"beratur", why:"Berhawa dingin, buka 9 pg – 11 mlm jadi tiada risiko tutup. 6 minit dari LTAPP." }, { name:"Cargas Café", addr:"Main Road Bayan Lepas", rating:4.3, reviews:3208, why:"Nasi campur murah, 2 minit dari LTAPP, tapi panas dan self-service." }, { name:"Bayan Baru Market Food Court", why:"Medan selera MBPP, banyak gerai Muslim, semua orang boleh pilih sendiri. 12 minit.", rating:4, reviews:1812 }, { name:"Alunan Rasa by Irama Dining", addr:"Setia Triangle", rating:4.6, reviews:321, why:"Ada surau, tapi buka 12.00 tgh sahaja." }] },
+        { t:'11:45', e:'12:45', type:'meal', title:'Makan tengah hari — Nasi Kandar Beratur 786', place:'beratur', planB:[{ name:"Arab Street", addr:"31-1-15, The CEO, Lebuh Nipah 5, Bayan Lepas", rating:4.9, reviews:193, hours:"11.00 pg – 11.00 mlm, Jumaat buka 2.00 ptg", why:"Masakan Arab halal, shawarma dan nasi mandi, porsi besar.", kei:"Masakan Arab, shawarma dan nasi mandi" }, { name:"Minah Restaurant", addr:"Jalan Sultan Azlan Shah, Taman Tun Sardon, Gelugor", rating:4.3, reviews:1300, hours:"9.00 pg – 4.00 ptg, tutup Isnin", why:"Masakan Melayu, banyak pilihan lauk dan ulam.", kei:"Masakan Melayu, banyak pilihan lauk dan ulam" }, { place:"sofea", why:"3 minit dari LTAPP, tetapi tutup 1.00 tgh — berisiko kalau flight lewat atau kereta sewa lambat.", kei:"Kedai makan berhampiran LTAPP" }, { name:"Cargas Café", addr:"Main Road Bayan Lepas", rating:4.3, reviews:3208, why:"Nasi campur murah, 2 minit dari LTAPP, tapi panas dan self-service.", kei:"Nasi campur murah, self-service" }, { name:"Bayan Baru Market Food Court", why:"Medan selera MBPP, banyak gerai Muslim, semua orang boleh pilih sendiri. 12 minit.", rating:4, reviews:1812, kei:"Medan selera MBPP, banyak gerai Muslim" }, { name:"Alunan Rasa by Irama Dining", addr:"Setia Triangle", rating:4.6, reviews:321, why:"Ada surau, tapi buka 12.00 tgh sahaja.", kei:"Restoran, ada surau" }] },
         { move:{ km:15, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu' } },
         { t:'13:05', e:'14:15', type:'homestay', title:'Check-in homestay, solat Zuhur (jamak Asar)', place:'homestay', meta:'Check-in rasmi 3.00 ptg. Wafi minta awal, tetapi belum disahkan — anggap ia belum pasti sampai homestay jawab.', flags:[{k:'warn',v:'Check-in awal belum disahkan'}], planB:[{ text:"Kalau tak boleh masuk: letak beg di lobi atau dalam kereta, solat Zuhur jamak Asar di Masjid Jamek Jelutong (5 minit) atau surau berdekatan, kemudian gerak terus ke Kampung Agong. Beg masuk bilik lepas balik malam." }, { text:"Jangan pusing-pusing menunggu — Kampung Agong tutup 6.00 ptg, jadi masa lebih baik dihabiskan di sana." }, { text:"Sahkan dengan tuan homestay seminggu sebelum trip supaya tak jadi teka-teki pada hari itu." }] },
         { move:{ km:45, min:65, via:'Jambatan Pulau Pinang → Butterworth → Kepala Batas → Penaga. Kira masa ikut keadaan trafik semasa.' } },
         { t:'15:20', e:'17:30', type:'stop', title:'Kampung Agong', place:'kgagong', flags:[{k:'warn',v:'Tutup 6.00 ptg'}], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La.Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
         { move:{ km:50, min:70, via:'Melalui Jambatan Pulau Pinang terus ke Bayan Lepas.'} },
-        { t:'18:40', e:'19:10', type:'meal', title:'La.Luna — take away', place:'laluna', flags:[{k:'warn', v:'Take away sahaja'}], meta:'Ambil bungkus sahaja, bukan makan di situ. Untuk dimakan kemudian atau sebagai snek.', planB:[{ name:"Jeruk Madu Pak Ali", addr:"Jalan Penang", why:"Kalau tak sempat, buah tangan sama boleh dapat di sini pada Hari 3, 2 minit dari Chowrasta.", rating:4.1, reviews:1667 }] },
+        { t:'18:40', e:'19:10', type:'meal', title:'La.Luna — take away', place:'laluna', flags:[{k:'warn', v:'Take away sahaja'}], meta:'Ambil bungkus sahaja, bukan makan di situ. Untuk dimakan kemudian atau sebagai snek.', planB:[{ name:"Jeruk Madu Pak Ali", addr:"Jalan Penang", why:"Kalau tak sempat, buah tangan sama boleh dapat di sini pada Hari 3, 2 minit dari Chowrasta.", rating:4.1, reviews:1667, kei:"Jeruk dan buah tangan" }] },
         { move:{ km:11, min:20 } },
         { t:'19:30', e:'20:20', type:'solat', title:'Tiba homestay — solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib masuk 7.21 mlm.'},
         { move:{ km:4, min:12 } },
-        { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip PakTeh dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana." }] },
+        { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip PakTeh dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana.", kei:"Mee sotong, gerai medan selera Esplanade" }] },
         { move:{ km:4, min:12 } },
         { t:'22:45', type:'homestay', title:'Balik homestay', place:'homestay' }
       ]
@@ -189,22 +189,22 @@ const DATA = {
       items:[
         { t:'07:30', type:'move2', title:'Kereta 2 (Syafi) ke LTAPP — ambil Halima & Kak Ayman', meta:'Homestay ke LTAPP 20 minit. Flight tiba 8.00 pg. Dari LTAPP terus ke tempat sarapan, sampai kira-kira 8.45.' },
         { t:'07:45', type:'move2', title:'Kereta 1 (Wafi) terus ke sarapan', meta:'Homestay ke Hutton Lane 12 minit.' },
-        { t:'08:00', e:'09:00', type:'meal', title:'Sarapan — Roti Bakar Hutton Lane', place:'hutton', planB:[{ place:"fizzy", why:"Simpan untuk Isnin." }, { name:"Kopitiam 7 Pagi", rating:4.3, reviews:1430 }, { name:"Hidden Cafe Kg Tepi Pantai" }, { name:"Roti Canai Gemas Road", rating:4.3, reviews:3249, note:"Tutup Isnin." }] },
+        { t:'08:00', e:'09:00', type:'meal', title:'Sarapan — Roti Bakar Hutton Lane', place:'hutton', planB:[{ place:"fizzy", why:"Simpan untuk Isnin." }, { name:"Kopitiam 7 Pagi", rating:4.3, reviews:1430, kei:"Kopitiam, sarapan" }, { name:"Hidden Cafe Kg Tepi Pantai", kei:"Kafe, sarapan" }, { name:"Roti Canai Gemas Road", rating:4.3, reviews:3249, note:"Tutup Isnin.", kei:"Roti canai" }] },
         { move:{ km:6, min:20, via:'Jalan Air Itam' } },
-        { t:'09:30', e:'12:00', type:'stop', title:'Penang Hill', place:'hill', planB:[{ name:"Taman Botani Pulau Pinang", why:"Kaki bukit, percuma.", rating:4.5, reviews:8438 }, { name:"The Habitat Penang Hill", why:"Atas bukit, RM50 dewasa.", rating:4.4, reviews:4448 }, { name:"Pantai Miami", addr:"Batu Ferringhi", rating:4.2, reviews:1613 }, { name:"Tropical Spice Garden", addr:"Teluk Bahang", rating:4.6, reviews:2050 }, { name:"Entopia Butterfly Farm", addr:"Teluk Bahang", rating:4.5, reviews:10113 }] },
+        { t:'09:30', e:'12:00', type:'stop', title:'Penang Hill', place:'hill', planB:[{ name:"Taman Botani Pulau Pinang", why:"Kaki bukit, percuma.", rating:4.5, reviews:8438, kei:"Taman botani di kaki bukit" }, { name:"The Habitat Penang Hill", why:"Atas bukit, RM50 dewasa.", rating:4.4, reviews:4448, kei:"Taman hutan di atas bukit" }, { name:"Pantai Miami", addr:"Batu Ferringhi", rating:4.2, reviews:1613, kei:"Pantai" }, { name:"Tropical Spice Garden", addr:"Teluk Bahang", rating:4.6, reviews:2050, kei:"Taman rempah" }, { name:"Entopia Butterfly Farm", addr:"Teluk Bahang", rating:4.5, reviews:10113, kei:"Taman rama-rama" }] },
         { move:{ km:6, min:20, via:'Jalan Air Itam → Jalan Dato Keramat' } },
-        { t:'12:25', e:'13:45', type:'meal', title:'Makan tengah hari — Nasi Kandar Hameediyah', place:'hameed', flags:[{k:'info',v:'Zohor 1.17 ptg'}], planB:[{ name:"Kassim Nasi Kandar", rating:4.4, reviews:449 }, { name:"Nasi Kandar Kampong Pisang", addr:"Air Itam", why:"Kalau lapar sebelum turun bukit.", rating:4.9, reviews:21 }] },
+        { t:'12:25', e:'13:45', type:'meal', title:'Makan tengah hari — Nasi Kandar Hameediyah', place:'hameed', flags:[{k:'info',v:'Zohor 1.17 ptg'}], planB:[{ name:"Kassim Nasi Kandar", rating:4.4, reviews:449, kei:"Nasi kandar" }, { name:"Nasi Kandar Kampong Pisang", addr:"Air Itam", why:"Kalau lapar sebelum turun bukit.", rating:4.9, reviews:21, kei:"Nasi kandar" }] },
         { move:{ km:7, min:18, via:'Jalan Kelawai → Tanjung Tokong' } },
         { t:'14:05', e:'14:40', type:'solat', title:'Masjid Habib — Zuhur (jamak Asar)', place:'habib', flags:[{k:'warn',v:'Jalan pusing 40 min'}], planB:[{ text:"Jimat 40 minit: solat di Masjid Kapitan Keling, 4 minit jalan kaki dari Hameediyah, terus ke Armenian Street. Singgah Masjid Habib untuk Maghrib sebelum makan malam — ia di laluan ke Tanjung Tokong/Gurney." }] },
         { move:{ km:7, min:18, via:'Balik ke George Town. Parking tepi jalan di Lebuh Acheh / Lebuh Cannon.' } },
         { t:'15:00', e:'16:00', type:'stop', title:'Armenian Street', place:'armenian' },
         { move:{ km:0.8, min:10, walk:true } },
-        { t:'16:10', e:'17:15', type:'stop', title:'Chew Jetty', place:'chew', meta:'Petang angin laut, cahaya lembut, kurang terik.', planB:[{ name:"Hin Bus Depot", why:"Seni, kafe.", rating:4.6, reviews:2395 }, { place:"gurney", why:"Kalau hujan petang." }] },
+        { t:'16:10', e:'17:15', type:'stop', title:'Chew Jetty', place:'chew', meta:'Petang angin laut, cahaya lembut, kurang terik.', planB:[{ name:"Hin Bus Depot", why:"Seni, kafe.", rating:4.6, reviews:2395, kei:"Ruang seni dan kafe" }, { place:"gurney", why:"Kalau hujan petang.", kei:"Mall di Persiaran Gurney" }] },
         { move:{ km:4, min:12 } },
         { t:'17:30', e:'18:50', type:'homestay', title:'Balik homestay — rehat, mandi', place:'homestay' },
         { t:'19:00', e:'19:45', type:'solat', title:'Solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib 7.21 mlm.' },
-        { t:'20:00', e:'22:00', type:'meal', title:'Makan malam bersama Umi Wan', meta:'Lokasi setakat ini di tanah besar. Akan dikemas kini.', planB:[{ name:"Premium Chinese Muslim Cuisine", rating:4.3, reviews:297 }, { name:"Tok Ma Malay Kitchen", addr:"George Town" }, { name:"The Table Penang", rating:4.4, reviews:1025 }, { name:"Rumah Kacha", rating:4.3, reviews:710 }, { name:"Jawi House Cafe Gallery", rating:4.5, reviews:1573 }] },
-        { t:'22:30', type:'homestay', title:'Balik homestay', place:'homestay', planB:[{ name:"Avatar Secret Garden", addr:"Tanjung Tokong", why:"Masih bertenaga: lampu malam." }, { name:"Gurney Bay Park", rating:4.5, reviews:893, why:"Basikal pantai." }, { name:"Feringghi Walk", why:"Basikal pantai." }] }
+        { t:'20:00', e:'22:00', type:'meal', title:'Makan malam bersama Umi Wan', meta:'Lokasi setakat ini di tanah besar. Akan dikemas kini.', planB:[{ name:"Premium Chinese Muslim Cuisine", rating:4.3, reviews:297, kei:"Masakan Cina Muslim" }, { name:"Tok Ma Malay Kitchen", addr:"George Town", kei:"Masakan Melayu" }, { name:"The Table Penang", rating:4.4, reviews:1025, kei:"Restoran makan malam" }, { name:"Rumah Kacha", rating:4.3, reviews:710, kei:"Restoran makan malam" }, { name:"Jawi House Cafe Gallery", rating:4.5, reviews:1573, kei:"Kafe dan galeri" }] },
+        { t:'22:30', type:'homestay', title:'Balik homestay', place:'homestay', planB:[{ name:"Avatar Secret Garden", addr:"Tanjung Tokong", why:"Masih bertenaga: lampu malam.", kei:"Taman lampu malam" }, { name:"Gurney Bay Park", rating:4.5, reviews:893, why:"Basikal pantai.", kei:"Taman tepi laut, sesuai berbasikal" }, { name:"Feringghi Walk", why:"Basikal pantai.", kei:"Laluan tepi pantai, sesuai berbasikal" }] }
       ]
     },
     {
@@ -216,13 +216,13 @@ const DATA = {
       items:[
         { t:'08:00', e:'08:30', type:'homestay', title:'Checkout — beg masuk kereta', place:'homestay', meta:'Homestay benarkan sampai 12 tgh, tapi kita keluar awal supaya tak patah balik. Semak semua bilik, pengecas, ubat.' },
         { move:{ km:4, min:12 } },
-        { t:'08:45', e:'09:55', type:'meal', title:'Sarapan — Makan Pagi by Fizzy', place:'fizzy', meta:'Parking di Chowrasta (bertingkat), 3 minit jalan kaki.', planB:[{ name:"Kopitiam 7 Pagi", rating:4.3, reviews:1430 }, { name:"Hidden Cafe Kg Tepi Pantai" }] },
+        { t:'08:45', e:'09:55', type:'meal', title:'Sarapan — Makan Pagi by Fizzy', place:'fizzy', meta:'Parking di Chowrasta (bertingkat), 3 minit jalan kaki.', planB:[{ name:"Kopitiam 7 Pagi", rating:4.3, reviews:1430, kei:"Kopitiam, sarapan" }, { name:"Hidden Cafe Kg Tepi Pantai", kei:"Kafe, sarapan" }] },
         { move:{ km:0.3, min:3, walk:true } },
         { t:'10:00', e:'10:55', type:'stop', title:'Pasar Chowrasta + Jeruk Madu Pak Ali', place:'chowrasta' },
         { move:{ km:0.2, min:2, walk:true } },
-        { t:'11:00', e:'12:00', type:'meal', title:'Makan tengah hari — Dim Sum Valet, Lebuh Keng Kwee', place:'dimsum', meta:'Jalan yang sama dengan Chowrasta, 2 minit jalan kaki. Isnin buka.', planB:[{ place:"laksa", why:"Sijil JAKIM ditarik balik Jun 2025, jadi bukan pilihan kalau nak yang bersijil." }, { place:"hameed", why:"Bersijil JAKIM, 6 minit jalan kaki (tapi kita dah makan di sana Hari 2)." }, { name:"Sup Hameed", addr:"Jalan Penang", why:"Sup tulang dan nasi beriani, dekat sini juga.", rating:4, reviews:3113 }] },
+        { t:'11:00', e:'12:00', type:'meal', title:'Makan tengah hari — Dim Sum Valet, Lebuh Keng Kwee', place:'dimsum', meta:'Jalan yang sama dengan Chowrasta, 2 minit jalan kaki. Isnin buka.', planB:[{ place:"laksa", why:"Sijil JAKIM ditarik balik Jun 2025, jadi bukan pilihan kalau nak yang bersijil." }, { place:"hameed", why:"Bersijil JAKIM, 6 minit jalan kaki (tapi kita dah makan di sana Hari 2)." }, { name:"Sup Hameed", addr:"Jalan Penang", why:"Sup tulang dan nasi beriani, dekat sini juga.", rating:4, reviews:3113, kei:"Sup tulang dan nasi beriani" }] },
         { move:{ km:11, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu ke Bayan Lepas' } },
-        { t:'12:20', e:'14:00', type:'rehat', title:'Queensbay Mall — rehat, solat Zuhur, beli barang akhir', place:'queensbay', meta:'Berhawa dingin, ada surau untuk solat Zuhur, dan medan selera kalau sesiapa nak makan ringan. 14 minit dari sini ke LTAPP.', flags:[{k:'info',v:'Zohor 1.16 ptg'}], planB:[{ text:"Terus ke LTAPP dari Lebuh Keng Kwee (25 minit) kalau semua dah penat — tiba 12.30 tgh, buffer sangat besar." }, { name:"Snake Temple", why:"5 minit dari LTAPP, kalau nak singgah pendek yang lain.", rating:3.9, reviews:1847 }] },
+        { t:'12:20', e:'14:00', type:'rehat', title:'Queensbay Mall — rehat, solat Zuhur, beli barang akhir', place:'queensbay', meta:'Berhawa dingin, ada surau untuk solat Zuhur, dan medan selera kalau sesiapa nak makan ringan. 14 minit dari sini ke LTAPP.', flags:[{k:'info',v:'Zohor 1.16 ptg'}], planB:[{ text:"Terus ke LTAPP dari Lebuh Keng Kwee (25 minit) kalau semua dah penat — tiba 12.30 tgh, buffer sangat besar." }, { name:"Snake Temple", why:"5 minit dari LTAPP, kalau nak singgah pendek yang lain.", rating:3.9, reviews:1847, kei:"Tokong ular" }] },
         { move:{ km:8, min:14 } },
         { t:'14:15', type:'flight', title:'Tiba LTAPP — turunkan Fitri & Fatimah dahulu, pulangkan kereta', place:'lta', meta:'Fitri & Fatimah check-in terus untuk flight 4.00 ptg (buffer 1 jam 45 minit). Yang lain pulangkan 2 kereta, kemudian check-in untuk 5.15 ptg.' },
         { t:'16:00', type:'flight', title:'Berlepas — Fitri & Fatimah', meta:'AirAsia ke KLIA2.' },
@@ -234,13 +234,13 @@ const DATA = {
 
   // Turutan lokasi untuk garisan laluan peta (mengikut hari)
   routes: {
-    1:['lta','sofea','homestay','kgagong','laluna','homestay','padang','homestay'],
+    1:['lta','beratur','homestay','kgagong','laluna','homestay','padang','homestay'],
     2:['homestay','hutton','hill','hameed','habib','armenian','chew','homestay'],
     3:['homestay','fizzy','chowrasta','dimsum','queensbay','lta']
   },
   // Marker bernombor (satu setiap lokasi berhenti; homestay & LTAPP dipapar berasingan)
   markers: {
-    1:['sofea','kgagong','laluna','padang'],
+    1:['beratur','kgagong','laluna','padang'],
     2:['hutton','hill','hameed','habib','armenian','chew'],
     3:['fizzy','chowrasta','dimsum','queensbay']
   },
@@ -283,6 +283,7 @@ const DATA = {
     name:'Homestay Karpal Singh Drive',
     addr:'12, Lebuh Sungai Pinang 3, Karpal Singh Drive, Jelutong, 11600 George Town',
     facts:[['9','bilik tidur'],['14','katil'],['9','bilik air'],['4','tingkat']],
+    images:[],
     checkin:'3.00 ptg (minta awal)', checkout:'12.00 tgh (kita keluar 8.30 pg)',
     rooms:[
       { n:1, g:'F1', who:'Muhd, Kak Salina, Khadijah, Alisha' },
@@ -306,7 +307,7 @@ const DATA = {
       ['Paling murah', 'Semasa tempahan asal — tambah bagasi serentak dengan beli tiket'],
       ['Lebih mahal', 'Selepas tempah, melalui app atau laman web sebelum hari penerbangan'],
       ['Paling mahal', 'Di kaunter lapangan terbang pada hari itu — elak ini'],
-      ['Paling teruk', 'Beg ditahan di pintu masuk pesawat kerana melebihi saiz kabin']
+      ['Bahaya', 'Beg ditahan di pintu masuk pesawat kerana melebihi saiz kabin']
     ],
     rules:[
       ['Bagasi kabin percuma', '7 kg semua orang: 1 beg 56 × 36 × 23 cm + 1 barang bawah kerusi 40 × 30 × 10 cm'],
@@ -342,17 +343,17 @@ const DATA = {
 
 
   costs:[
-    { item:'Penang Hill (pergi-balik, MyKad)', amt:'RM16 dewasa / RM8 kanak-kanak 4–12', note:'Express lane RM40 / RM20. Beli online sales.penanghill.gov.my.' },
-    { item:'Kampung Agong', amt:'RM10 dewasa / RM5 kanak-kanak 4–12', note:'Bawah 4 tahun percuma. Kostum tradisional RM30.' },
-    { item:'Queensbay Mall', amt:'Percuma', note:'Parking bertingkat, kadar mall biasa. Ada surau dan medan selera.' },
-    { item:'Chew Jetty, Armenian Street, Chowrasta', amt:'Percuma', note:'Parking tepi jalan MBPP 60 sen / 30 minit (app Penang Smart Parking). Parking Chowrasta kira-kira RM1 sejam.' },
-    { item:'KLIA Transit Salak Tinggi → KLIA2', amt:'RM4.90 dewasa / RM2.20 kanak-kanak', note:'Kanak-kanak 6–15 tahun. Bawah 6 percuma. 11 minit.' },
-    { item:'KLIA Transit Putrajaya → KLIA2', amt:'RM9.40 dewasa / RM4.20 kanak-kanak', note:'20 minit.' },
-    { item:'KLIA Ekspres / Transit KL Sentral → KLIA2', amt:'RM55 dewasa / RM25 kanak-kanak', note:'33–39 minit. Online 10% lebih murah.' },
-    { item:'Parking Salak Tinggi Park & Ride (Sab–Isn)', amt:'kira-kira RM30–36', note:'RM3 siang, RM9 malam pertama (berbumbung, terbuka RM7), RM12 / RM10 sehari seterusnya.' },
-    { item:'Parking Gateway@klia2 (Sab–Isn)', amt:'RM55 sehari, kira-kira RM165', note:'Jalan terus ke terminal.' },
-    { item:'Parking KLIA Long Term Car Park (Sab–Isn)', amt:'RM27–32 sehari', note:'Shuttle percuma ke KLIA2 setiap 10–15 minit.' },
-    { item:'Parking LTAPP', amt:'RM3 sejam, maks RM33 sehari', note:'Untuk keluarga Muhd jika hantar/ambil.' }
+    { grp:'pinang', item:'Penang Hill (pergi-balik, MyKad)', dewasa:'RM16', kanak:'RM8', note:'Express lane RM40 / RM20. Beli online sales.penanghill.gov.my.' },
+    { grp:'pinang', item:'Kampung Agong', dewasa:'RM10', kanak:'RM5', note:'Bawah 4 tahun percuma. Kostum tradisional RM30.' },
+    { grp:'pinang', item:'Queensbay Mall', dewasa:'Percuma', kanak:'Percuma', note:'Parking bertingkat, kadar mall biasa. Ada surau dan medan selera.' },
+    { grp:'pinang', item:'Chew Jetty, Armenian Street, Chowrasta', dewasa:'Percuma', kanak:'Percuma', note:'Parking tepi jalan MBPP 60 sen / 30 minit (app Penang Smart Parking). Parking Chowrasta kira-kira RM1 sejam.' },
+    { grp:'pergi', item:'KLIA Transit Salak Tinggi → KLIA2', dewasa:'RM4.90', kanak:'RM2.20', note:'Kanak-kanak 6–15 tahun. Bawah 6 percuma. 11 minit.' },
+    { grp:'pergi', item:'KLIA Transit Putrajaya → KLIA2', dewasa:'RM9.40', kanak:'RM4.20', note:'20 minit.' },
+    { grp:'pergi', item:'KLIA Ekspres / Transit KL Sentral → KLIA2', dewasa:'RM55', kanak:'RM25', note:'33–39 minit. Online 10% lebih murah.' },
+    { grp:'pergi', item:'Parking Salak Tinggi Park & Ride (Sab–Isn)', dewasa:'RM30–36', kanak:'—', note:'RM3 siang, RM9 malam pertama (berbumbung, terbuka RM7), RM12 / RM10 sehari seterusnya.' },
+    { grp:'pergi', item:'Parking Gateway@klia2 (Sab–Isn)', dewasa:'RM165', kanak:'—', note:'Jalan terus ke terminal.' },
+    { grp:'pergi', item:'Parking KLIA Long Term Car Park (Sab–Isn)', dewasa:'RM27–32 sehari', kanak:'—', note:'Shuttle percuma ke KLIA2 setiap 10–15 minit.' },
+    { grp:'balik', item:'Parking LTAPP', dewasa:'RM3 sejam', kanak:'—', note:'Untuk keluarga Muhd jika hantar/ambil.' }
   ],
 
   rain:[

@@ -70,6 +70,11 @@ const RS_ICON = {
   tol:'<path d="M3 20.5v-9M21 20.5v-9M3 11.5h18M4.5 11.5l1.5-4h12l1.5 4M9 15.5h6"/>',
   minyak:'<path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 12.5 5v15.5M3 20.5h11M6.5 9.5h4"/><path d="M12.5 9h3a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 0 3 0V8l-2.5-2.5"/>'
 };
+const FAKTA_ICON = {
+  katil:'<path d="M3 19v-9M3 13h18v6M3 19h18M6.5 10.5h3.2M21 19v-4.5a2 2 0 0 0-2-2h-8.5"/><circle cx="7.8" cy="9.6" r="1.9"/>',
+  air:'<path d="M4 12h16v2.5a4.5 4.5 0 0 1-4.5 4.5h-7A4.5 4.5 0 0 1 4 14.5Z"/><path d="M7 12V6.2A1.7 1.7 0 0 1 8.7 4.5h.4a1.7 1.7 0 0 1 1.7 1.7M7 19l-1 2.2M18 19l1 2.2"/>',
+  tingkat:'<path d="M4 21V8.5l7-4 7 4V21M4 21h17M8 21v-4h6v4M7.5 11.5h2M14 11.5h2M7.5 14.5h2M14 14.5h2"/>'
+};
 const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.6l5.9-.8z"/></svg>';
 
 /* ============================================================
@@ -334,9 +339,11 @@ function planbHtml(list){
     const ulasan = x.reviews || (p && p.reviews);
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([nama, alamat].filter(Boolean).join(', '))}`;
     const bintang = pilBintang(rating, ulasan);
+    const kei = x.kei || (p && (p.tagline || p.special));
     return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
          + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
          + `${alamat?'':''}${x.hours?`<span class="pb-hours">${esc(x.hours)}</span>`:''}`
+         + `${kei?`<p class="pb-kei"><b>Keistimewaan:</b> ${esc(kei)}</p>`:''}`
          + `${x.why?`<p>${esc(x.why)}</p>`:''}`
          + `${x.note?`<p class="pb-note-kecil">${esc(x.note)}</p>`:''}</li>`;
   }).join('') + `</ul>`;
@@ -469,11 +476,16 @@ function planbHtml(list){
     }).join('');
     html += `<div class="lane-row"><div class="lane-name">${esc(r.label||g.label)}<small>${esc(r.note)}</small></div>${cells}</div>`;
   });
+  // Penanda masa supaya carta boleh dibaca, bukan sekadar warna
+  const tanda = [['pg',7],['tgh',13],['mlm',20]];
+  html += `<div class="lane-foot"><span></span>` + [0,1,2].map(() =>
+      `<div class="lane-cell">${tanda.map(t => `<i style="left:${pct(t[1])}%">${t[0]}</i>`).join('')}</div>`).join('') + `</div>`;
   $('#lane').innerHTML = html;
   $('#codekey').innerHTML = DATA.groups.map(g => `<span><b style="--g:${g.color}">${esc(g.id)}</b>${esc(g.label)}<em>${g.pax} org</em></span>`).join('');
   const total = DATA.groups.reduce((a,g)=>a+g.pax,0);
   const g1 = G('G1').pax;
-  $('#headcount').innerHTML = `<div><b>${total-g1}</b><span>Sabtu, lepas 10.20 pg</span></div><div><b>${total}</b><span>Ahad, lepas 8.00 pg</span></div><div><b>${total}</b><span>Isnin, semua balik petang</span></div>`;
+  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 8.00 pg'],[total,'Isnin, semua balik petang']];
+  $('#headcount').innerHTML = kira.map(([v,l],i) => `<div><b>Day ${i+1} — ${v} pax</b><span>${esc(l)}</span></div>`).join('');
 })();
 
 /* ============================================================
@@ -481,11 +493,13 @@ function planbHtml(list){
    ============================================================ */
 (function flights(){
   const chip = w => { const [gid, nm] = w.split(':'); const g = G(gid); return `<span class="chip" style="--g:${g.color}">${esc(nm || g.label)}</span>`; };
-  $('#board').innerHTML = DATA.flights.map(f => `<div class="board-row">
+  const baris = f => `<div class="board-row">
       <div class="t">${f.dep?fmtT(f.dep):'—'}${f.est?'<i class="est">anggaran</i>':''}<small>${esc(f.date)}</small></div>
       <div><div class="r">${esc(f.fromName)} → ${esc(f.toName)} <span>${f.arr?'tiba '+fmtT(f.arr):''}${f.flightNo?(f.arr?', ':'')+`<a class="fr24" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}" target="_blank" rel="noopener">${esc(f.flightNo)}</a>`:''}</span></div>
         <div class="who">${f.who.map(chip).join('')}</div>
-        ${f.note?`<div class="note">${esc(f.note)}</div>`:''}</div></div>`).join('');
+        ${f.note?`<div class="note">${esc(f.note)}</div>`:''}</div></div>`;
+  const kump = [['Pergi', DATA.flights.filter(f => f.to === 'PEN')], ['Balik', DATA.flights.filter(f => f.from === 'PEN')]];
+  $('#board').innerHTML = kump.map(([nm, list]) => `<div class="board-grp">${esc(nm)}</div>` + list.map(baris).join('')).join('');
   $('#cut-title').innerHTML = `<svg class="cut-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.6 1.6M9 2.4h6M18.6 6.4l1.4-1.4"/></svg>${esc(DATA.cutoff.title)}`;
   $('#cutoff').innerHTML = DATA.cutoff.rows.map(c => `<div><b>${fmtT(c.t)}</b><span>${esc(c.l)}</span><em>${esc(c.d)}</em></div>`).join('');
   $('#cut-foot').textContent = DATA.cutoff.foot;
@@ -493,7 +507,7 @@ function planbHtml(list){
   $('#kl-list').innerHTML = DATA.klSide.map(k => { const g = G(k.g);
     const opts = k.opts.map(o => `<div class="opt${o.main?' main':''}">
         <div class="opt-h"><span class="opt-k">${esc(o.k)}</span><b>${esc(o.name)}</b>${o.main?'<em>Pilihan utama</em>':''}${o.link?'<i class="lk">berkait</i>':''}</div>
-        <ul>${o.lines.map(l=>`<li>${esc(l)}</li>`).join('')}</ul>
+        <table class="opt-tbl"><thead><tr><th>Langkah</th><th>Masa</th><th>Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>
         ${o.link?`<div class="opt-link">${esc(o.link)}</div>`:''}
       </div>`).join('');
     return `<div class="kl" style="--g:${g.color}"><h3>${esc(k.title)}<span>${esc(k.sub)}</span></h3>${opts}${k.foot?`<div class="kl-foot">${esc(k.foot)}</div>`:''}</div>`;
@@ -643,12 +657,25 @@ function carSvg(c, uid){
    ============================================================ */
 (function stay(){
   const s = DATA.stay, p = DATA.places.homestay;
+  // Ikon kad fakta homestay
+  const FAKTA = { 'bilik tidur':'katil', 'katil':'katil', 'bilik air':'air', 'tingkat':'tingkat' };
   $('#stay').innerHTML = `<h3>${esc(s.name)}</h3><p>${esc(s.addr)}</p>
-    <div class="facts">${s.facts.map(f=>`<div><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>
+    <div class="facts">${s.facts.map(f=>`<div><span class="fi"><svg viewBox="0 0 24 24" aria-hidden="true">${FAKTA_ICON[FAKTA[f[1]]||'katil']}</svg></span><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>${(s.images&&s.images.length)?`<button type="button" class="btn-galeri" id="btn-galeri">Lihat gambar</button>`:''}
     <p><b>Check-in</b> ${esc(s.checkin)}<br><b>Check-out</b> ${esc(s.checkout)}</p>
     <div class="ti-links" style="margin:10px 0 16px"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>
     <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3>
     <div class="rooms">${s.rooms.map(r => { const g = r.g ? G(r.g) : null; return `<div class="room ${g?'':'vacant'}" style="--g:${g?g.color:'transparent'}"><b>Bilik ${r.n}</b>${esc(r.who)}${r.sub?`<br><small>${esc(r.sub)}</small>`:''}</div>`; }).join('')}</div>`;
+})();
+
+(function galeri(){
+  const btn = $('#btn-galeri'), box = $('#galeri'); if(!btn || !box) return;
+  box.querySelector('.gl-isi').innerHTML = DATA.stay.images.map(g =>
+    `<figure><img src="${esc(g.src)}" alt="${esc(g.alt||'')}" loading="lazy">${g.alt?`<figcaption>${esc(g.alt)}</figcaption>`:''}</figure>`).join('');
+  const tutup = () => { box.hidden = true; document.body.style.overflow = ''; };
+  btn.addEventListener('click', () => { box.hidden = false; document.body.style.overflow = 'hidden'; box.querySelector('.rk-x').focus(); });
+  box.querySelector('.rk-x').addEventListener('click', tutup);
+  box.addEventListener('click', e => { if(e.target === box) tutup(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !box.hidden) tutup(); });
 })();
 
 /* ============================================================
@@ -664,14 +691,25 @@ function carSvg(c, uid){
 /* ============================================================
    COSTS / RAIN / CHECKLIST
    ============================================================ */
-$('#cost-tbl').innerHTML = `<thead><tr><th>Perkara</th><th class="num">Kadar</th></tr></thead><tbody>` + DATA.costs.map(c => `<tr><td>${esc(c.item)}<small>${esc(c.note||'')}</small></td><td class="num">${c.amt.split(' / ').map(esc).join('<br>')}</td></tr>`).join('') + `</tbody>`;
+const KOS_GRP = [['pergi','Perjalanan ke KLIA2'],['pinang','Semasa di Pulau Pinang'],['balik','Balik']];
+$('#cost-tbl').innerHTML = `<thead><tr><th>Perkara</th><th class="num">Dewasa</th><th class="num">Kanak-kanak</th></tr></thead><tbody>`
+  + KOS_GRP.map(([g,nm]) => `<tr class="grp"><td colspan="3">${esc(nm)}</td></tr>`
+      + DATA.costs.filter(c => c.grp === g).map(c => `<tr><td>${esc(c.item)}<small>${esc(c.note||'')}</small></td>`
+        + `<td class="num">${esc(c.dewasa)}</td><td class="num">${esc(c.kanak)}</td></tr>`).join('')).join('')
+  + `</tbody>`;
 $('#road-km').textContent = DATA.jalan.km;
 $('#toll-tbl').innerHTML = `<thead><tr><th>Tol</th><th>Kadar</th><th class="num">Jumlah</th></tr></thead><tbody>` + DATA.jalan.tolrows.map(r => `<tr><td>${esc(r.apa)}<small>${esc(r.bila)}</small></td><td>${esc(r.kadar)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
 $('#fuel-tbl').innerHTML = `<thead><tr><th>Bahan api</th><th class="num">Seliter</th><th class="num">1 kereta</th><th class="num">2 kereta</th></tr></thead><tbody>` + DATA.jalan.bahanapi.map(r => `<tr><td>${esc(r.jenis)}</td><td class="num">${esc(r.harga)}</td><td class="num">${esc(r.kereta)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
 $('#road-note').textContent = DATA.jalan.nota;
 $('#road-rental').innerHTML = `<b>Kereta sewa.</b> ${esc(DATA.jalan.rental)}`;
 $('#bag-note').textContent = DATA.bagasi.note;
-$('#bag-ladder').innerHTML = DATA.bagasi.ladder.map((x,n) => `<div class="lad l${n}"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('');
+const LAD_ICON = [
+  '<circle cx="12" cy="12" r="8.5"/><path d="M9.2 12.2l2 2 3.6-4"/>',
+  '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.3V12l3 1.8"/>',
+  '<path d="M12 4.5l8.5 15h-17Z"/><path d="M12 10v4M12 16.6v.5"/>',
+  '<circle cx="12" cy="12" r="8.5"/><path d="M8.6 8.6l6.8 6.8M15.4 8.6l-6.8 6.8"/>'
+];
+$('#bag-ladder').innerHTML = DATA.bagasi.ladder.map((x,n) => `<div class="lad l${n}"><span class="li"><svg viewBox="0 0 24 24" aria-hidden="true">${LAD_ICON[n]}</svg></span><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('');
 $('#bag-tbl').innerHTML = `<thead><tr><th>Peraturan</th><th>Butiran</th></tr></thead><tbody>` + DATA.bagasi.rules.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('') + `</tbody>`;
 $('#bag-tip').innerHTML = `<b>Tip untuk kumpulan besar.</b> ${esc(DATA.bagasi.tip)}`;
 $('#rain').innerHTML = DATA.rain.map(r => `<div><b>${esc(r.when)}</b><p>${esc(r.plan)}</p></div>`).join('');

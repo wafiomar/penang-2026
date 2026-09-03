@@ -107,7 +107,7 @@
 <section id="pergerakan">
   <div class="wrap">
     <div class="sec-head">
-      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M4 12h14M4 17h6"/><circle cx="18" cy="7" r="1.4"/><circle cx="9" cy="17" r="1.4"/></svg>Siapa ada bila</h2>
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M4 12h14M4 17h6"/><circle cx="18" cy="7" r="1.4"/><circle cx="9" cy="17" r="1.4"/></svg>Pergerakan</h2>
       <p>Satu baris satu kumpulan. Bar penuh bermaksud sudah di Pulau Pinang, bar berjalur bermaksud dalam perjalanan.</p>
     </div>
     <div class="lane-wrap"><div class="lane" id="lane"></div>
@@ -159,6 +159,13 @@
   <div class="wrap">
     <div class="sec-head"><h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>Penginapan</h2></div>
     <div class="stay" id="stay"></div>
+    <div class="rk" id="galeri" hidden role="dialog" aria-modal="true" aria-label="Gambar homestay">
+      <div class="rk-kotak">
+        <button type="button" class="rk-x" aria-label="Tutup galeri"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <h2>Gambar homestay</h2>
+        <div class="gl-isi"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -169,7 +176,10 @@
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 20v-7a6 6 0 0 1 12 0v7M12 3v4M9 20v-4a3 3 0 0 1 6 0v4"/></svg>Waktu solat Pulau Pinang</h2>
       <p>Zon PNG01 (JAKIM), diselaraskan dengan jadual e-Solat. Anggap tepat ±1 minit; semak e-solat.gov.my pada hari itu kalau nak pasti.</p>
     </div>
-    <table class="solat-tbl" id="solat-tbl"></table>
+    <details class="lipat">
+      <summary>Jadual waktu solat</summary>
+      <table class="solat-tbl" id="solat-tbl"></table>
+    </details>
   </div>
 </section>
 
@@ -185,13 +195,19 @@
     <h3 style="margin-top:26px">Kos jalan raya</h3>
     <p class="muted small" style="margin-top:4px" id="road-km"></p>
     <table id="toll-tbl" style="margin-top:12px"></table>
-    <table id="fuel-tbl" style="margin-top:10px"></table>
+    <details class="lipat" style="margin-top:10px">
+      <summary>Kos bahan api</summary>
+      <table id="fuel-tbl"></table>
+    </details>
     <p class="tiny muted" style="margin-top:8px" id="road-note"></p>
     <div class="seatnote" id="road-rental"></div>
 
     <h3 style="margin-top:26px">Bagasi AirAsia</h3>
     <p class="muted small" style="margin-top:4px" id="bag-note"></p>
-    <div class="ladder" id="bag-ladder"></div>
+    <details class="lipat" style="margin-top:10px">
+      <summary>Bila tambah bagasi paling murah</summary>
+      <div class="ladder" id="bag-ladder"></div>
+    </details>
     <table id="bag-tbl" style="margin-top:12px"></table>
     <div class="seatnote" id="bag-tip"></div>
   </div>
