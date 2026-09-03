@@ -40,8 +40,12 @@ const TI_ICON = {
   solat:'<path d="M4 20h16M6 20v-7a6 6 0 0 1 12 0v7M12 3.5v3.5M9.5 20v-3.5a2.5 2.5 0 0 1 5 0V20"/>',
   flight:'<path d="M3 13l7 1.6 3.4 6.4 2-1.8-1-5.6 5.4-3.4a2 2 0 0 0-1.8-3.4l-5.4 3.4L6.4 6.6 4.4 8.4 9 11.4 3 13Z"/>',
   note:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.6"/>',
-  move2:'<path d="M4 16h16M6 16l1.4-6h9.2L18 16M5 16v2.2M19 16v2.2"/><circle cx="8.4" cy="16" r="1"/><circle cx="15.6" cy="16" r="1"/>'
+  move2:'<path d="M4 16h16M6 16l1.4-6h9.2L18 16M5 16v2.2M19 16v2.2"/><circle cx="8.4" cy="16" r="1"/><circle cx="15.6" cy="16" r="1"/>',
+  homestay:'<path d="M3.5 11L12 4.2 20.5 11v8.3a1 1 0 0 1-1 1h-4.8v-5.6H9.3v5.6H4.5a1 1 0 0 1-1-1Z"/>',
+  rehat:'<path d="M4.5 8.5h12v5.5a4.5 4.5 0 0 1-4.5 4.5H9a4.5 4.5 0 0 1-4.5-4.5Z"/><path d="M16.5 9.8h1.8a2.4 2.4 0 0 1 0 4.8h-1.8M4 21h13"/>'
 };
+// Warna kategori ikut DATA.cats supaya legend dan jadual sentiasa sepadan.
+const CAT = Object.fromEntries(DATA.cats.map(c => [c.k, c]));
 const HALAL = {
   sijil:{ t:'Sijil halal JAKIM', ic:'<path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/><path d="M9.2 12l2 2 3.6-3.8"/>' },
   muslim:{ t:'Milik Muslim, tiada sijil', ic:'<path d="M12 3l7 3v5.4c0 4.3-2.9 7.7-7 8.6-4.1-.9-7-4.3-7-8.6V6l7-3Z"/>' },
@@ -283,6 +287,11 @@ function planbHtml(list){
 /* ============================================================
    TIMELINE
    ============================================================ */
+(function katLegend(){
+  const el = $('#cat-key'); if(!el) return;
+  el.innerHTML = DATA.cats.map(c => `<li style="--c:${c.color}"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[c.k]}</svg></span>${esc(c.label)}</li>`).join('');
+})();
+
 (function timeline(){
   const tabs = $('#day-tabs');
   tabs.innerHTML = DATA.days.map(d => `<button data-day="${d.n}">Day ${d.n}<small>${esc(d.label)}</small></button>`).join('');
@@ -324,9 +333,10 @@ function planbHtml(list){
         return;
       }
       const p = it.place ? P[it.place] : null;
-      const isStop = (it.type==='stop'||it.type==='meal') && it.place && DATA.markers[n].includes(it.place);
+      const isStop = (it.type==='stop'||it.type==='meal'||it.type==='rehat') && it.place && DATA.markers[n].includes(it.place);
       const num = isStop ? `<span class="n">${++stopIdx}</span>` : '';
-      const ic = TI_ICON[it.type] ? `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[it.type]}</svg></span>` : '';
+      const cat = CAT[it.type];
+      const ic = TI_ICON[it.type] ? `<span class="ico" style="--c:${cat?cat.color:'var(--ink-2)'}" title="${cat?esc(cat.label):''}"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[it.type]}</svg></span>` : '';
       let bdg = '';
       if(p && p.halal){ const h = HALAL[p.halal]; bdg += `<span class="bdg ${p.halal}"><svg viewBox="0 0 24 24" aria-hidden="true">${h.ic}</svg>${h.t}</span>`; }
       if(p && p.rating){ bdg += pilBintang(p.rating, p.reviews); }
@@ -362,7 +372,7 @@ function planbHtml(list){
       html += `<div class="ti d${n}">
         <div class="ti-time">${fmtT(it.t)}${it.e?`<span>– ${fmtT(it.e)}</span>`:''}</div>
         <div class="ti-body">
-          <div class="ti-title">${ic}${num}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}</span></div>
+          <div class="ti-title">${ic}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}</span>${num}</div>
           ${lede}${metaP}${badges}${amaran}${cost}${flags?`<div>${flags}</div>`:''}${butiran}${planB}${links}
         </div></div>`;
     });

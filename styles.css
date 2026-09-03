@@ -134,6 +134,14 @@ section+section{border-top:1px solid var(--line)}
 .halalkey>summary::after{content:"";width:7px;height:7px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg);margin-left:auto}
 .halalkey[open]>summary::after{transform:rotate(-135deg)}
 .halalkey>summary:focus-visible{outline:2px solid var(--d3);outline-offset:-2px;border-radius:var(--radius)}
+/* Legend: kategori ikon di atas, status halal di bawah */
+.lg-tajuk{margin:2px 14px 6px;font-size:.72rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-3)}
+.lg-tajuk+.halal-tbl{margin-top:0}
+.cat-key{list-style:none;margin:0 14px 14px;padding:0 0 12px;display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;border-bottom:1px solid var(--line-2)}
+.cat-key li{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--ink-2);min-width:0}
+.cat-key .ico{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:color-mix(in srgb,var(--c) 15%,#fff)}
+.cat-key .ico svg{width:15px;height:15px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:400px){.cat-key{gap:7px 8px}.cat-key li{font-size:.76rem}}
 .halal-tbl{margin:0 14px;width:calc(100% - 28px);border:0;border-radius:0;font-size:.78rem}
 .halal-tbl th{padding:0 4px 7px;border-top:0;background:transparent;text-align:left}
 .halal-tbl td{padding:8px 4px;color:var(--ink-2);line-height:1.35;vertical-align:top}
@@ -154,14 +162,14 @@ section+section{border-top:1px solid var(--line)}
 .ti-time{font-weight:700;font-size:1.05rem;line-height:1.2;letter-spacing:-0.01em}
 .ti-time span{display:block;font-weight:500;color:var(--ink-2);font-size:.8rem;margin-top:2px}
 .ti-title{font-weight:600;font-size:1.02rem;display:flex;align-items:flex-start;gap:8px}
+.ti-title>span:not(.ico):not(.n){flex:1;min-width:0}
 .ti-title a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--line)}
 .ti-title a:hover,.ti-title a:focus-visible{text-decoration-color:currentColor}
 .ti-title .ico{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;margin-top:1px}
 .ti-title .ico svg{width:15px;height:15px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.d1 .ti-title .ico{background:var(--d1-soft)}.d1 .ti-title .ico svg{stroke:var(--d1)}
-.d2 .ti-title .ico{background:var(--d2-soft)}.d2 .ti-title .ico svg{stroke:var(--d2)}
-.d3 .ti-title .ico{background:var(--d3-soft)}.d3 .ti-title .ico svg{stroke:var(--d3)}
-.ti-title .n{flex:none;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;color:#fff;font-size:.75rem;font-weight:700;margin-top:2px}
+.ti-title .ico{background:color-mix(in srgb,var(--c) 15%,#fff)}
+.ti-title .ico svg{stroke:var(--c)}
+.ti-title .n{flex:none;order:9;margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;color:#fff;font-size:.75rem;font-weight:700;margin-top:2px}
 .d1 .ti-title .n{background:var(--d1)}.d2 .ti-title .n{background:var(--d2)}.d3 .ti-title .n{background:var(--d3)}
 .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
 .bdg{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid transparent}
@@ -318,7 +326,7 @@ details.planb[open] summary::before{content:"–"}
 @media (max-width:420px){.car{padding:12px 10px}.seatkey{gap:3px 8px}.seatkey li{font-size:.73rem}}
 /* Seat map: satu SVG, skala penuh ikut lebar bekas */
 /* Telefon: lebar penuh supaya nama muat. Tablet: 380px. Desktop: 320px, dua lajur. */
-.carmap{display:block;width:100%;height:auto;margin:10px auto 0}
+.carmap{display:block;width:100%;height:auto;max-width:250px;margin:10px auto 0}
 @media (min-width:500px) and (max-width:900px){.carmap{max-width:380px}}
 @media (min-width:901px){.carmap{max-width:320px}}
 /* Cadangan kedudukan */
