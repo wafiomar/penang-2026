@@ -437,6 +437,98 @@ function planbHtml(list){
 /* ============================================================
    CARS
    ============================================================ */
+/* ============================================================
+   SEAT MAP — ilustrasi kereta pandangan atas (SVG tunggal)
+   ============================================================ */
+// Geometri kabin. Semua nilai dalam unit viewBox 300 x 620.
+const SM = {
+  w:300, h:620,
+  cabin:{ x:26, y:100, w:248, h:504 },      // lantai kabin
+  seatX:{ tiga:[30,112,194], depan:[30,194], kapten:[30,178] },
+  seatW:{ tiga:76, depan:76, kapten:92 },
+  rowY:[140, 261, 382, 503],
+  seatH:52, sandaranH:22
+};
+
+// Satu kerusi: sandaran bentuk U terbalik di bawah, kusyen di atas.
+function smSeat(x, y, w, isi, nombor, beg, uid){
+  const h = SM.seatH, b = y + h, u = b + SM.sandaranH - 6;
+  const sandaran = `<path d="M${x+4} ${b-12} V${u-4} Q${x+4} ${u+2} ${x+10} ${u+2} H${x+w-10} Q${x+w-4} ${u+2} ${x+w-4} ${u-4} V${b-12}" fill="none" stroke="#33424C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  if(beg){
+    return sandaran
+      + `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="#E7EBEC" stroke="#C3CCD1" stroke-width="1.5"/>`
+      + `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="url(#sm-hatch-${uid})"/>`
+      + `<g transform="translate(${x+w/2-9},${y+h/2-9})" fill="none" stroke="#7E8B93" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">`
+      + `<rect x="1" y="4.5" width="16" height="11.5" rx="2"/><path d="M6 4.5V3a1.4 1.4 0 0 1 1.4-1.4h3.2A1.4 1.4 0 0 1 12 3v1.5"/></g>`;
+  }
+  return sandaran
+    + `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="${isi}" stroke="${isi}" stroke-width="1.5"/>`
+    + `<text x="${x+w/2}" y="${y+h/2}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-weight="700" font-size="23">${nombor}</text>`;
+}
+
+// Badan kenderaan, cermin depan, papan pemuka, stereng di KANAN, cermin sisi.
+function smBody(uid){
+  return `<defs>`
+    + `<pattern id="sm-hatch-${uid}" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">`
+    + `<line x1="0" y1="0" x2="0" y2="8" stroke="#AEB9BF" stroke-width="3.2"/></pattern>`
+    + `</defs>`
+    // cermin sisi
+    + `<rect x="10" y="94" width="10" height="7" rx="2.5" fill="#8A96A0"/><rect x="16" y="96.5" width="6" height="3" rx="1.5" fill="#8A96A0"/>`
+    + `<rect x="280" y="94" width="10" height="7" rx="2.5" fill="#8A96A0"/><rect x="278" y="96.5" width="6" height="3" rx="1.5" fill="#8A96A0"/>`
+    // badan: hidung bulat di atas, badan memanjang ke bawah
+    + `<path d="M18 96 V58 Q18 14 62 10 H238 Q282 14 282 58 V600 Q282 612 270 612 H30 Q18 612 18 600 Z" fill="#D5DBDE" stroke="#BAC3C8" stroke-width="2"/>`
+    // lantai kabin
+    + `<rect x="${SM.cabin.x}" y="${SM.cabin.y}" width="${SM.cabin.w}" height="${SM.cabin.h}" rx="14" fill="var(--panel)" stroke="#C6CFD3" stroke-width="1.5"/>`
+    // cermin depan
+    + `<path d="M28 96 Q150 40 272 96" fill="none" stroke="#AFBBC2" stroke-width="7" stroke-linecap="round"/>`
+    + `<path d="M40 92 Q150 52 260 92" fill="none" stroke="#E3E9EB" stroke-width="3" stroke-linecap="round"/>`
+    // papan pemuka
+    + `<rect x="32" y="106" width="236" height="17" rx="8" fill="#41505A"/>`
+    + `<rect x="48" y="112" width="52" height="5" rx="2.5" fill="#6E7C86"/>`
+    // stereng di sebelah kanan
+    + `<g transform="translate(232,126)"><circle r="14" fill="none" stroke="#2E3B44" stroke-width="4.5"/>`
+    + `<circle r="4.5" fill="#2E3B44"/><path d="M-14 1.5H-5M14 1.5H5M0 4.5V14" stroke="#2E3B44" stroke-width="3.5" stroke-linecap="round"/></g>`;
+}
+
+// Bina SVG penuh untuk satu kereta.
+function carSvg(c, uid){
+  let n = 0, body = '', key = [], pangku = [];
+  DATA.carRows.forEach((cols, ri) => {
+    const jenis = cols === 3 ? 'tiga' : (ri === 2 ? 'kapten' : 'depan');
+    const xs = SM.seatX[jenis], w = SM.seatW[jenis], y = SM.rowY[ri];
+    // Jalur ruang stroller di hadapan baris yang ditanda
+    if(c.stroller === ri+1){
+      const by = y - 37;
+      body += `<rect x="30" y="${by}" width="240" height="26" rx="7" fill="#EDF0F1" stroke="#9AA6AD" stroke-width="1.2" stroke-dasharray="5 4"/>`
+        + `<rect x="30" y="${by}" width="240" height="26" rx="7" fill="url(#sm-hatch-${uid})" opacity=".55"/>`
+        + `<text x="150" y="${by+13}" text-anchor="middle" dominant-baseline="central" fill="#5D6A72" font-weight="700" font-size="11">Ruang stroller</text>`;
+    }
+    // Lorong di tengah baris 3
+    if(jenis === 'kapten'){
+      body += `<line x1="150" y1="${y-4}" x2="150" y2="${y+SM.seatH+18}" stroke="#C6CFD3" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round"/>`;
+    }
+    for(let k=0;k<cols;k++){
+      const no = n + 1, s = c.seats[n++] || '';
+      if(s === 'BEG'){
+        body += smSeat(xs[k], y, w, '', no, true, uid);
+        key.push(`<li class="beg"><i></i><b>${no}</b><span>Ruang beg</span></li>`);
+        continue;
+      }
+      if(!s){
+        body += smSeat(xs[k], y, w, '#E7EBEC', no, false, uid);
+        key.push(`<li class="beg"><i></i><b>${no}</b><span>Kosong</span></li>`);
+        continue;
+      }
+      const [gid, nm, tag, lap] = s.split(':'); const g = G(gid);
+      if(lap) pangku.push([lap, nm.split(' + ')[0]]);
+      body += smSeat(xs[k], y, w, g.color, no, false, uid);
+      key.push(`<li><i style="background:${g.color}"></i><b>${no}</b><span>${esc(nm)}${tag==='D'?' — pemandu':''}</span></li>`);
+    }
+  });
+  const svg = `<svg class="carmap" viewBox="0 0 ${SM.w} ${SM.h}" role="img" aria-label="Susun atur seat ${esc(c.name)}">${smBody(uid)}${body}</svg>`;
+  return { svg, key, pangku };
+}
+
 (function cars(){
   const tabs = $('#car-tabs');
   tabs.innerHTML = DATA.carScenarios.map((s,i) => `<button data-i="${i}">${esc(s.tab)}<small>${esc(s.sub)}</small></button>`).join('');
@@ -446,44 +538,18 @@ function planbHtml(list){
     const sc = DATA.carScenarios[i];
     [...tabs.children].forEach((b,k) => b.classList.toggle('on', k===i));
     $('#car-note').innerHTML = `<div class="day-intro d3"><b>${esc(sc.when)}.</b> ${esc(sc.note)}</div>`;
-    $('#cars').innerHTML = sc.cars.map(c => {
-      let n = 0;
-      const pangku = [], key = [];
-      const rows = DATA.carRows.map((cols, ri) => {
-        const cells = [];
-        for(let k=0;k<cols;k++){
-          const no = n + 1;
-          const s = c.seats[n++] || '';
-          if(s === 'BEG'){
-            cells.push(`<div class="seat bag" aria-label="Ruang beg">${ICON.bag}</div>`);
-            key.push(`<li class="beg"><i></i><b>${no}</b><span>Ruang beg</span></li>`);
-            continue;
-          }
-          if(!s){
-            cells.push(`<div class="seat empty">${no}</div>`);
-            key.push(`<li class="beg"><i></i><b>${no}</b><span>Kosong</span></li>`);
-            continue;
-          }
-          const [gid, nm, tag, lap] = s.split(':'); const g = G(gid);
-          if(lap) pangku.push([lap, nm.split(' + ')[0]]);
-          cells.push(`<div class="seat f" style="--g:${g.color}">${no}</div>`);
-          key.push(`<li><i style="background:${g.color}"></i><b>${no}</b><span>${esc(nm)}${tag==='D'?' — pemandu':''}</span></li>`);
-          // Baris 3 ialah kerusi kapten — sisip lorong di tengah
-          if(cols===2 && ri===2 && k===0) cells.push(`<span class="lorong" aria-hidden="true"></span>`);
-        }
-        // Ruang stroller di hadapan baris yang ditanda (bukan seat, tidak dikira)
-        const band = (c.stroller === ri+1) ? `<div class="stroller">Ruang stroller</div>` : '';
-        return band + `<div class="row c${cols}${cols===2&&ri===2?' kapten':''}">${cells.join('')}</div>`;
-      }).join('');
+    $('#cars').innerHTML = sc.cars.map((c, ci) => {
+      const { svg, key, pangku } = carSvg(c, i + '-' + ci);
       const ppl = c.seats.filter(s => s && s!=='BEG').length + c.seats.filter(s => (s.split(':')[3]||'')).length;
       const bags = c.seats.filter(s => s==='BEG').length;
       const kaki = pangku.map(([a,b]) => `${esc(a)} dipangku oleh ${esc(b)}.`).join(' ');
       return `<div class="car"><h3>${esc(c.name)} <span class="sug">(Cadangan)</span><span>Staria 10 seat</span></h3>`
         + `<div class="cnote">${esc(DATA.carNote)}</div>`
         + `<div class="drv">Pemandu mula: <b>${esc(c.driver)}</b>. ${ppl} orang${bags?`, ${bags} ruang beg`:''}. Boleh tukar.</div>`
-        + `<div class="cabin">${rows}</div>`
+        + svg
         + `<ul class="seatkey">${key.join('')}</ul>`
         + (kaki ? `<div class="cfoot">${kaki}</div>` : '')
+        + `<details class="cadangan"><summary>Cadangan kedudukan</summary><ul>${DATA.carTips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>`
         + `</div>`;
     }).join('');
     const t = sc.third;

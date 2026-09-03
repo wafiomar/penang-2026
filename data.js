@@ -7,8 +7,8 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 8.03 pagi',
-    version: 'v2.1'
+    updated: '3 September 2026, 8.27 pagi',
+    version: 'v2.2'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
@@ -232,6 +232,13 @@ const DATA = {
   // Kereta: layout MPV 10 tempat, 4 baris 2-3-2-3 (baris 1 = pemandu + 1).
   // Nilai seat: 'ID:Nama' atau 'ID:Nama:D' (pemandu mula), 'BEG' = ruang bagasi, '' = kosong.
   carNote: 'Hyundai Staria 10 seat, diesel. Sudah tempah — bayar semasa ambil di LTAPP.',
+  carTips: [
+    'Anak kecil lebih baik di baris 2 dan 3, bukan baris belakang sekali. Baris belakang paling banyak terasa gegaran dan paling mudah buat budak mabuk perjalanan.',
+    'Sesiapa yang mudah mabuk perjalanan letak di baris 1 atau 2, pandang ke hadapan, dan buka tingkap sedikit.',
+    'Baris 3 ialah kerusi kapten dengan lorong di tengah, jadi paling senang keluar masuk. Sesuai untuk sesiapa yang kerap perlu bergerak, contohnya menjaga bayi atau berhenti ke tandas.',
+    'Baris belakang paling sesuai untuk orang dewasa dan beg.',
+    'Untuk perjalanan panjang ke Kampung Agong, tukar tempat selepas berhenti supaya tiada seorang terperap di baris belakang sepanjang hari.'
+  ],
   carRows: [2,3,2,3],
   carScenarios: [
     { id:'tiba', tab:'Ketibaan', sub:'15 orang', when:'Sabtu 12 Sept, dari LTAPP', pax:15,
