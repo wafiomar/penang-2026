@@ -447,14 +447,6 @@ const SM = {
   seatH:56, sandaranH:22
 };
 
-// Warna teks: putih atau gelap, ikut mana yang lebih kontras dengan warna kerusi.
-function smInk(hex){
-  const c = hex.replace('#','');
-  const v = [0,2,4].map(i => { const x = parseInt(c.slice(i,i+2),16)/255; return x<=0.03928 ? x/12.92 : Math.pow((x+0.055)/1.055, 2.4); });
-  const L = 0.2126*v[0] + 0.7152*v[1] + 0.0722*v[2];
-  return (1.05/(L+0.05)) >= ((L+0.05)/0.05) ? '#fff' : '#14232E';
-}
-
 // Pecahkan nama panjang kepada dua baris supaya muat dalam kerusi.
 function smWrap(nm){
   if(nm.length <= 11) return [nm];
@@ -481,13 +473,13 @@ function smSeat(x, y, w, isi, nama, pemandu, beg, uid){
       + `<rect x="1" y="4.5" width="16" height="11.5" rx="2"/><path d="M6 4.5V3a1.4 1.4 0 0 1 1.4-1.4h3.2A1.4 1.4 0 0 1 12 3v1.5"/></g>`
       + `<text x="${cx}" y="${y+43}" text-anchor="middle" fill="#5D6A72" font-weight="700" font-size="11">Beg</text>`;
   }
-  const ink = smInk(isi);
+  const ink = '#fff'; // nama sentiasa putih; warna kumpulan digelapkan dalam DATA kalau perlu
   const baris = smWrap(nama);
   let teks;
   if(pemandu){
     teks = `<text x="${cx}" y="${y+24}" text-anchor="middle" fill="${ink}" font-weight="700" font-size="11.5">${esc(baris[0])}</text>`
          + (baris[1] ? `<text x="${cx}" y="${y+36}" text-anchor="middle" fill="${ink}" font-weight="700" font-size="11.5">${esc(baris[1])}</text>` : '')
-         + `<text x="${cx}" y="${y + (baris[1]?48:40)}" text-anchor="middle" fill="${ink}" font-weight="600" font-size="8.5" opacity=".85">pemandu</text>`;
+         + `<text x="${cx}" y="${y + (baris[1]?48:40)}" text-anchor="middle" fill="${ink}" font-weight="600" font-size="8">Starting driver</text>`;
   } else if(baris[1]){
     teks = `<text x="${cx}" y="${y+24}" text-anchor="middle" fill="${ink}" font-weight="700" font-size="11.5">${esc(baris[0])}</text>`
          + `<text x="${cx}" y="${y+38}" text-anchor="middle" fill="${ink}" font-weight="700" font-size="11.5">${esc(baris[1])}</text>`;
@@ -564,9 +556,9 @@ function carSvg(c, uid){
       const kaki = pangku.map(([a,b]) => `${esc(a)} dipangku oleh ${esc(b)}.`).join(' ');
       return `<div class="car"><h3>${esc(c.name)} <span class="sug">(Cadangan)</span><span>Staria 10 seat</span></h3>`
         + `<div class="cnote">${esc(DATA.carNote)}</div>`
-        + `<div class="drv">Pemandu mula: <b>${esc(c.driver)}</b>. ${ppl} orang${bags?`, ${bags} ruang beg`:''}. Boleh tukar.</div>`
+        + `<div class="drv">Starting driver: <b>${esc(c.driver)}</b>. ${ppl} orang${bags?`, ${bags} ruang beg`:''}. Boleh tukar.</div>`
         + svg
-        + (kaki ? `<div class="cfoot">${kaki}</div>` : '')
+        + `<div class="cfoot">${kaki ? esc(kaki) + ' ' : ''}${esc(DATA.carFoot)}</div>`
         + `<details class="cadangan"><summary>Cadangan kedudukan</summary><ul>${DATA.carTips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>`
         + `</div>`;
     }).join('');
