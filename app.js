@@ -78,6 +78,8 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 (function hero(){
   $('#hero-dates').textContent = DATA.trip.dates;
   $('#hero-pax').textContent = DATA.groups.reduce((a,g)=>a+g.pax,0);
+  const dw = DATA.groups.reduce((a,g)=>a+g.dewasa,0), kk = DATA.groups.reduce((a,g)=>a+g.kanak,0);
+  $('#hero-pecah').textContent = `${dw} dewasa · ${kk} kanak-kanak${DATA.trip.toddler?` (${DATA.trip.toddler} toddler)`:''}`;
   const start = new Date(DATA.trip.start + 'T00:00:00+08:00');
   const now = new Date();
   const d = Math.ceil((start - now)/864e5);
@@ -96,6 +98,62 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   const u = DATA.ucapan, el = $('#ucapan'); if(!u || !el) return;
   const tukar = new Date(u.tarikh + 'T00:00:00+08:00');
   el.textContent = new Date() >= tukar ? u.selepas : u.sebelum;
+})();
+
+/* ============================================================
+   RINGKASAN TRIP — modal satu skrin, semua isi dibaca dari DATA
+   ============================================================ */
+(function ringkasan(){
+  const modal = $('#ringkas'); if(!modal) return;
+  const hariPendek = s => { const m = s.match(/^(.+?)\s*\((.+)\)$/); return m ? m[2].slice(0,3) + ' ' + m[1] : s; };
+  const hariPenuh  = s => { const m = s.match(new RegExp('\\((.+)\\)$')); return m ? m[1] : s; };
+  const nama = f => f.who.map(w => { const [gid, nm] = w.split(':'); return nm || G(gid).label; });
+
+  // Blok 1 — penerbangan
+  const keLuar = DATA.flights.filter(f => f.to === 'PEN');
+  const balik  = DATA.flights.filter(f => f.from === 'PEN');
+  const baris1 = [];
+  if(keLuar[0]){ const f = keLuar[0];
+    baris1.push(`<b>Pergi</b> ${esc(hariPendek(f.date))}${f.flightNo?', '+esc(f.flightNo):''}, ${esc(f.fromName)} ${fmtT(f.dep)} → ${esc(f.to)} ${fmtT(f.arr)}`); }
+  if(balik.length){
+    const bit = balik.map(f => `${fmtT(f.dep)} (${f.who.length > 3 ? 'lain' : esc(nama(f).join(', '))})`).join(' dan ');
+    baris1.push(`<b>Balik</b> ${esc(hariPendek(balik[0].date))}, ${bit}`); }
+  keLuar.slice(1).forEach(f => baris1.push(`${esc(nama(f).join(', '))} tiba ${esc(hariPenuh(f.date))} ${fmtT(f.arr)}`));
+
+  // Blok 2 — tempat utama setiap hari
+  const baris2 = DATA.days.map(d => {
+    const senarai = (d.ringkas || DATA.markers[d.n] || []).slice(0,4).map(k => DATA.places[k].short || DATA.places[k].name);
+    return `<b>Day ${d.n}</b> ${esc(senarai.join(' · '))}`;
+  });
+
+  // Blok 3 — kereta, guna senario semasa bercuti
+  const sc = DATA.carScenarios.find(s => s.id === 'cuti') || DATA.carScenarios[0];
+  const baris3 = sc.cars.map(c => {
+    const org = c.seats.filter(s => s && s !== 'BEG').map(s => s.split(':')[1]);
+    return `<b>${esc(c.name)}</b> <i>starting driver ${esc(c.driver)}</i><span>${esc(org.join(', '))}</span>`;
+  });
+  const t3 = DATA.carScenarios.find(s => s.third);
+  if(t3) baris3.push(`<b>${esc(t3.third.who)}</b> <i>kereta sendiri</i>`);
+
+  // Blok 4 — homestay
+  const bilik = DATA.stay.facts.find(f => f[1].includes('bilik tidur'));
+  const tingkat = DATA.stay.facts.find(f => f[1].includes('tingkat'));
+  const bersih = s => s.replace(/\s*\(.*\)$/, '');
+
+  $('#ringkas-isi').innerHTML =
+      `<section><h3>Penerbangan</h3>${baris1.map(x=>`<p>${x}</p>`).join('')}</section>`
+    + `<section><h3>Tiga hari</h3>${baris2.map(x=>`<p>${x}</p>`).join('')}</section>`
+    + `<section class="rk-kereta"><h3>Kereta</h3>${baris3.map(x=>`<p>${x}</p>`).join('')}</section>`
+    + `<section><h3>Homestay</h3><p>${esc(DATA.stay.addr)}</p>`
+    + `<p>Check-in ${esc(bersih(DATA.stay.checkin))} · Check-out ${esc(bersih(DATA.stay.checkout))}</p>`
+    + `<p>${esc(bilik[0])} bilik · ${esc(tingkat[0])} tingkat</p></section>`;
+
+  const buka = () => { modal.hidden = false; document.body.style.overflow = 'hidden'; modal.querySelector('.rk-x').focus(); };
+  const tutup = () => { modal.hidden = true; document.body.style.overflow = ''; };
+  $('#btn-ringkas').addEventListener('click', buka);
+  modal.querySelector('.rk-x').addEventListener('click', tutup);
+  modal.addEventListener('click', e => { if(e.target === modal) tutup(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !modal.hidden) tutup(); });
 })();
 
 /* ============================================================
