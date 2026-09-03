@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 3.36 petang',
+    updated: '3 September 2026, 3.55 petang',
     toddler: 2,
-    version: 'v3.3'
+    version: 'v3.4'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -155,26 +155,26 @@ const DATA = {
              'Satu-satunya hari kita keluar pulau, dan hari paling banyak memandu.',
              'Kira masa ikut keadaan trafik semasa.'],
       ringkas:['kgagong','laluna','padang'],
-      km:132, toll:'RM14', tollNote:'2 kereta masuk pulau', fuel:'±RM55', azanFrom:'10:20',
+      km:126, toll:'RM14', tollNote:'2 kereta masuk pulau', fuel:'±RM53', azanFrom:'10:20',
       items:[
         { t:'04:30', type:'note',  title:'Bertolak dari rumah masing-masing', meta:'Awal sebab peraturan 3 jam. Lihat "Pagi Sabtu: cara ke KLIA2" untuk laluan setiap kumpulan.', metaLink:{ text:'Pagi Sabtu: cara ke KLIA2', href:'#pagi-sabtu' } },
         { t:'05:45', e:'08:45', type:'flight', title:'KLIA2 — check-in bagasi, Subuh, sarapan', place:'klia2', meta:'Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan.' },
         { t:'09:25', type:'flight', title:'Berlepas AK6154', flightRef:'AK6154', meta:'Tempoh 55 minit.' },
         { t:'10:20', type:'flight', title:'Tiba Pulau Pinang, ambil bagasi', place:'lta' },
         { t:'11:30', type:'move2', title:'Ambil kereta sewa di LTAPP', meta:'Kereta 1 starting driver Wafi, Kereta 2 starting driver Syafi. Semak kereta, ambil gambar sekeliling badan kereta sebelum bergerak.' },
-        { move:{ km:3, min:6 } },
+        { move:{ km:9.9, min:6 } },
         { t:'11:45', e:'12:45', type:'meal', title:'Makan tengah hari — Nasi Kandar Beratur 786', place:'beratur', planB:[{ name:"Arab Street", addr:"31-1-15, The CEO, Lebuh Nipah 5, Bayan Lepas", rating:4.9, reviews:193, hours:"11.00 pg – 11.00 mlm, Jumaat buka 2.00 ptg", why:"Masakan Arab halal, shawarma dan nasi mandi, porsi besar.", kei:"Masakan Arab, shawarma dan nasi mandi" }, { name:"Minah Restaurant", addr:"Jalan Sultan Azlan Shah, Taman Tun Sardon, Gelugor", rating:4.3, reviews:1300, hours:"9.00 pg – 4.00 ptg, tutup Isnin", why:"Masakan Melayu, banyak pilihan lauk dan ulam.", kei:"Masakan Melayu, banyak pilihan lauk dan ulam" }, { name:"Cargas Café", addr:"Main Road Bayan Lepas", rating:4.3, reviews:3208, why:"Nasi campur murah, 2 minit dari LTAPP, tapi panas dan self-service.", kei:"Nasi campur murah, self-service" }, { name:"Bayan Baru Market Food Court", why:"Medan selera MBPP, banyak gerai Muslim, semua orang boleh pilih sendiri. 12 minit.", rating:4, reviews:1812, kei:"Medan selera MBPP, banyak gerai Muslim" }, { name:"Alunan Rasa by Irama Dining", addr:"Setia Triangle", rating:4.6, reviews:321, why:"Ada surau, tapi buka 12.00 tgh sahaja.", kei:"Restoran, ada surau" }] },
-        { move:{ km:15, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu' } },
+        { move:{ km:15.1, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu' } },
         { t:'13:05', e:'14:15', type:'homestay', title:'Check-in homestay, solat Zuhur (jamak Asar)', place:'homestay', meta:'Check-in rasmi 3.00 ptg. Wafi minta awal, tetapi belum disahkan — anggap ia belum pasti sampai homestay jawab.', flags:[{k:'warn',v:'Check-in awal belum disahkan'}], planB:[{ text:"Kalau tak boleh masuk: letak beg di lobi atau dalam kereta, solat Zuhur jamak Asar di Masjid Jamek Jelutong (5 minit) atau surau berdekatan, kemudian gerak terus ke Kampung Agong. Beg masuk bilik lepas balik malam." }, { text:"Jangan pusing-pusing menunggu — Kampung Agong tutup 6.00 ptg, jadi masa lebih baik dihabiskan di sana." }, { text:"Sahkan dengan tuan homestay seminggu sebelum trip supaya tak jadi teka-teki pada hari itu." }] },
-        { move:{ km:45, min:65, via:'Jambatan Pulau Pinang → Butterworth → Kepala Batas → Penaga. Kira masa ikut keadaan trafik semasa.' } },
+        { move:{ km:37.4, min:65, via:'Jambatan Pulau Pinang → Butterworth → Kepala Batas → Penaga. Kira masa ikut keadaan trafik semasa.' } },
         { t:'15:20', e:'17:30', type:'stop', title:'Kampung Agong', place:'kgagong', flags:[{k:'warn',v:'Tutup 6.00 ptg'}], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La.Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
-        { move:{ km:50, min:70, via:'Melalui Jambatan Pulau Pinang terus ke Bayan Lepas.'} },
+        { move:{ km:40.2, min:70, via:'Melalui Jambatan Pulau Pinang terus ke Bayan Lepas.'} },
         { t:'18:40', e:'19:10', type:'meal', title:'La.Luna — take away', place:'laluna', flags:[{k:'warn', v:'Take away sahaja'}], meta:'Ambil bungkus sahaja, bukan makan di situ. Untuk dimakan kemudian atau sebagai snek.', planB:[{ name:"Jeruk Madu Pak Ali", addr:"Jalan Penang", why:"Kalau tak sempat, buah tangan sama boleh dapat di sini pada Hari 3, 2 minit dari Chowrasta.", rating:4.1, reviews:1667, kei:"Jeruk dan buah tangan" }] },
-        { move:{ km:11, min:20 } },
+        { move:{ km:14.3, min:20 } },
         { t:'19:30', e:'20:20', type:'solat', title:'Tiba homestay — solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib masuk 7.21 mlm.'},
-        { move:{ km:4, min:12 } },
+        { move:{ km:4.7, min:12 } },
         { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip La.Luna dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana.", kei:"Mee sotong, gerai medan selera Esplanade" }] },
-        { move:{ km:4, min:12 } },
+        { move:{ km:4.4, min:12 } },
         { t:'22:45', type:'homestay', title:'Balik homestay', place:'homestay' }
       ]
     },
@@ -282,7 +282,29 @@ const DATA = {
     name:'Homestay Karpal Singh Drive',
     addr:'12, Lebuh Sungai Pinang 3, Karpal Singh Drive, Jelutong, 11600 George Town',
     facts:[['9','bilik tidur'],['14','katil'],['9','bilik air'],['4','tingkat']],
-    images:[],
+    images:[
+      { src:'img/frontviewhome.avif', alt:'Pemandangan hadapan homestay', w:1440, h:960 },
+      { src:'img/postbox.webp', alt:'Peti surat di hadapan rumah', w:1440, h:960 },
+      { src:'img/backviewhome.avif', alt:'Pemandangan belakang homestay', w:1440, h:960 },
+      { src:'img/backviewhome2.avif', alt:'Pemandangan belakang homestay dari sudut lain', w:1440, h:1920 },
+      { src:'img/1stfloor.avif', alt:'Tingkat satu homestay', w:1440, h:960 },
+      { src:'img/hall1.avif', alt:'Ruang tamu', w:1440, h:960 },
+      { src:'img/hall2.avif', alt:'Ruang tamu dari sudut lain', w:1440, h:960 },
+      { src:'img/hallconnecttodining.avif', alt:'Ruang tamu bersambung ke ruang makan', w:1440, h:960 },
+      { src:'img/dining1.avif', alt:'Ruang makan', w:1440, h:960 },
+      { src:'img/kitchen1.jpeg', alt:'Dapur', w:1440, h:960 },
+      { src:'img/kitchen2.avif', alt:'Dapur dari sudut lain', w:1440, h:960 },
+      { src:'img/bed1.avif', alt:'Bilik tidur 1', w:1440, h:960 },
+      { src:'img/bed2.avif', alt:'Bilik tidur 2', w:1440, h:960 },
+      { src:'img/bed3.avif', alt:'Bilik tidur 3', w:1440, h:960 },
+      { src:'img/bed4.avif', alt:'Bilik tidur 4', w:1440, h:960 },
+      { src:'img/bed5.avif', alt:'Bilik tidur 5', w:1440, h:960 },
+      { src:'img/bed6.avif', alt:'Bilik tidur 6', w:1440, h:960 },
+      { src:'img/bed7.avif', alt:'Bilik tidur 7', w:1440, h:960 },
+      { src:'img/bed8.avif', alt:'Bilik tidur 8', w:1440, h:960 },
+      { src:'img/bed9.avif', alt:'Bilik tidur 9', w:1440, h:960 },
+      { src:'img/laundry-toilet.avif', alt:'Ruang dobi dan tandas', w:1440, h:960 }
+    ],
     checkin:'3.00 ptg (minta awal)', checkout:'12.00 tgh (kita keluar 8.30 pg)',
     rooms:[
       { n:1, g:'F1', who:'Muhd, Kak Salina, Khadijah, Alisha' },
@@ -324,12 +346,12 @@ const DATA = {
   routeNote:'Waktu puncak dan trafik jambatan boleh tambah 15-20 minit.',
 
   jalan: {
-    km:'Laluan utama 185 km sebuah kereta (132 Hari 1 + 30 Hari 2 + 23 Hari 3). Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 405 km, iaitu 40.5 liter pada 10 liter setiap 100 km.',
+    km:'Laluan utama 179 km sebuah kereta (126 Hari 1 + 30 Hari 2 + 23 Hari 3), diukur dari jalan sebenar OSRM. Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 393 km, iaitu 39.3 liter pada 10 liter setiap 100 km.',
     bahanapi:[
-      { jenis:'Diesel, subsidi BUDI', harga:'RM2.10', kereta:'RM43', total:'RM85' },
-      { jenis:'Diesel, harga pasaran', harga:'RM4.62', kereta:'RM94', total:'RM187' },
-      { jenis:'RON95, subsidi BUDI95', harga:'RM1.99', kereta:'RM40', total:'RM81' },
-      { jenis:'RON95, harga pasaran', harga:'RM3.82', kereta:'RM77', total:'RM155' }
+      { jenis:'Diesel, subsidi BUDI', harga:'RM2.10', kereta:'RM41', total:'RM83' },
+      { jenis:'Diesel, harga pasaran', harga:'RM4.62', kereta:'RM91', total:'RM182' },
+      { jenis:'RON95, subsidi BUDI95', harga:'RM1.99', kereta:'RM39', total:'RM78' },
+      { jenis:'RON95, harga pasaran', harga:'RM3.82', kereta:'RM75', total:'RM150' }
     ],
     tolrows:[
       { apa:'Jambatan Pulau Pinang, kelas 1', kadar:'RM7.00 sekali masuk', bila:'Hari 1 sahaja, balik dari Penaga', total:'RM14 (2 kereta)' },

@@ -777,13 +777,56 @@ function carSvg(c, uid){
 
 (function galeri(){
   const btn = $('#btn-galeri'), box = $('#galeri'); if(!btn || !box) return;
-  box.querySelector('.gl-isi').innerHTML = DATA.stay.images.map(g =>
-    `<figure><img src="${esc(g.src)}" alt="${esc(g.alt||'')}" loading="lazy">${g.alt?`<figcaption>${esc(g.alt)}</figcaption>`:''}</figure>`).join('');
-  const tutup = () => { box.hidden = true; document.body.style.overflow = ''; };
-  btn.addEventListener('click', () => { box.hidden = false; document.body.style.overflow = 'hidden'; box.querySelector('.rk-x').focus(); });
+  const imgs = DATA.stay.images || []; if(!imgs.length) return;
+  const jalur = box.querySelector('.gl-isi');
+  // aspect-ratio ditetapkan dari saiz sebenar supaya tiada lompatan semasa memuat
+  jalur.innerHTML = imgs.map(g => `<figure class="gl-slaid">
+      <img src="${esc(g.src)}" alt="${esc(g.alt || 'Homestay Karpal Singh Drive')}"
+           width="${g.w}" height="${g.h}" style="aspect-ratio:${g.w}/${g.h}"
+           loading="lazy" decoding="async">
+      <figcaption>${esc(g.alt || 'Homestay Karpal Singh Drive')}</figcaption>
+    </figure>`).join('');
+
+  const kira = box.querySelector('#gl-kira');
+  let semasa = -1;
+  function segar(){
+    const i = Math.round(jalur.scrollLeft / jalur.clientWidth);
+    const n = Math.max(0, Math.min(i, imgs.length - 1));
+    if(n === semasa) return;
+    semasa = n;
+    kira.textContent = (n + 1) + ' / ' + imgs.length;
+  }
+  jalur.addEventListener('scroll', () => { requestAnimationFrame(segar); }, { passive:true });
+
+  function ke(n){
+    const t = Math.max(0, Math.min(n, imgs.length - 1));
+    jalur.scrollTo({ left: t * jalur.clientWidth, behavior:'smooth' });
+  }
+  box.querySelector('#gl-prev').addEventListener('click', () => ke(semasa - 1));
+  box.querySelector('#gl-next').addEventListener('click', () => ke(semasa + 1));
+
+  let skrolHalaman = 0;
+  const tutup = () => {
+    box.hidden = true;
+    document.body.style.overflow = '';
+    window.scrollTo({ top:skrolHalaman, behavior:'instant' });  // kembali serta-merta, tanpa animasi
+    btn.focus({ preventScroll:true });
+  };
+  btn.addEventListener('click', () => {
+    skrolHalaman = window.scrollY;
+    box.hidden = false; document.body.style.overflow = 'hidden';
+    jalur.scrollLeft = 0; semasa = -1; segar();
+    box.querySelector('.rk-x').focus({ preventScroll:true });
+  });
   box.querySelector('.rk-x').addEventListener('click', tutup);
   box.addEventListener('click', e => { if(e.target === box) tutup(); });
-  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !box.hidden) tutup(); });
+  document.addEventListener('keydown', e => {
+    if(box.hidden) return;
+    if(e.key === 'Escape') tutup();
+    else if(e.key === 'ArrowRight') ke(semasa + 1);
+    else if(e.key === 'ArrowLeft') ke(semasa - 1);
+  });
+  window.addEventListener('resize', () => { if(!box.hidden) jalur.scrollLeft = semasa * jalur.clientWidth; }, { passive:true });
 })();
 
 /* ============================================================
