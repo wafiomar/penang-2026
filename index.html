@@ -20,8 +20,10 @@
     <div class="kicker">Brief keluarga</div>
     <h1>Pulau Pinang<br>Vacation</h1>
     <div class="dates" id="hero-dates"></div>
-    <div class="countdown" id="countdown"></div>
-    <div><button type="button" class="btn-ringkas" id="btn-ringkas">Ringkasan trip</button></div>
+    <div class="hero-aksi">
+      <div class="countdown" id="countdown"></div>
+      <button type="button" class="btn-ringkas" id="btn-ringkas">Trip Summary</button>
+    </div>
     <div class="hero-grid">
       <div><b><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 5.6a3 3 0 0 1 0 5.6M17.5 19.5c0-2.4-1-4.2-2.6-5.2"/></svg><span id="hero-pax"></span></b><span>pax</span><span class="pecah" id="hero-pecah"></span></div>
       <div><b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg><span>3H 2M</span></b><span>Sabtu – Isnin</span></div>
@@ -78,7 +80,7 @@
     <div class="sec-head">
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M8 17h6"/></svg>Jadual harian</h2>
       <p>Masa di sini ialah masa sebenar yang dikira dari jarak jalan raya, bukan rekaan. Waktu solat Pulau Pinang diselit pada tempatnya.</p>
-      <p class="jujur">Masa di sini ialah sasaran, bukan janji. Dengan 21 orang dan dua kereta, setiap perhentian ambil 10 hingga 15 minit tambahan untuk naik turun. Lewat 20 minit tidak merosakkan apa-apa — satu-satunya waktu yang betul-betul mati ialah Kampung Agong tutup 6.00 ptg dan waktu berlepas penerbangan.</p>
+      <p class="jujur">Masa di sini ialah sasaran, bukan janji. Dengan 21 orang dan dua kereta, setiap perhentian ambil 10 hingga 15 minit tambahan untuk naik turun. Lewat 20 minit tidak merosakkan apa-apa. Dua sahaja yang tidak boleh dilewatkan: Kampung Agong tutup 6.00 petang, dan waktu berlepas penerbangan.</p>
     </div>
     <div class="tabs" id="day-tabs"></div>
     <details class="halalkey">
@@ -234,10 +236,10 @@
   </div>
 </section>
 
-<div class="rk" id="ringkas" hidden role="dialog" aria-modal="true" aria-label="Ringkasan trip">
+<div class="rk" id="ringkas" hidden role="dialog" aria-modal="true" aria-label="Trip Summary">
   <div class="rk-kotak">
-    <button type="button" class="rk-x" aria-label="Tutup ringkasan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <h2>Ringkasan trip</h2>
+    <button type="button" class="rk-x" aria-label="Tutup Trip Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2>Trip Summary</h2>
     <div class="rk-isi" id="ringkas-isi"></div>
   </div>
 </div>

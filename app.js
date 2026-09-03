@@ -12,6 +12,29 @@ function fmtT(t){ // "14:30" -> "2.30 ptg"
   return hh + '.' + String(m).padStart(2,'0') + ' ' + suf;
 }
 const toMin = t => { const [h,m]=t.split(':').map(Number); return h*60+m; };
+const fromMin = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
+// Julat masa: buang suffix pertama kalau kedua-duanya sama waktu. "2.15 – 3.20 ptg"
+function julat(a, b){
+  const A = fmtT(a), B = fmtT(b);
+  const sa = A.slice(A.lastIndexOf(' ')+1), sb = B.slice(B.lastIndexOf(' ')+1);
+  return sa === sb ? `${A.slice(0, A.lastIndexOf(' '))} – ${B}` : `${A} – ${B}`;
+}
+// Jam setiap segmen pergerakan dikira, bukan ditaip dalam DATA.
+function masaGerak(items){
+  const peta = new Map();
+  let siap = null;
+  items.forEach((it, i) => {
+    if(it.move){
+      if(siap === null) return;
+      const tamat = siap + (it.move.min || 0);
+      peta.set(i, [siap, tamat]);
+      siap = tamat;
+      return;
+    }
+    if(it.t) siap = it.e ? toMin(it.e) : toMin(it.t);
+  });
+  return peta;
+}
 // Pautan dalam teks meta: ganti frasa dalam DATA dengan pautan ke seksyen lain.
 function metaHtml(meta, link){
   const html = meta.map(esc).join('<br>');
@@ -128,7 +151,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   // Blok 2 — tempat utama setiap hari
   const baris2 = DATA.days.map(d => {
     const senarai = (d.ringkas || DATA.markers[d.n] || []).slice(0,4).map(k => DATA.places[k].short || DATA.places[k].name);
-    return `<b>Day ${d.n}</b> ${esc(senarai.join(' · '))}`;
+    return `<b>Day ${d.n}</b> <span class="rk-alur">${senarai.map(esc).join(' <i>→</i> ')}</span>`;
   });
 
   // Blok 3 — kereta, guna senario semasa bercuti
@@ -204,7 +227,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 /* ============================================================
    MAP
    ============================================================ */
-const MAP = { map:null, layers:{}, all:null };
+const MAP = { map:null, layers:{}, all:null, marks:{}, pilihHari:null };
 function initMap(){
   if(typeof L === 'undefined'){ $('#map').style.display='none'; $('#map-fallback').style.display='block'; $('#map-ctl').style.display='none'; $('#map-note').style.display='none'; return; }
   const map = L.map('map', { scrollWheelZoom:false, zoomControl:true, attributionControl:true });
@@ -225,8 +248,9 @@ function initMap(){
     DATA.markers[d].forEach((id,i) => {
       const p = P[id];
       const item = day.items.find(it => it.place===id);
-      L.marker([p.lat,p.lng], { icon:L.divIcon({ className:'', html:`<div class="pin d${d}">${i+1}</div>`, iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-12] }) })
+      const mk = L.marker([p.lat,p.lng], { icon:L.divIcon({ className:'', html:`<div class="pin d${d}">${i+1}</div>`, iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-12] }) })
         .bindPopup(popupHtml(p, d, item)).addTo(lg);
+      MAP.marks[d + ':' + id] = mk;
     });
     // Route: straight fallback first, replaced by OSRM geometry if available
     const pts = DATA.routes[d].map(id => [P[id].lat, P[id].lng]);
@@ -239,12 +263,16 @@ function initMap(){
 
   $('#map-ctl').addEventListener('click', e => {
     const btn = e.target.closest('button'); if(!btn) return;
+    tunjukHari(btn.dataset.day);
+  });
+  MAP.pilihHari = tunjukHari;
+  function tunjukHari(sel){
+    const btn = [...$('#map-ctl').children].find(x => x.dataset.day === sel) || $('#map-ctl').children[0];
     [...$('#map-ctl').children].forEach(x=>x.classList.toggle('on', x===btn));
-    const sel = btn.dataset.day;
     [1,2,3].forEach(d => { if(sel==='all' || String(d)===sel) MAP.layers[d].addTo(map); else map.removeLayer(MAP.layers[d]); });
     if(sel==='all') map.fitBounds(b, { padding:[24,24] });
     else { const pts = DATA.routes[+sel].map(id=>[P[id].lat,P[id].lng]); map.fitBounds(L.latLngBounds(pts), { padding:[30,30] }); }
-  });
+  }
 }
 function popupHtml(p, d, item){
   const when = item ? (fmtT(item.t) + (item.e ? ' – ' + fmtT(item.e) : '')) : '';
@@ -379,8 +407,15 @@ function planbHtml(list){
     const rows = [];
     let lastT = null, stopIdx = 0;
     const pushAzanBefore = t => { while(azan.length && (t===null || toMin(azan[0].t) <= toMin(t))){ const a = azan.shift(); rows.push(a); } };
-    day.items.forEach(it => {
+    const gerak = masaGerak(day.items);
+    day.items.forEach((it, i) => {
       if(it.t){ pushAzanBefore(it.t); lastT = it.t; }
+      if(it.move){
+        const seterus = day.items.slice(i+1).find(x => !x.move);
+        const p2 = seterus && seterus.place ? DATA.places[seterus.place] : null;
+        rows.push({ move:it.move, jam:gerak.get(i), ke:(p2 ? p2.name : (seterus ? seterus.title : '')) });
+        return;
+      }
       rows.push(it);
     });
     pushAzanBefore(null);
@@ -394,12 +429,14 @@ function planbHtml(list){
       }
       if(it.move){
         const m = it.move;
-        html += `<div class="ti ti-move"><div class="ti-time">·</div><div class="ti-body">${m.walk?ICON.walk:ICON.car}<span>${m.walk?'Jalan kaki':'Memandu'} kira-kira ${dur(m.min)}${m.km?', '+m.km+' km':''}${m.via?'. '+esc(m.via):''}</span></div></div>`;
+        const jam = it.jam ? julat(fromMin(it.jam[0]), fromMin(it.jam[1])) : '·';
+        const ke = it.ke ? `${m.walk?'Jalan kaki ke':'Bergerak ke'} ${esc(it.ke)}` : (m.walk?'Jalan kaki':'Bergerak');
+        html += `<div class="ti ti-move"><div class="ti-time">${jam}</div><div class="ti-body">${m.walk?ICON.walk:ICON.car}<span>${ke} · ${dur(m.min)}${m.km?' · '+m.km+' km':''}${m.via?'. '+esc(m.via):''}</span></div></div>`;
         return;
       }
       const p = it.place ? P[it.place] : null;
       const isStop = (it.type==='stop'||it.type==='meal'||it.type==='rehat') && it.place && DATA.markers[n].includes(it.place);
-      const num = isStop ? `<span class="n">${++stopIdx}</span>` : '';
+      const num = isStop ? `<button type="button" class="n" data-mday="${n}" data-mplace="${esc(it.place)}" aria-label="Tunjuk ${esc(p?p.name:it.title)} pada peta">${++stopIdx}</button>` : '';
       const cat = CAT[it.type];
       const ic = TI_ICON[it.type] ? `<span class="ico" style="--c:${cat?cat.color:'var(--ink-2)'}" title="${cat?esc(cat.label):''}"><svg viewBox="0 0 24 24" aria-hidden="true">${TI_ICON[it.type]}</svg></span>` : '';
       let bdg = '';
@@ -442,6 +479,15 @@ function planbHtml(list){
         </div></div>`;
     });
     $('#timeline').innerHTML = html;
+    $('#timeline').querySelectorAll('button.n').forEach(b => b.addEventListener('click', () => {
+      const d = b.dataset.mday, id = b.dataset.mplace, mk = MAP.marks[d + ':' + id];
+      if(!mk || !MAP.map) return;
+      const aktif = $('#map-ctl .on');
+      if(!aktif || (aktif.dataset.day !== d && aktif.dataset.day !== 'all')) MAP.pilihHari(d);
+      else if(aktif.dataset.day === 'all') MAP.pilihHari(d);
+      $('#peta').scrollIntoView({ behavior:'smooth', block:'start' });
+      setTimeout(() => { MAP.map.invalidateSize(); MAP.map.setView(mk.getLatLng(), Math.max(MAP.map.getZoom(), 14), { animate:true }); mk.openPopup(); }, 450);
+    }));
   }
 })();
 
