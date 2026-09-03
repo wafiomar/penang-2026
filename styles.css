@@ -97,7 +97,7 @@ section+section{border-top:1px solid var(--line)}
 .map-ctl button[data-day="all"].on{background:var(--ink);border-color:var(--ink);color:#fff}
 .map-note{position:absolute;right:12px;top:12px;z-index:400;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:5px 5px 5px 10px;font-size:.78rem;color:var(--ink-2);max-width:220px}
 .map-note[hidden]{display:none}
-.map-note button{flex:none;display:flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink-3);cursor:pointer}
+.map-note button{flex:none;display:flex;align-items:center;justify-content:center;width:26px;height:26px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink-3);cursor:pointer}
 .map-note button:hover,.map-note button:focus-visible{background:var(--paper);color:var(--ink)}
 .map-note button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .map-fallback{display:none;padding:40px 18px;text-align:center;color:var(--ink-2)}

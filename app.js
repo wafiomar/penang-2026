@@ -513,7 +513,7 @@ function planbHtml(list){
     return `<div class="kl" style="--g:${g.color}"><h3>${esc(k.title)}<span>${esc(k.sub)}</span></h3>${opts}${k.foot?`<div class="kl-foot">${esc(k.foot)}</div>`:''}</div>`;
   }).join('');
 
-  $('#seatnote').innerHTML = `<b>Tempat duduk pesawat.</b> AirAsia jual pilihan kerusi sebagai tambahan. Kalau tak beli, sistem beri secara rawak dan keluarga boleh terpisah. Untuk penerbangan 55 minit ini, cara paling murah ialah beritahu kaunter check-in yang ada anak kecil — mereka biasanya boleh susun supaya duduk bersebelahan tanpa caj.`;
+  $('#seatnote').innerHTML = `<b>Seat pesawat.</b> AirAsia jual pilihan seat sebagai tambahan. Kalau tak beli, sistem beri secara rawak dan keluarga boleh terpisah. Untuk penerbangan 55 minit ini, cara paling murah ialah beritahu kaunter check-in yang ada anak kecil — mereka biasanya boleh susun supaya duduk bersebelahan tanpa caj.`;
 })();
 
 /* ============================================================

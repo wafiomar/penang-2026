@@ -7,12 +7,12 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 9.40 pagi',
+    updated: '3 September 2026, 10.07 pagi',
     toddler: 2,
-    version: 'v2.7'
+    version: 'v3.0'
   },
 
-  // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
+  // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
   groups: [
     { id:'F1', name:'Muhd',   label:'Keluarga Muhd',   short:'Kel. Muhd', pax:4, dewasa:2, kanak:2, who:'2 dewasa, 2 kanak-kanak', color:'#6F5BB8', from:'Sudah di Pulau Pinang', members:['Muhd','Kak Salina','Khadijah','Alisha'] },
     { id:'F2', name:'Hadi',   label:'Keluarga Hadi',   short:'Kel. Hadi', pax:4, dewasa:2, kanak:2, who:'2 dewasa, 2 kanak-kanak', color:'#288181', from:'ERL Salak Tinggi',       members:['Hadi','Kak Hajar','Hud','Hana'] },
@@ -174,7 +174,7 @@ const DATA = {
         { move:{ km:11, min:20 } },
         { t:'19:30', e:'20:20', type:'solat', title:'Tiba homestay — solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib masuk 7.21 mlm.'},
         { move:{ km:4, min:12 } },
-        { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip PakTeh dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana.", kei:"Mee sotong, gerai medan selera Esplanade" }] },
+        { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip La.Luna dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana.", kei:"Mee sotong, gerai medan selera Esplanade" }] },
         { move:{ km:4, min:12 } },
         { t:'22:45', type:'homestay', title:'Balik homestay', place:'homestay' }
       ]
@@ -245,7 +245,7 @@ const DATA = {
     3:['fizzy','chowrasta','dimsum','queensbay']
   },
 
-  // Kereta: layout MPV 10 tempat, 4 baris 2-3-2-3 (baris 1 = pemandu + 1).
+  // Kereta: layout Staria 10 seat, 4 baris 2-3-2-3 (baris 1 = penumpang depan + pemandu di kanan).
   // Nilai seat: 'ID:Nama' atau 'ID:Nama:D' (starting driver), 'BEG' = ruang bagasi, '' = kosong.
   carFoot: 'Boleh rotate seat sepanjang jalan.',
   carNote: 'Hyundai Staria 10 seat, diesel. Sudah tempah — bayar semasa ambil di LTAPP.',
