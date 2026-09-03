@@ -316,7 +316,7 @@ details.planb[open] summary::before{content:"–"}
 .car .cfoot{margin-top:9px;font-size:.78rem;color:var(--ink-2)}
 .car .drv b{color:var(--ink)}
 .cabin{border:2px solid var(--line);border-radius:22px 22px 12px 12px;padding:14px 8px 10px;background:var(--paper);position:relative}
-@media (max-width:420px){.car{padding:12px 10px}.cabin{padding:12px 6px 8px}.row{gap:4px}.seat{padding:5px 4px;font-size:.7rem}.seat b{font-size:.73rem}.seat small{font-size:.63rem}.row.kapten{grid-template-columns:1fr 14px 1fr}.lorong{margin:2px 3px}}
+@media (max-width:420px){.car{padding:12px 10px}.cabin{padding:12px 6px 8px}.row{gap:4px}.seat{font-size:.95rem}.row.kapten{grid-template-columns:1fr 14px 1fr}.lorong{margin:2px 3px}.seatkey{gap:3px 8px}.seatkey li{font-size:.73rem}}
 .cabin::before{content:"";position:absolute;left:50%;top:-2px;transform:translateX(-50%);width:44%;height:8px;border-radius:0 0 8px 8px;background:var(--line)}
 .row{display:grid;gap:5px;margin-bottom:14px}
 .row:last-child{margin-bottom:0}
@@ -327,13 +327,19 @@ details.planb[open] summary::before{content:"–"}
 .lorong{align-self:stretch;border-left:2px dashed var(--line);border-right:2px dashed var(--line);margin:2px 6px}
 /* Ruang kaki yang ditanda sebagai ruang stroller — bukan seat */
 .stroller{margin-bottom:6px;padding:5px 8px;border:1px dashed var(--ink-3);border-radius:7px;font-size:.66rem;font-weight:600;color:var(--ink-3);text-align:center;letter-spacing:.02em;background:repeating-linear-gradient(45deg,transparent,transparent 5px,rgba(138,150,160,.16) 5px,rgba(138,150,160,.16) 10px)}
-.seat{min-height:44px;border-radius:8px 8px 5px 5px;background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;padding:5px 6px;font-size:.74rem;line-height:1.15;display:flex;flex-direction:column;justify-content:center;color:var(--ink)}
-.seat.f{border-color:var(--g);border-bottom-color:var(--g);background:color-mix(in srgb,var(--g) 12%,#fff)}
-.seat b{font-weight:700;font-size:.78rem;overflow-wrap:anywhere;hyphens:auto}
+.seat{min-height:42px;border-radius:8px 8px 5px 5px;background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;letter-spacing:-0.01em;color:var(--ink)}
+.seat.f{border-color:var(--g);border-bottom-color:var(--g);background:color-mix(in srgb,var(--g) 16%,#fff);color:color-mix(in srgb,var(--g) 72%,#1B2A35)}
+.seatkey{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:3px 10px}
+.seatkey li{display:flex;align-items:baseline;gap:6px;font-size:.76rem;line-height:1.3;color:var(--ink-2);min-width:0}
+.seatkey i{flex:none;width:9px;height:9px;border-radius:50%;background:var(--ink-3);transform:translateY(-1px)}
+.seatkey li.beg i{background:transparent;border:1.5px dashed var(--ink-3)}
+.seatkey b{flex:none;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;min-width:1.1em}
+.seatkey span{min-width:0;overflow-wrap:anywhere}
 .seat small{color:var(--ink-2);font-size:.68rem}
 .seat small.lap{color:var(--g);font-weight:700}
-.seat.empty{color:var(--ink-3);border-style:dashed;justify-content:center;text-align:center}
-.seat.bag{color:var(--ink-3);border-style:dashed;background:var(--paper);justify-content:center;text-align:center;font-weight:600}
+.seat.empty{color:var(--ink-3);border-style:dashed}
+.seat.bag{color:var(--ink-3);border-style:dashed;background:var(--paper)}
+.seat.bag svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .seat .dv{display:inline-block;font-size:.62rem;font-weight:700;padding:1px 5px;border-radius:4px;background:var(--ink);color:#fff;margin-top:2px;align-self:flex-start}
 .own{margin-top:12px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);font-size:.9rem;line-height:1.45}
 .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;font-size:.8rem;color:var(--ink-2)}

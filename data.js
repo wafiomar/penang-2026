@@ -7,8 +7,8 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 7.46 pagi',
-    version: 'v2.0'
+    updated: '3 September 2026, 8.03 pagi',
+    version: 'v2.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, tempat duduk & bilik.
@@ -231,7 +231,7 @@ const DATA = {
 
   // Kereta: layout MPV 10 tempat, 4 baris 2-3-2-3 (baris 1 = pemandu + 1).
   // Nilai seat: 'ID:Nama' atau 'ID:Nama:D' (pemandu mula), 'BEG' = ruang bagasi, '' = kosong.
-  carNote: 'Hyundai Staria 10 seat, diesel. Belum disahkan dengan syarikat sewa.',
+  carNote: 'Hyundai Staria 10 seat, diesel. Sudah tempah — bayar semasa ambil di LTAPP.',
   carRows: [2,3,2,3],
   carScenarios: [
     { id:'tiba', tab:'Ketibaan', sub:'15 orang', when:'Sabtu 12 Sept, dari LTAPP', pax:15,

@@ -30,6 +30,7 @@ const ICON = {
   car:'<svg viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-6h9L18 17M4 17v2M20 17v2M7 11l1-3h8l1 3"/><circle cx="8" cy="17" r="1.2"/><circle cx="16" cy="17" r="1.2"/></svg>',
   walk:'<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="M10 21l2-6 3 3v3M8 13l2-4 3-1 3 3 2 1M12 15l-3 6"/></svg>',
   home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+  bag:'<svg viewBox="0 0 24 24"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5v2"/></svg>',
   plane:'<svg viewBox="0 0 24 24"><path d="M2 12l7 2 3 7 2-2-1-6 6-4a2 2 0 0 0-2-3l-6 4-6-2-2 2 5 3z"/></svg>'
 };
 
@@ -447,18 +448,26 @@ function planbHtml(list){
     $('#car-note').innerHTML = `<div class="day-intro d3"><b>${esc(sc.when)}.</b> ${esc(sc.note)}</div>`;
     $('#cars').innerHTML = sc.cars.map(c => {
       let n = 0;
-      const pangku = [];
+      const pangku = [], key = [];
       const rows = DATA.carRows.map((cols, ri) => {
         const cells = [];
         for(let k=0;k<cols;k++){
+          const no = n + 1;
           const s = c.seats[n++] || '';
-          if(s === 'BEG'){ cells.push(`<div class="seat bag">Beg</div>`); continue; }
-          if(!s){ cells.push(`<div class="seat empty">kosong</div>`); continue; }
+          if(s === 'BEG'){
+            cells.push(`<div class="seat bag" aria-label="Ruang beg">${ICON.bag}</div>`);
+            key.push(`<li class="beg"><i></i><b>${no}</b><span>Ruang beg</span></li>`);
+            continue;
+          }
+          if(!s){
+            cells.push(`<div class="seat empty">${no}</div>`);
+            key.push(`<li class="beg"><i></i><b>${no}</b><span>Kosong</span></li>`);
+            continue;
+          }
           const [gid, nm, tag, lap] = s.split(':'); const g = G(gid);
-          const short = g.short || g.label;
-          const sub = nm.split(' ').some(w => short.includes(w)) ? '' : short;
           if(lap) pangku.push([lap, nm.split(' + ')[0]]);
-          cells.push(`<div class="seat f" style="--g:${g.color}"><b>${esc(nm)}</b>${sub?`<small>${esc(sub)}</small>`:''}${tag==='D'?'<span class="dv">Pemandu mula</span>':''}</div>`);
+          cells.push(`<div class="seat f" style="--g:${g.color}">${no}</div>`);
+          key.push(`<li><i style="background:${g.color}"></i><b>${no}</b><span>${esc(nm)}${tag==='D'?' — pemandu':''}</span></li>`);
           // Baris 3 ialah kerusi kapten — sisip lorong di tengah
           if(cols===2 && ri===2 && k===0) cells.push(`<span class="lorong" aria-hidden="true"></span>`);
         }
@@ -473,12 +482,13 @@ function planbHtml(list){
         + `<div class="cnote">${esc(DATA.carNote)}</div>`
         + `<div class="drv">Pemandu mula: <b>${esc(c.driver)}</b>. ${ppl} orang${bags?`, ${bags} ruang beg`:''}. Boleh tukar.</div>`
         + `<div class="cabin">${rows}</div>`
+        + `<ul class="seatkey">${key.join('')}</ul>`
         + (kaki ? `<div class="cfoot">${kaki}</div>` : '')
         + `</div>`;
     }).join('');
     const t = sc.third;
     $('#own-car').innerHTML = t
-      ? `<span><i class="dot" style="background:${G(t.g).color}"></i><b>${esc(t.who)}</b> — ${esc(t.text)}</span>`
+      ? `<span><i class="dot" style="background:${G(t.g).color}"></i>${esc(t.text)}</span>`
       : `<span class="muted">Semua dalam 2 Staria pada peringkat ini.</span>`;
   }
   $('#legend').innerHTML = DATA.groups.map(g => `<span style="--g:${g.color}"><i></i>${esc(g.label)} (${g.pax})</span>`).join('');
