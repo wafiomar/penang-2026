@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 10.07 pagi',
+    updated: '3 September 2026, 10.20 pagi',
     toddler: 2,
-    version: 'v3.0'
+    version: 'v3.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -119,7 +119,6 @@ const DATA = {
     lta:       { name:"Lapangan Terbang Antarabangsa Pulau Pinang (LTAPP)", lat:5.296, lng:100.2752, addr:"Bayan Lepas", kind:"plane", tips:"Parking RM3 sejam, maksimum RM33 sehari." },
     homestay:  { name:"Homestay Karpal Singh Drive", lat:5.3967, lng:100.3279, addr:"12, Lebuh Sungai Pinang 3, Jelutong, 11600 George Town", kind:"home" },
     beratur:   { short:"Beratur 786", name:"Nasi Kandar Beratur 786", lat:5.2993, lng:100.2671, addr:"1-1-11 Summerskye Residence, Jalan Sungai Tiram 8, Bayan Lepas", hours:"9.00 pg – 11.00 mlm, setiap hari", halal:"muslim", rating:4.2, reviews:1283, tagline:"Nasi kandar berhawa dingin, giliran bergerak laju", special:"Nasi kandar. Ayam goreng digoreng di depan.", tips:"6 minit dari LTAPP. Berhawa dingin, tempat duduk betul, tak seperti gerai asal yang panas. Giliran bergerak laju sebab ramai staf." },
-    sofea:     { name:"Mentari Pagi by Sofea", lat:5.2978, lng:100.2641, addr:"Jalan Mahkamah, Bayan Lepas", hours:"8.00 pg – 1.00 tgh", halal:"muslim", rating:3.1, reviews:343, tagline:"Tiga minit dari LTAPP, tutup 1.00 tengah hari", tips:"3 minit dari LTAPP, jadi terus ke sini lepas ambil kereta. Tutup 1.00 tgh — kalau flight lewat atau kereta sewa lambat, terus guna Plan B." },
     queensbay: { name:"Queensbay Mall", lat:5.3331, lng:100.307, addr:"100, Persiaran Bayan Indah, Bayan Lepas", hours:"10.30 pg – 10.30 mlm", rating:4.4, reviews:26288, tagline:"Mall terbesar Pulau Pinang, ada surau dan medan selera", special:"Mall terbesar Pulau Pinang, berhawa dingin, ada surau dan medan selera besar.", tips:"12 minit ke LTAPP. Parking bertingkat percuma beberapa jam pertama.", short:"Queensbay" },
     kgagong:   { name:"Kampung Agong", lat:5.5396, lng:100.3791, addr:"841 Kampung Bakar Kapor, 13100 Penaga", hours:"9.00 pg – 6.00 ptg", rating:4.5, reviews:5928, cost:"RM10 dewasa, RM5 kanak-kanak 4–12 tahun, bawah 4 percuma. Sewa kostum tradisional RM30, slot terhad.", tagline:"Di tanah besar, seberang jambatan", tips:"Tanah besar, seberang jambatan. Panas tengah hari — bawa topi dan air.", short:"Kg Agong" },
     pakteh:    { name:"PakTeh Fruits, Kg. Pelet", lat:5.4152, lng:100.4624, addr:"Jalan Guar Perahu, Kubang Semang, Bukit Mertajam", hours:"10.00 pg – 11.00 mlm", halal:"muslim", rating:4, reviews:603, tagline:"Kedai buah viral — durian dan mangga", special:"Kedai buah viral (durian, mangga).", tips:"Ini di Bukit Mertajam, bukan di Penaga — jalan pusing 30 km dari Kg Agong." },
@@ -164,11 +163,11 @@ const DATA = {
         { t:'10:20', type:'flight', title:'Tiba Pulau Pinang, ambil bagasi', place:'lta' },
         { t:'11:30', type:'move2', title:'Ambil kereta sewa di LTAPP', meta:'Kereta 1 starting driver Wafi, Kereta 2 starting driver Syafi. Semak kereta, ambil gambar sekeliling badan kereta sebelum bergerak.' },
         { move:{ km:3, min:6 } },
-        { t:'11:45', e:'12:45', type:'meal', title:'Makan tengah hari — Nasi Kandar Beratur 786', place:'beratur', planB:[{ name:"Arab Street", addr:"31-1-15, The CEO, Lebuh Nipah 5, Bayan Lepas", rating:4.9, reviews:193, hours:"11.00 pg – 11.00 mlm, Jumaat buka 2.00 ptg", why:"Masakan Arab halal, shawarma dan nasi mandi, porsi besar.", kei:"Masakan Arab, shawarma dan nasi mandi" }, { name:"Minah Restaurant", addr:"Jalan Sultan Azlan Shah, Taman Tun Sardon, Gelugor", rating:4.3, reviews:1300, hours:"9.00 pg – 4.00 ptg, tutup Isnin", why:"Masakan Melayu, banyak pilihan lauk dan ulam.", kei:"Masakan Melayu, banyak pilihan lauk dan ulam" }, { place:"sofea", why:"3 minit dari LTAPP, tetapi tutup 1.00 tgh — berisiko kalau flight lewat atau kereta sewa lambat.", kei:"Kedai makan berhampiran LTAPP" }, { name:"Cargas Café", addr:"Main Road Bayan Lepas", rating:4.3, reviews:3208, why:"Nasi campur murah, 2 minit dari LTAPP, tapi panas dan self-service.", kei:"Nasi campur murah, self-service" }, { name:"Bayan Baru Market Food Court", why:"Medan selera MBPP, banyak gerai Muslim, semua orang boleh pilih sendiri. 12 minit.", rating:4, reviews:1812, kei:"Medan selera MBPP, banyak gerai Muslim" }, { name:"Alunan Rasa by Irama Dining", addr:"Setia Triangle", rating:4.6, reviews:321, why:"Ada surau, tapi buka 12.00 tgh sahaja.", kei:"Restoran, ada surau" }] },
+        { t:'11:45', e:'12:45', type:'meal', title:'Makan tengah hari — Nasi Kandar Beratur 786', place:'beratur', planB:[{ name:"Arab Street", addr:"31-1-15, The CEO, Lebuh Nipah 5, Bayan Lepas", rating:4.9, reviews:193, hours:"11.00 pg – 11.00 mlm, Jumaat buka 2.00 ptg", why:"Masakan Arab halal, shawarma dan nasi mandi, porsi besar.", kei:"Masakan Arab, shawarma dan nasi mandi" }, { name:"Minah Restaurant", addr:"Jalan Sultan Azlan Shah, Taman Tun Sardon, Gelugor", rating:4.3, reviews:1300, hours:"9.00 pg – 4.00 ptg, tutup Isnin", why:"Masakan Melayu, banyak pilihan lauk dan ulam.", kei:"Masakan Melayu, banyak pilihan lauk dan ulam" }, { name:"Cargas Café", addr:"Main Road Bayan Lepas", rating:4.3, reviews:3208, why:"Nasi campur murah, 2 minit dari LTAPP, tapi panas dan self-service.", kei:"Nasi campur murah, self-service" }, { name:"Bayan Baru Market Food Court", why:"Medan selera MBPP, banyak gerai Muslim, semua orang boleh pilih sendiri. 12 minit.", rating:4, reviews:1812, kei:"Medan selera MBPP, banyak gerai Muslim" }, { name:"Alunan Rasa by Irama Dining", addr:"Setia Triangle", rating:4.6, reviews:321, why:"Ada surau, tapi buka 12.00 tgh sahaja.", kei:"Restoran, ada surau" }] },
         { move:{ km:15, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu' } },
         { t:'13:05', e:'14:15', type:'homestay', title:'Check-in homestay, solat Zuhur (jamak Asar)', place:'homestay', meta:'Check-in rasmi 3.00 ptg. Wafi minta awal, tetapi belum disahkan — anggap ia belum pasti sampai homestay jawab.', flags:[{k:'warn',v:'Check-in awal belum disahkan'}], planB:[{ text:"Kalau tak boleh masuk: letak beg di lobi atau dalam kereta, solat Zuhur jamak Asar di Masjid Jamek Jelutong (5 minit) atau surau berdekatan, kemudian gerak terus ke Kampung Agong. Beg masuk bilik lepas balik malam." }, { text:"Jangan pusing-pusing menunggu — Kampung Agong tutup 6.00 ptg, jadi masa lebih baik dihabiskan di sana." }, { text:"Sahkan dengan tuan homestay seminggu sebelum trip supaya tak jadi teka-teki pada hari itu." }] },
         { move:{ km:45, min:65, via:'Jambatan Pulau Pinang → Butterworth → Kepala Batas → Penaga. Kira masa ikut keadaan trafik semasa.' } },
-        { t:'15:20', e:'17:30', type:'stop', title:'Kampung Agong', place:'kgagong', flags:[{k:'warn',v:'Tutup 6.00 ptg'}], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La.Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
+        { t:'15:20', e:'17:30', type:'stop', title:'Kampung Agong', place:'kgagong', flags:[{k:'mati',v:'Waktu mati'},{k:'warn',v:'Tutup 6.00 ptg'}], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La.Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
         { move:{ km:50, min:70, via:'Melalui Jambatan Pulau Pinang terus ke Bayan Lepas.'} },
         { t:'18:40', e:'19:10', type:'meal', title:'La.Luna — take away', place:'laluna', flags:[{k:'warn', v:'Take away sahaja'}], meta:'Ambil bungkus sahaja, bukan makan di situ. Untuk dimakan kemudian atau sebagai snek.', planB:[{ name:"Jeruk Madu Pak Ali", addr:"Jalan Penang", why:"Kalau tak sempat, buah tangan sama boleh dapat di sini pada Hari 3, 2 minit dari Chowrasta.", rating:4.1, reviews:1667, kei:"Jeruk dan buah tangan" }] },
         { move:{ km:11, min:20 } },
@@ -224,7 +223,7 @@ const DATA = {
         { move:{ km:11, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu ke Bayan Lepas' } },
         { t:'12:20', e:'14:00', type:'rehat', title:'Queensbay Mall — rehat, solat Zuhur, beli barang akhir', place:'queensbay', meta:'Berhawa dingin, ada surau untuk solat Zuhur, dan medan selera kalau sesiapa nak makan ringan. 14 minit dari sini ke LTAPP.', flags:[{k:'info',v:'Zohor 1.16 ptg'}], planB:[{ text:"Terus ke LTAPP dari Lebuh Keng Kwee (25 minit) kalau semua dah penat — tiba 12.30 tgh, buffer sangat besar." }, { name:"Snake Temple", why:"5 minit dari LTAPP, kalau nak singgah pendek yang lain.", rating:3.9, reviews:1847, kei:"Tokong ular" }] },
         { move:{ km:8, min:14 } },
-        { t:'14:15', type:'flight', title:'Tiba LTAPP — turunkan Fitri & Fatimah dahulu, pulangkan kereta', place:'lta', meta:'Fitri & Fatimah check-in terus untuk flight 4.00 ptg (buffer 1 jam 45 minit). Yang lain pulangkan 2 kereta, kemudian check-in untuk 5.15 ptg.' },
+        { t:'14:15', type:'flight', title:'Tiba LTAPP — turunkan Fitri & Fatimah dahulu, pulangkan kereta', place:'lta', flags:[{k:'mati',v:'Waktu mati'}], meta:'Fitri & Fatimah check-in terus untuk flight 4.00 ptg (buffer 1 jam 45 minit). Yang lain pulangkan 2 kereta, kemudian check-in untuk 5.15 ptg.' },
         { t:'16:00', type:'flight', title:'Berlepas — Fitri & Fatimah', meta:'AirAsia ke KLIA2.' },
         { t:'17:15', type:'flight', title:'Berlepas — semua yang lain', meta:'AirAsia ke KLIA2.' },
         { t:'18:15', type:'flight', title:'Tiba KLIA2', place:'klia2', meta:'Ambil bagasi, ERL/kereta balik. Tren KLIA Transit ke Salak Tinggi 11 minit, ke Putrajaya 20 minit.' }
@@ -287,9 +286,9 @@ const DATA = {
     checkin:'3.00 ptg (minta awal)', checkout:'12.00 tgh (kita keluar 8.30 pg)',
     rooms:[
       { n:1, g:'F1', who:'Muhd, Kak Salina, Khadijah, Alisha' },
-      { n:2, g:'F2', who:'Hana & Fatimah' },
+      { n:2, g:'F2', g2:'G2', who:'Hana & Fatimah' },
       { n:3, g:'F2', who:'Hadi & Kak Hajar' },
-      { n:4, g:'G2', who:'Hud & Fitri' },
+      { n:4, g:'F2', g2:'G2', who:'Hud & Fitri' },
       { n:5, g:'F3', who:'Obi, Kak Yusra, Nasrullah, Maryam, Annur' },
       { n:6, g:'F4', who:'Wafi & Nadian' },
       { n:7, g:'S1', who:'Syafi' },

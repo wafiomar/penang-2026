@@ -664,7 +664,7 @@ function carSvg(c, uid){
     <p><b>Check-in</b> ${esc(s.checkin)}<br><b>Check-out</b> ${esc(s.checkout)}</p>
     <div class="ti-links" style="margin:10px 0 16px"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>
     <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3>
-    <div class="rooms">${s.rooms.map(r => { const g = r.g ? G(r.g) : null; return `<div class="room ${g?'':'vacant'}" style="--g:${g?g.color:'transparent'}"><b>Bilik ${r.n}</b>${esc(r.who)}${r.sub?`<br><small>${esc(r.sub)}</small>`:''}</div>`; }).join('')}</div>`;
+    <div class="rooms">${s.rooms.map(r => { const g = r.g ? G(r.g) : null, g2 = r.g2 ? G(r.g2) : null; return `<div class="room ${g?'':'vacant'}${g2?' dua':''}" style="--g:${g?g.color:'transparent'};--g2:${g2?g2.color:'transparent'}"><b>Bilik ${r.n}</b>${esc(r.who)}${r.sub?`<br><small>${esc(r.sub)}</small>`:''}</div>`; }).join('')}</div>`;
 })();
 
 (function galeri(){
@@ -710,7 +710,7 @@ const LAD_ICON = [
   '<circle cx="12" cy="12" r="8.5"/><path d="M8.6 8.6l6.8 6.8M15.4 8.6l-6.8 6.8"/>'
 ];
 $('#bag-ladder').innerHTML = DATA.bagasi.ladder.map((x,n) => `<div class="lad l${n}"><span class="li"><svg viewBox="0 0 24 24" aria-hidden="true">${LAD_ICON[n]}</svg></span><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('');
-$('#bag-tbl').innerHTML = `<thead><tr><th>Peraturan</th><th>Butiran</th></tr></thead><tbody>` + DATA.bagasi.rules.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('') + `</tbody>`;
+$('#bag-tbl').innerHTML = `<thead><tr><th>Peraturan</th><th>Details</th></tr></thead><tbody>` + DATA.bagasi.rules.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('') + `</tbody>`;
 $('#bag-tip').innerHTML = `<b>Tip untuk kumpulan besar.</b> ${esc(DATA.bagasi.tip)}`;
 $('#rain').innerHTML = DATA.rain.map(r => `<div><b>${esc(r.when)}</b><p>${esc(r.plan)}</p></div>`).join('');
 $('#check').innerHTML = DATA.checklist.map(c => `<li><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true">${CHK_ICON[c.i]||CHK_ICON.beg}</svg></span><span>${esc(c.t)}</span></li>`).join('');
