@@ -47,6 +47,13 @@ section+section{border-top:1px solid var(--line)}
 .hero{padding:28px 0 22px;background:var(--panel);border-bottom:1px solid var(--line)}
 .hero .kicker{color:var(--ink-2);font-size:.95rem}
 .hero h1{font-size:clamp(2.1rem,8vw,3.6rem);font-weight:700;letter-spacing:-0.03em;margin:4px 0 8px;line-height:1.02}
+/* Tajuk dan animasi pesawat berkongsi satu baris. Animasi mengecil sendiri
+   supaya tajuk tidak pernah ditolak turun baris tambahan. */
+.hero-atas{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hero-atas h1{min-width:0;flex:1 1 auto}
+.hero-anim{flex:0 1 auto;width:clamp(78px,22vw,190px);height:auto;aspect-ratio:1;max-width:38%;object-fit:contain;pointer-events:none;background:transparent}
+@media (min-width:700px){.hero-anim{width:clamp(150px,20vw,220px)}}
+
 .hero .dates{font-size:1.15rem;font-weight:500}
 .hero-grid{display:grid;grid-template-columns:1.45fr 1fr 1.1fr;gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
 .hero-grid div{min-width:0}

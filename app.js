@@ -934,10 +934,10 @@ $('#check').addEventListener('click', e => {
   const jadual = g => `<table class="ub-jadual"><thead><tr><th>Sebelum</th><th></th><th>Selepas</th></tr></thead><tbody>`
     + g.map(r => `<tr><td class="lama">${esc(r.sebelum)}</td><td class="pnh">${PANAH}</td><td class="baharu">${esc(r.selepas)}</td></tr>`).join('')
     + `</tbody></table>`;
+  // Jadual untuk penggantian, senarai pendek "Baru" untuk perkara baru.
   const badan = c => (c.ganti && c.ganti.length ? jadual(c.ganti) : '')
-    + (c.kumpulan
-        ? c.kumpulan.map(k => `<div class="ub-kump"><h4>${esc(k.tajuk)}</h4>${senarai(k.items)}</div>`).join('')
-        : senarai(c.items || []));
+    + (c.baru && c.baru.length ? `<div class="ub-kump"><h4>Baru</h4>${senarai(c.baru)}</div>` : '')
+    + (c.items && c.items.length ? senarai(c.items) : '');
 
   isi.innerHTML = log.map((c, n) => `<details class="ub-v"${n === 0 ? ' open' : ''}>
       <summary><b>Versi ${esc(c.v)}</b><span>${esc(c.tarikh)}</span></summary>
@@ -1002,3 +1002,23 @@ function taburConfetti(el){
   lapis.innerHTML = html;
   bekas.insertBefore(lapis, el);
 }
+
+/* ============================================================
+   ANIMASI HERO
+   ============================================================ */
+(function heroAnim(){
+  const v = document.getElementById('hero-anim'); if(!v) return;
+  // Kalau pengguna minta kurangkan gerakan: papar satu bingkai sahaja, tanpa main.
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+    v.removeAttribute('autoplay'); v.loop = false;
+    const henti = () => { try { v.pause(); } catch(e){} };
+    v.addEventListener('loadeddata', () => { try { v.currentTime = Math.min(1, v.duration || 1); } catch(e){} henti(); });
+    v.addEventListener('play', henti);
+    henti();
+    return;
+  }
+  // Sesetengah pelayar sekat autoplay walaupun senyap; cuba sekali lagi diam-diam.
+  const cuba = () => { const p = v.play(); if(p && p.catch) p.catch(() => {}); };
+  v.addEventListener('canplay', cuba, { once:true });
+  cuba();
+})();

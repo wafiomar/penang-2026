@@ -22,17 +22,24 @@ Tulis juga tarikh dan waktu kemas kini dalam footer, format:
 Guna waktu Malaysia.
 
 ## Changelog untuk keluarga
-Setiap kali versi dinaikkan, tambah entri baru dalam `DATA.changelog`
-(terbaru di atas). Tulis dalam bahasa mudah untuk ahli keluarga, bukan bahasa
-teknikal — tumpu pada apa yang mengubah apa mereka buat atau ke mana mereka
-pergi. Jangan sebut nama fail, nama fungsi, atau istilah kod.
+`DATA.changelog` mencatat perubahan BESAR sahaja — perkara yang mengubah
+tempat, masa, susunan orang, atau menambah seksyen baru.
 
-Baik: "Makan tengah hari Sabtu tukar ke Nasi Kandar Beratur 786, berhawa
-dingin dan tidak tutup awal"
+JANGAN catat langsung: pembaikan paparan, pembetulan ayat, perubahan warna,
+susun atur, ejaan, atau apa-apa yang kosmetik. Kalau sesuatu versi tiada
+perubahan besar, jangan tambah entri baru — biarkan sahaja.
+
+Gabungkan versi berdekatan yang kecil menjadi satu entri. Setiap item satu
+baris pendek, tanpa penjelasan panjang. Seluruh changelog mesti boleh dibaca
+dalam 30 saat.
+
+Struktur setiap entri:
+- `ganti` untuk penggantian, dipapar sebagai jadual Sebelum → Selepas
+- `baru` untuk perkara baru, dipapar sebagai senarai pendek
+
+Baik: "Makan tengah hari Sabtu tukar ke Nasi Kandar Beratur 786"
 Buruk: "Ditukar DATA.places.sofea kepada beratur"
-
-Kalau perubahan hanya kosmetik dan tidak menjejaskan keluarga, tulis satu
-baris ringkas sahaja.
+Buruk: "Perkataan tidak lagi pecah di tengah pada skrin kecil"
 
 ## Semakan wajib sebelum lapor siap
 Jalankan ketiga-tiga ini setiap kali:

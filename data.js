@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '4 September 2026, 11.05 pagi',
+    updated: '4 September 2026, 6.38 petang',
     toddler: 2,
-    version: 'v4.2'
+    version: 'v4.3'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -351,44 +351,24 @@ const DATA = {
 
   // Apa yang berubah, ditulis untuk ahli keluarga. Terbaru di atas.
   // Entri boleh guna 'items' (senarai ringkas) atau 'kumpulan' (bertajuk).
+  // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
+  // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
-    { v:'4.2', tarikh:'4 September 2026', items:[
-      'Senarai perubahan ini terbuka sendiri sekali sahaja bila ada yang baharu. Tutup sekali, ia tidak ganggu lagi sampai ada kemas kini seterusnya.'
+    { v:'4.3', tarikh:'4 September 2026', baru:[
+      'Gambar homestay boleh dilihat terus dalam halaman.',
+      'Peta hari Ahad tunjuk larian Kereta 2 ke lapangan terbang.'
     ]},
-    { v:'4.1', tarikh:'4 September 2026', items:[
-      'Rating dan nombor telefon setiap tempat dikemas kini — tekan nombor telefon terus dail.',
-      'Senarai barang bawa ada kotak tanda, boleh tanda sendiri semasa mengemas beg.',
-      'Carta pergerakan tiga hari kini bersambung dengan waktu sebenar di bawahnya.',
-      'Peta hari Ahad tunjuk larian Kereta 2 ke lapangan terbang untuk ambil Halima & Kak Ayman.'
-    ]},
-    { v:'4.0', tarikh:'3 September 2026', items:[
-      'Ada butang "Apa yang berubah" di bawah sekali. Tekan bila-bila untuk lihat apa yang baharu sejak kali terakhir anda buka.'
-    ]},
-    { v:'3.4', tarikh:'3 September 2026',
+    { v:'3.0', tarikh:'3 September 2026',
       ganti:[
         { sebelum:'Mentari Pagi', selepas:'Nasi Kandar Beratur 786' },
         { sebelum:'PakTeh Fruits', selepas:'La Luna' }
       ],
-      kumpulan:[
-      { tajuk:'Baru dalam halaman', items:[
-        'Galeri 21 gambar homestay — tekan "Lihat gambar" di bahagian Penginapan, boleh leret kiri kanan.',
-        'Pelan tempat duduk kedua-dua kereta dengan nama setiap orang, jadi semua tahu duduk di mana.',
-        'Agihan bilik homestay — siapa sebilik dengan siapa.',
-        'Setiap tempat makan dan tempat lawat ada Plan B kalau penuh, tutup, atau hujan.',
-        'Tekan nombor bulat dalam jadual harian, peta terus tunjuk tempat itu.',
-        'Setiap perjalanan ada jam mula dan jam sampai, bukan sekadar jarak.',
-        'Trip Summary satu skrin — semua benda penting tanpa perlu skrol.',
-        'Nombor penerbangan AK6154 boleh ditekan untuk jejak penerbangan secara langsung.',
-        'Waktu solat Pulau Pinang, anggaran kos di lokasi, dan senarai barang bawa.'
-      ]},
-      { tajuk:'Lebih mudah dibaca', items:[
-        'Jarak setiap perjalanan Hari 1 diukur semula ikut jalan sebenar, jadi anggaran minyak lebih tepat.',
-        'Bar menu di atas kini bergerak sendiri mengikut bahagian yang sedang dibaca.',
-        'Perkataan tidak lagi pecah di tengah pada telefon skrin kecil.',
-        'Butiran panjang dilipat, tekan "Details" bila perlu sahaja.',
-        'Nota jelas bahawa masa dalam jadual ialah sasaran, bukan janji — cuma dua perkara yang betul-betul tidak boleh dilewatkan.'
+      baru:[
+        'Pelan tempat duduk kedua-dua kereta dengan nama setiap orang.',
+        'Agihan bilik homestay.',
+        'Setiap tempat ada Plan B kalau penuh atau tutup.',
+        'Waktu solat, anggaran kos, dan senarai barang bawa.'
       ]}
-    ]}
   ],
   jalan: {
     km:'Laluan utama 179 km sebuah kereta (126 Hari 1 + 30 Hari 2 + 23 Hari 3), diukur dari jalan sebenar OSRM. Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 393 km, iaitu 39.3 liter pada 10 liter setiap 100 km.',
