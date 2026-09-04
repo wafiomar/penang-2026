@@ -46,8 +46,18 @@ Kalau ada yang tak padan, betulkan dahulu, kemudian beritahu apa yang dibetulkan
   sebenar, tulis "semak sendiri" dan beri nama sumber.
 - Tulis status halal tanpa sumber. Tiga tahap sahaja: sijil JAKIM,
   milik Muslim tanpa sijil, atau perlu disemak.
-- Guna localStorage atau sessionStorage.
+- Simpan data trip dalam localStorage atau storan pelayar. Data trip kekal
+  dalam data.js sahaja.
 - Hotlink gambar dari hasil carian Google.
+
+## Storan pelayar
+localStorage dibenarkan untuk keutamaan paparan yang tidak penting sahaja,
+contohnya versi changelog yang sudah dilihat. Laman ini statik di GitHub Pages
+dan Cloudflare Pages, jadi localStorage berfungsi normal.
+
+Jangan sekali-kali simpan data trip di situ — jadual, tempat, masa, nama dan
+kos semuanya kekal dalam data.js sahaja. Setiap bacaan storan mesti dibalut
+try/catch supaya halaman tetap berfungsi kalau pelayar menyekatnya.
 
 ## Peta
 Leaflet dengan tile OpenStreetMap. Tiada API key. Jangan tukar ke penyedia

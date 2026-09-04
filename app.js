@@ -152,8 +152,9 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   else if(d===1) el.textContent = 'Esok bertolak';
   else if(d<=0 && d>-3) el.textContent = 'Sedang berlangsung';
   else el.textContent = 'Selesai — terima kasih semua';
-  $('#foot').innerHTML = `<p>Kemas kini ${esc(DATA.trip.updated)} (${esc(DATA.trip.version)}). Waktu solat zon PNG01. Peta © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, laluan oleh OSRM.</p>`
-    + `<button type="button" class="btn-ubah" id="btn-ubah">Apa yang berubah</button>`;
+  $('#foot').innerHTML = `<p>Kemas kini ${esc(DATA.trip.updated)} (${esc(DATA.trip.version)})`
+    + ` · <a href="#" class="pautan-ubah" id="btn-ubah">Apa yang berubah<i class="titik-baru" hidden></i></a>`
+    + `. Waktu solat zon PNG01. Peta © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, laluan oleh OSRM.</p>`;
 })();
 
 /* ============================================================
@@ -921,13 +922,14 @@ $('#check').addEventListener('click', e => {
   const btn = $('#btn-ubah'), box = $('#ubah'), isi = $('#ubah-isi');
   if(!btn || !box || !isi) return;
   const log = DATA.changelog || []; if(!log.length){ btn.remove(); return; }
+  const KUNCI = 'penang2026-versi-dilihat';
 
-  // Versi terakhir yang dilihat disimpan dalam pembolehubah sahaja, bukan storan
-  // pelayar. Jadi titik "ada yang baharu" muncul semula setiap kali halaman dimuat.
-  let versiDilihat = null;
+  // Keutamaan paparan sahaja, bukan data trip. Kalau storan disekat, halaman
+  // tetap berfungsi — cuma popup akan muncul semula setiap lawatan.
+  const baca = () => { try { return localStorage.getItem(KUNCI); } catch(e){ return null; } };
+  const simpan = v => { try { localStorage.setItem(KUNCI, v); } catch(e){} };
 
   const senarai = it => `<ul>${it.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
-  // Penggantian tempat dipapar sebagai jadual sebelum → selepas; selebihnya senarai biasa.
   const PANAH = '<svg class="ub-panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
   const jadual = g => `<table class="ub-jadual"><thead><tr><th>Sebelum</th><th></th><th>Selepas</th></tr></thead><tbody>`
     + g.map(r => `<tr><td class="lama">${esc(r.sebelum)}</td><td class="pnh">${PANAH}</td><td class="baharu">${esc(r.selepas)}</td></tr>`).join('')
@@ -937,25 +939,37 @@ $('#check').addEventListener('click', e => {
         ? c.kumpulan.map(k => `<div class="ub-kump"><h4>${esc(k.tajuk)}</h4>${senarai(k.items)}</div>`).join('')
         : senarai(c.items || []));
 
-  isi.innerHTML = log.map((c, i) => `<details class="ub-v"${i === 0 ? ' open' : ''}>
+  isi.innerHTML = log.map((c, n) => `<details class="ub-v"${n === 0 ? ' open' : ''}>
       <summary><b>Versi ${esc(c.v)}</b><span>${esc(c.tarikh)}</span></summary>
       <div class="ub-badan">${badan(c)}</div>
     </details>`).join('');
 
-  function segarTitik(){
-    btn.classList.toggle('ada-baru', versiDilihat !== log[0].v);
-  }
+  const titik = btn.querySelector('.titik-baru');
+  const terkini = log[0].v;
+  const segarTitik = () => { titik.hidden = baca() === terkini; };
   segarTitik();
 
-  const tutup = () => { box.hidden = true; document.body.style.overflow = ''; btn.focus({ preventScroll:true }); };
-  btn.addEventListener('click', () => {
+  let skrolHalaman = 0;
+  function buka(){
+    if(!box.hidden) return;
+    skrolHalaman = window.scrollY;
     box.hidden = false; document.body.style.overflow = 'hidden';
-    versiDilihat = log[0].v; segarTitik();
     box.querySelector('.rk-x').focus({ preventScroll:true });
-  });
+  }
+  function tutup(){
+    box.hidden = true; document.body.style.overflow = '';
+    window.scrollTo({ top:skrolHalaman, behavior:'instant' });
+    simpan(terkini); segarTitik();          // ditutup bermakna sudah dilihat
+    btn.focus({ preventScroll:true });
+  }
+  btn.addEventListener('click', e => { e.preventDefault(); buka(); });
   box.querySelector('.rk-x').addEventListener('click', tutup);
   box.addEventListener('click', e => { if(e.target === box) tutup(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !box.hidden) tutup(); });
+
+  // Lawatan pertama (tiada apa tersimpan) atau versi berubah: buka sendiri,
+  // lewat sedikit supaya halaman sempat dimuat dahulu.
+  if(baca() !== terkini) setTimeout(buka, 1000);
 })();
 
 

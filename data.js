@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '4 September 2026, 10.35 pagi',
+    updated: '4 September 2026, 11.05 pagi',
     toddler: 2,
-    version: 'v4.1'
+    version: 'v4.2'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -352,6 +352,9 @@ const DATA = {
   // Apa yang berubah, ditulis untuk ahli keluarga. Terbaru di atas.
   // Entri boleh guna 'items' (senarai ringkas) atau 'kumpulan' (bertajuk).
   changelog: [
+    { v:'4.2', tarikh:'4 September 2026', items:[
+      'Senarai perubahan ini terbuka sendiri sekali sahaja bila ada yang baharu. Tutup sekali, ia tidak ganggu lagi sampai ada kemas kini seterusnya.'
+    ]},
     { v:'4.1', tarikh:'4 September 2026', items:[
       'Rating dan nombor telefon setiap tempat dikemas kini — tekan nombor telefon terus dail.',
       'Senarai barang bawa ada kotak tanda, boleh tanda sendiri semasa mengemas beg.',
@@ -364,8 +367,7 @@ const DATA = {
     { v:'3.4', tarikh:'3 September 2026',
       ganti:[
         { sebelum:'Mentari Pagi', selepas:'Nasi Kandar Beratur 786' },
-        { sebelum:'PakTeh Fruits', selepas:'La Luna' },
-        { sebelum:'The Farm', selepas:'Queensbay Mall' }
+        { sebelum:'PakTeh Fruits', selepas:'La Luna' }
       ],
       kumpulan:[
       { tajuk:'Baru dalam halaman', items:[
