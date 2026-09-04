@@ -141,7 +141,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
    ============================================================ */
 (function hero(){
   $('#hero-dates').textContent = DATA.trip.dates;
-  $('#hero-pax').textContent = DATA.groups.reduce((a,g)=>a+g.pax,0);
+  $('#hero-pax').textContent = DATA.groups.reduce((a,g)=>a+g.pax,0) + ' pax';
   const dw = DATA.groups.reduce((a,g)=>a+g.dewasa,0), kk = DATA.groups.reduce((a,g)=>a+g.kanak,0);
   $('#hero-pecah').textContent = `${dw} dewasa · ${kk} kanak-kanak${DATA.trip.toddler?` (${DATA.trip.toddler} toddler)`:''}`;
   const start = new Date(DATA.trip.start + 'T00:00:00+08:00');
@@ -1004,21 +1004,28 @@ function taburConfetti(el){
 }
 
 /* ============================================================
-   ANIMASI HERO
+   ANIMASI PESAWAT DI HERO
    ============================================================ */
-(function heroAnim(){
-  const v = document.getElementById('hero-anim'); if(!v) return;
-  // Kalau pengguna minta kurangkan gerakan: papar satu bingkai sahaja, tanpa main.
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){
-    v.removeAttribute('autoplay'); v.loop = false;
-    const henti = () => { try { v.pause(); } catch(e){} };
-    v.addEventListener('loadeddata', () => { try { v.currentTime = Math.min(1, v.duration || 1); } catch(e){} henti(); });
-    v.addEventListener('play', henti);
-    henti();
-    return;
-  }
-  // Sesetengah pelayar sekat autoplay walaupun senyap; cuba sekali lagi diam-diam.
-  const cuba = () => { const p = v.play(); if(p && p.catch) p.catch(() => {}); };
-  v.addEventListener('canplay', cuba, { once:true });
-  cuba();
+// Dijana dalam kod, tiada fail. Garis halus sahaja, warna --d3 seperti
+// ikon tajuk seksyen. Gerakan tenang: satu kitaran penuh 16 saat.
+(function pesawat(){
+  const bekas = document.getElementById('hero-anim'); if(!bekas) return;
+  const awan = [
+    { d:'M8 26h22', o:.30, s:26 },
+    { d:'M2 40h14', o:.22, s:34 },
+    { d:'M14 62h26', o:.26, s:30 },
+    { d:'M6 78h16', o:.18, s:38 }
+  ];
+  bekas.innerHTML = `<svg viewBox="0 0 240 110" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+    <g class="pw-awan">${awan.map((c,i) =>
+      `<path d="${c.d}" style="--o:${c.o};--lama:${c.s}s;--tunda:-${i * 4}s"/>`).join('')}</g>
+    <g class="pw-jalan"><g class="pw-lambung">
+      <g transform="scale(1.9) translate(23.5,0) rotate(90)">
+        <path class="pw-badan" d="M4 0c1 0 1.7 1.1 1.7 2.5v6.5l9.5 5.2v2.5l-9.5-2.7v5.5l3 2v2L4 22.8 0.3 23.5v-2l3-2v-5.5L-6.2 16.7v-2.5l9.5-5.2V2.5C3.3 1.1 3 0 4 0Z"/>
+      </g>
+    </g></g>
+  </svg>`;
+
+  // Kalau pengguna minta kurangkan gerakan, letak pesawat di satu tempat tetap.
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) bekas.classList.add('pw-diam');
 })();
