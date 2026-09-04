@@ -21,6 +21,19 @@ Tulis juga tarikh dan waktu kemas kini dalam footer, format:
 "Kemas kini 2 September 2026, 9.40 malam (v1.3)"
 Guna waktu Malaysia.
 
+## Changelog untuk keluarga
+Setiap kali versi dinaikkan, tambah entri baru dalam `DATA.changelog`
+(terbaru di atas). Tulis dalam bahasa mudah untuk ahli keluarga, bukan bahasa
+teknikal — tumpu pada apa yang mengubah apa mereka buat atau ke mana mereka
+pergi. Jangan sebut nama fail, nama fungsi, atau istilah kod.
+
+Baik: "Makan tengah hari Sabtu tukar ke Nasi Kandar Beratur 786, berhawa
+dingin dan tidak tutup awal"
+Buruk: "Ditukar DATA.places.sofea kepada beratur"
+
+Kalau perubahan hanya kosmetik dan tidak menjejaskan keluarga, tulis satu
+baris ringkas sahaja.
+
 ## Semakan wajib sebelum lapor siap
 Jalankan ketiga-tiga ini setiap kali:
 1. Jarak setiap hari (`day.km`) mesti sama dengan jumlah `move.km` yang BUKAN jalan kaki (abaikan segmen dengan `walk:true`), dibundarkan ke km terdekat

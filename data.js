@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '3 September 2026, 3.55 petang',
+    updated: '4 September 2026, 10.08 pagi',
     toddler: 2,
-    version: 'v3.4'
+    version: 'v4.0'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -345,6 +345,38 @@ const DATA = {
 
   routeNote:'Waktu puncak dan trafik jambatan boleh tambah 15-20 minit.',
 
+  // Apa yang berubah, ditulis untuk ahli keluarga. Terbaru di atas.
+  // Entri boleh guna 'items' (senarai ringkas) atau 'kumpulan' (bertajuk).
+  changelog: [
+    { v:'4.0', tarikh:'3 September 2026', items:[
+      'Ada butang "Apa yang berubah" di bawah sekali. Tekan bila-bila untuk lihat apa yang baharu sejak kali terakhir anda buka.'
+    ]},
+    { v:'3.4', tarikh:'3 September 2026', kumpulan:[
+      { tajuk:'Tempat berubah', items:[
+        'Makan tengah hari Sabtu tukar ke Nasi Kandar Beratur 786 — berhawa dingin dan tidak tutup awal.',
+        'Petang Sabtu tukar ke La.Luna, ambil bungkus makan tepi laut, ganti tempat lama.',
+        'Mentari Pagi by Sofea dikeluarkan terus dari senarai. Jangan cari, ia sudah tiada.',
+        'Setiap tempat makan dan tempat lawat kini ada Plan B kalau penuh, tutup, atau hujan.'
+      ]},
+      { tajuk:'Baru dalam halaman', items:[
+        'Galeri 21 gambar homestay — tekan "Lihat gambar" di bahagian Penginapan, boleh leret kiri kanan.',
+        'Pelan tempat duduk kedua-dua kereta dengan nama setiap orang, jadi semua tahu duduk di mana.',
+        'Agihan bilik homestay — siapa sebilik dengan siapa.',
+        'Tekan nombor bulat dalam jadual harian, peta terus tunjuk tempat itu.',
+        'Setiap perjalanan ada jam mula dan jam sampai, bukan sekadar jarak.',
+        'Trip Summary satu skrin — semua benda penting tanpa perlu skrol.',
+        'Nombor penerbangan AK6154 boleh ditekan untuk jejak penerbangan secara langsung.',
+        'Waktu solat Pulau Pinang, anggaran kos di lokasi, dan senarai barang bawa.'
+      ]},
+      { tajuk:'Lebih mudah dibaca', items:[
+        'Jarak setiap perjalanan Hari 1 diukur semula ikut jalan sebenar, jadi anggaran minyak lebih tepat.',
+        'Bar menu di atas kini bergerak sendiri mengikut bahagian yang sedang dibaca.',
+        'Perkataan tidak lagi pecah di tengah pada telefon skrin kecil.',
+        'Butiran panjang dilipat, tekan "Details" bila perlu sahaja.',
+        'Nota jelas bahawa masa dalam jadual ialah sasaran, bukan janji — cuma dua perkara yang betul-betul tidak boleh dilewatkan.'
+      ]}
+    ]}
+  ],
   jalan: {
     km:'Laluan utama 179 km sebuah kereta (126 Hari 1 + 30 Hari 2 + 23 Hari 3), diukur dari jalan sebenar OSRM. Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 393 km, iaitu 39.3 liter pada 10 liter setiap 100 km.',
     bahanapi:[

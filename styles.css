@@ -502,6 +502,25 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .lad .li{display:block;margin-bottom:4px}
 .lad .li svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 footer{padding:28px 0 60px;color:var(--ink-3);font-size:.8rem;text-align:center}
+footer #foot p{margin:0}
+/* Butang "Apa yang berubah" dengan titik bila ada versi baharu */
+.btn-ubah{position:relative;margin-top:12px;font:inherit;font-size:.8rem;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink-2);cursor:pointer}
+.btn-ubah:hover,.btn-ubah:focus-visible{border-color:var(--ink-3);color:var(--ink);outline:none}
+.btn-ubah.ada-baru::after{content:"";position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#B3261E;border:2px solid var(--paper)}
+/* Senarai perubahan dalam modal */
+.ub-isi{flex:0 1 auto;min-height:0;overflow-y:auto;text-align:left;margin-top:4px}
+.ub-v{border-top:1px solid var(--line-2)}
+.ub-v:first-child{border-top:0}
+.ub-v>summary{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:11px 2px;cursor:pointer;list-style:none;font-size:.9rem;color:var(--ink)}
+.ub-v>summary::-webkit-details-marker{display:none}
+.ub-v>summary span{font-size:.78rem;font-weight:500;color:var(--ink-3)}
+.ub-v>summary:hover,.ub-v>summary:focus-visible{color:var(--d1);outline:none}
+.ub-badan{padding:0 2px 12px}
+.ub-kump+.ub-kump{margin-top:12px}
+.ub-kump h4{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.ub-isi ul{margin:0;padding-left:17px}
+.ub-isi li{font-size:.86rem;line-height:1.45;color:var(--ink-2);margin-bottom:5px}
+.ub-isi li::marker{color:var(--ink-3)}
 footer a{color:var(--ink-2)}
 #pagi-sabtu{scroll-margin-top:calc(var(--navh,52px) + 14px)}
 .to-top{position:fixed;right:14px;bottom:14px;z-index:55;display:flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.94);color:var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(20,35,46,.16);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .15s,transform .15s,visibility .15s}

@@ -151,7 +151,8 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   else if(d===1) el.textContent = 'Esok bertolak';
   else if(d<=0 && d>-3) el.textContent = 'Sedang berlangsung';
   else el.textContent = 'Selesai — terima kasih semua';
-  $('#foot').innerHTML = `Kemas kini ${esc(DATA.trip.updated)} (${esc(DATA.trip.version)}). Waktu solat zon PNG01. Peta © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, laluan oleh OSRM.`;
+  $('#foot').innerHTML = `<p>Kemas kini ${esc(DATA.trip.updated)} (${esc(DATA.trip.version)}). Waktu solat zon PNG01. Peta © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, laluan oleh OSRM.</p>`
+    + `<button type="button" class="btn-ubah" id="btn-ubah">Apa yang berubah</button>`;
 })();
 
 /* ============================================================
@@ -865,3 +866,41 @@ $('#bag-tbl').innerHTML = `<thead><tr><th>Peraturan</th><th>Details</th></tr></t
 $('#bag-tip').innerHTML = `<b>Tip untuk kumpulan besar.</b> ${esc(DATA.bagasi.tip)}`;
 $('#rain').innerHTML = DATA.rain.map(r => `<div><b>${esc(r.when)}</b><p>${esc(r.plan)}</p></div>`).join('');
 $('#check').innerHTML = DATA.checklist.map(c => `<li><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true">${CHK_ICON[c.i]||CHK_ICON.beg}</svg></span><span>${esc(c.t)}</span></li>`).join('');
+
+/* ============================================================
+   APA YANG BERUBAH
+   ============================================================ */
+(function ubah(){
+  const btn = $('#btn-ubah'), box = $('#ubah'), isi = $('#ubah-isi');
+  if(!btn || !box || !isi) return;
+  const log = DATA.changelog || []; if(!log.length){ btn.remove(); return; }
+
+  // Versi terakhir yang dilihat disimpan dalam pembolehubah sahaja, bukan storan
+  // pelayar. Jadi titik "ada yang baharu" muncul semula setiap kali halaman dimuat.
+  let versiDilihat = null;
+
+  const senarai = it => `<ul>${it.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  const badan = c => c.kumpulan
+    ? c.kumpulan.map(k => `<div class="ub-kump"><h4>${esc(k.tajuk)}</h4>${senarai(k.items)}</div>`).join('')
+    : senarai(c.items || []);
+
+  isi.innerHTML = log.map((c, i) => `<details class="ub-v"${i === 0 ? ' open' : ''}>
+      <summary><b>Versi ${esc(c.v)}</b><span>${esc(c.tarikh)}</span></summary>
+      <div class="ub-badan">${badan(c)}</div>
+    </details>`).join('');
+
+  function segarTitik(){
+    btn.classList.toggle('ada-baru', versiDilihat !== log[0].v);
+  }
+  segarTitik();
+
+  const tutup = () => { box.hidden = true; document.body.style.overflow = ''; btn.focus({ preventScroll:true }); };
+  btn.addEventListener('click', () => {
+    box.hidden = false; document.body.style.overflow = 'hidden';
+    versiDilihat = log[0].v; segarTitik();
+    box.querySelector('.rk-x').focus({ preventScroll:true });
+  });
+  box.querySelector('.rk-x').addEventListener('click', tutup);
+  box.addEventListener('click', e => { if(e.target === box) tutup(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !box.hidden) tutup(); });
+})();
