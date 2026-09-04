@@ -48,7 +48,8 @@ const dur = min => min>=60 ? Math.floor(min/60)+' jam' + (min%60 ? ' '+min%60+' 
 const gmaps = p => `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
 const waze  = p => `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
 // Profil Google bagi tempat itu — cari ikut nama dan alamat, bukan koordinat.
-const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.name, p.addr].filter(Boolean).join(', '))}`;
+// q: nama berdaftar untuk carian Google bila ia berbeza daripada nama paparan
+const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.q || p.name, p.addr].filter(Boolean).join(', '))}`;
 // Satu penerbangan sedang di udara? Kira ikut waktu Malaysia (UTC+8) pada tarikh
 // sebenar penerbangan itu. Tiada waktu tiba bermakna kita tak boleh tahu — anggap tidak.
 function diUdara(f){
@@ -160,6 +161,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
    ============================================================ */
 (function ucapan(){
   const u = DATA.ucapan, el = $('#ucapan'); if(!u || !el) return;
+  taburConfetti(el);
   const tukar = new Date(u.tarikh + 'T00:00:00+08:00');
   el.textContent = new Date() >= tukar ? u.selepas : u.sebelum;
 })();
@@ -297,9 +299,10 @@ function initMap(){
 
   // Static markers: homestay + LTAPP
   const fixed = L.layerGroup().addTo(map);
-  const mkFixed = (p, kind) => L.marker([p.lat,p.lng], { icon:L.divIcon({ className:'', html:`<div class="pin ${kind}">${ICON[kind]}</div>`, iconSize:[30,30], iconAnchor:[15,15], popupAnchor:[0,-14] }), zIndexOffset:500 })
-    .bindPopup(popupHtml(p, null, null)).addTo(fixed);
-  mkFixed(P.homestay,'home'); mkFixed(P.lta,'plane');
+  const notaTetap = { lta: (DATA.larian && DATA.larian[2] ? DATA.larian[2].label : '') };
+  const mkFixed = (p, kind, id) => L.marker([p.lat,p.lng], { icon:L.divIcon({ className:'', html:`<div class="pin ${kind}">${ICON[kind]}</div>`, iconSize:[30,30], iconAnchor:[15,15], popupAnchor:[0,-14] }), zIndexOffset:500 })
+    .bindPopup(popupHtml(p, null, null) + (notaTetap[id] ? `<div class="pp-larian">Ahad pagi: ${esc(notaTetap[id])}</div>` : '')).addTo(fixed);
+  mkFixed(P.homestay,'home','homestay'); mkFixed(P.lta,'plane','lta');
 
   [1,2,3].forEach(d => {
     const lg = L.layerGroup();
@@ -314,6 +317,14 @@ function initMap(){
     // Route: straight fallback first, replaced by OSRM geometry if available
     const pts = DATA.routes[d].map(id => [P[id].lat, P[id].lng]);
     const fallback = L.polyline(pts, { color:colors[d], weight:3, opacity:.7, dashArray:'6 8' }).addTo(lg);
+    // Larian sampingan: putus-putus dan lebih pudar supaya jelas ia bukan laluan semua orang
+    const lr = DATA.larian && DATA.larian[d];
+    if(lr){
+      const lpts = lr.titik.map(id => [P[id].lat, P[id].lng]);
+      const lgaris = L.polyline(lpts, { color:colors[d], weight:3.5, opacity:.6, dashArray:'7 7' })
+        .bindTooltip(lr.label, { sticky:true }).addTo(lg);
+      fetchRoute(null, lpts, colors[d], lg, lgaris, { opacity:.6, dashArray:'7 7', weight:3.5, label:lr.label });
+    }
     MAP.layers[d] = lg; lg.addTo(map);
     fetchRoute(d, pts, colors[d], lg, fallback);
   });
@@ -330,7 +341,14 @@ function initMap(){
     [...$('#map-ctl').children].forEach(x=>x.classList.toggle('on', x===btn));
     [1,2,3].forEach(d => { if(sel==='all' || String(d)===sel) MAP.layers[d].addTo(map); else map.removeLayer(MAP.layers[d]); });
     if(sel==='all') map.fitBounds(b, { padding:[24,24] });
-    else { const pts = DATA.routes[+sel].map(id=>[P[id].lat,P[id].lng]); map.fitBounds(L.latLngBounds(pts), { padding:[30,30] }); }
+    else {
+      // Sertakan larian sampingan supaya ia tidak terkeluar dari paparan
+      const ids = DATA.routes[+sel].slice();
+      const lr = DATA.larian && DATA.larian[+sel];
+      if(lr) lr.titik.forEach(id => { if(!ids.includes(id)) ids.push(id); });
+      const pts = ids.map(id=>[P[id].lat,P[id].lng]);
+      map.fitBounds(L.latLngBounds(pts), { padding:[30,30] });
+    }
   }
 }
 function popupHtml(p, d, item){
@@ -340,7 +358,7 @@ function popupHtml(p, d, item){
   <div class="pp-meta">${esc(p.addr||'')}${p.hours?'<br>Buka '+esc(p.hours):''}${p.cost?'<br>'+esc(p.cost):''}${p.note?'<br>'+esc(p.note):''}</div>
   <div class="pp-links"><a class="wz" href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div></div>`;
 }
-async function fetchRoute(d, pts, color, lg, fallback){
+async function fetchRoute(d, pts, color, lg, fallback, gaya){
   try{
     const coords = pts.map(p=>p[1]+','+p[0]).join(';');
     const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`, { cache:'force-cache' });
@@ -348,7 +366,10 @@ async function fetchRoute(d, pts, color, lg, fallback){
     const j = await r.json();
     const route = j.routes && j.routes[0]; if(!route) throw new Error('no route');
     lg.removeLayer(fallback);
-    L.geoJSON(route.geometry, { style:{ color, weight:4, opacity:.85 } }).addTo(lg);
+    const st = gaya ? { color, weight:gaya.weight, opacity:gaya.opacity, dashArray:gaya.dashArray } : { color, weight:4, opacity:.85 };
+    const baru = L.geoJSON(route.geometry, { style:st }).addTo(lg);
+    if(gaya && gaya.label) baru.bindTooltip(gaya.label, { sticky:true });
+    if(d === null) return;
     const min = Math.round(route.duration/60);
     const el = $(`#rs-time-${d}`); if(el) el.textContent = durShort(min);
   }catch(err){
@@ -571,7 +592,7 @@ function planbHtml(list){
     { g:'G1', segs:[[1,5.5,8,'transit'],[1,8,24,'here'],[2,0,17.25,'here'],[2,17.25,18.25,'transit']], note:'Tiba Ahad 8.00 pg' }
   ];
   const pct = h => Math.max(0, Math.min(100, (h - H0) / (H1 - H0) * 100));
-  let html = `<div class="lane-head"><span></span><span>Sabtu 12</span><span>Ahad 13</span><span>Isnin 14</span></div>`;
+  let html = `<div class="lane-head"><span></span><span>Sabtu 12 Sept</span><span>Ahad 13 Sept</span><span>Isnin 14 Sept</span></div>`;
   rowsDef.forEach(r => {
     const g = G(r.g);
     const cells = [0,1,2].map(di => {
@@ -585,9 +606,13 @@ function planbHtml(list){
     html += `<div class="lane-row"><div class="lane-name">${esc(r.label||g.label)}<small>${esc(r.note)}</small></div>${cells}</div>`;
   });
   // Penanda masa supaya carta boleh dibaca, bukan sekadar warna
-  const tanda = [['pg',7],['tgh',13],['mlm',20]];
-  html += `<div class="lane-foot"><span></span>` + [0,1,2].map(() =>
-      `<div class="lane-cell">${tanda.map(t => `<i style="left:${pct(t[1])}%">${t[0]}</i>`).join('')}</div>`).join('') + `</div>`;
+  // Masa sebenar, bukan singkatan. Hari kedua dan ketiga bermula pada garis 12am.
+  const tanda = [['6am',6],['12pm',12],['6pm',18]];
+  html += `<div class="lane-foot"><span></span>` + [0,1,2].map(di =>
+      `<div class="lane-cell">`
+      + (di > 0 ? `<i class="tengahmalam" style="left:0%">12am</i>` : '')
+      + tanda.map(t => `<i style="left:${pct(t[1])}%">${t[0]}</i>`).join('')
+      + `</div>`).join('') + `</div>`;
   $('#lane').innerHTML = html;
   $('#codekey').innerHTML = DATA.groups.map(g => `<span><b style="--g:${g.color}">${esc(g.id)}</b>${esc(g.label)}<em>${g.pax} org</em></span>`).join('');
   const total = DATA.groups.reduce((a,g)=>a+g.pax,0);
@@ -768,11 +793,16 @@ function carSvg(c, uid){
   const s = DATA.stay, p = DATA.places.homestay;
   // Ikon kad fakta homestay
   const FAKTA = { 'bilik tidur':'katil', 'katil':'katil', 'bilik air':'air', 'tingkat':'tingkat' };
-  $('#stay').innerHTML = `<h3>${esc(s.name)}</h3><p>${esc(s.addr)}</p>
-    <div class="facts">${s.facts.map(f=>`<div><span class="fi"><svg viewBox="0 0 24 24" aria-hidden="true">${FAKTA_ICON[FAKTA[f[1]]||'katil']}</svg></span><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>${(s.images&&s.images.length)?`<button type="button" class="btn-galeri" id="btn-galeri">Lihat gambar</button>`:''}
+  const btnGam = (s.images && s.images.length)
+    ? `<button type="button" class="btn-galeri" id="btn-galeri">`
+      + `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 16l-5-5-4.5 4.5L9 13l-6 6"/></svg>`
+      + `<span>Lihat gambar</span></button>`
+    : '';
+  $('#stay').innerHTML = `<div class="stay-tajuk"><h3>${esc(s.name)}</h3>${btnGam}</div><p>${esc(s.addr)}</p>
+    <div class="facts">${s.facts.map(f=>`<div><span class="fi"><svg viewBox="0 0 24 24" aria-hidden="true">${FAKTA_ICON[FAKTA[f[1]]||'katil']}</svg></span><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>
     <p><b>Check-in</b> ${esc(s.checkin)}<br><b>Check-out</b> ${esc(s.checkout)}</p>
     <div class="ti-links" style="margin:10px 0 16px"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>
-    <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3>
+    <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3><p class="bilik-nota">Nombor bilik di sini hanya senarai, bukan nombor bilik sebenar di rumah.</p>
     <div class="rooms">${s.rooms.map(r => { const g = r.g ? G(r.g) : null, g2 = r.g2 ? G(r.g2) : null; return `<div class="room ${g?'':'vacant'}${g2?' dua':''}" style="--g:${g?g.color:'transparent'};--g2:${g2?g2.color:'transparent'}"><b>Bilik ${r.n}</b>${esc(r.who)}${r.sub?`<br><small>${esc(r.sub)}</small>`:''}</div>`; }).join('')}</div>`;
 })();
 
@@ -851,7 +881,8 @@ $('#cost-tbl').innerHTML = `<thead><tr><th>Perkara</th><th class="num">Dewasa</t
   + `</tbody>`;
 $('#road-km').textContent = DATA.jalan.km;
 $('#toll-tbl').innerHTML = `<thead><tr><th>Tol</th><th>Kadar</th><th class="num">Jumlah</th></tr></thead><tbody>` + DATA.jalan.tolrows.map(r => `<tr><td>${esc(r.apa)}<small>${esc(r.bila)}</small></td><td>${esc(r.kadar)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
-$('#fuel-tbl').innerHTML = `<thead><tr><th>Bahan api</th><th class="num">Seliter</th><th class="num">1 kereta</th><th class="num">2 kereta</th></tr></thead><tbody>` + DATA.jalan.bahanapi.map(r => `<tr><td>${esc(r.jenis)}</td><td class="num">${esc(r.harga)}</td><td class="num">${esc(r.kereta)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
+$('#fuel-tbl').innerHTML = `<thead><tr><th>Bahan api</th><th class="num">Seliter</th><th class="num">1 kereta</th><th class="num">2 kereta</th></tr></thead><tbody>` + DATA.jalan.bahanapi.map(r => `<tr class="${r.utama?'utama':''}"><td>${esc(r.jenis)}</td><td class="num">${esc(r.harga)}</td><td class="num">${esc(r.kereta)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
+if(DATA.jalan.notaFuel){ const n=document.createElement('p'); n.className='fuel-nota'; n.textContent=DATA.jalan.notaFuel; $('#fuel-tbl').after(n); }
 $('#road-note').textContent = DATA.jalan.nota;
 $('#road-rental').innerHTML = `<b>Kereta sewa.</b> ${esc(DATA.jalan.rental)}`;
 $('#bag-note').textContent = DATA.bagasi.note;
@@ -865,7 +896,23 @@ $('#bag-ladder').innerHTML = DATA.bagasi.ladder.map((x,n) => `<div class="lad l$
 $('#bag-tbl').innerHTML = `<thead><tr><th>Peraturan</th><th>Details</th></tr></thead><tbody>` + DATA.bagasi.rules.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('') + `</tbody>`;
 $('#bag-tip').innerHTML = `<b>Tip untuk kumpulan besar.</b> ${esc(DATA.bagasi.tip)}`;
 $('#rain').innerHTML = DATA.rain.map(r => `<div><b>${esc(r.when)}</b><p>${esc(r.plan)}</p></div>`).join('');
-$('#check').innerHTML = DATA.checklist.map(c => `<li><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true">${CHK_ICON[c.i]||CHK_ICON.beg}</svg></span><span>${esc(c.t)}</span></li>`).join('');
+// Tip: kotak tanda boleh ditekan tetapi tidak disimpan — hiasan visual sahaja.
+// Teks selepas sempang jadi nota kecil; kalau tiada medan nota, pecahkan pada sempang.
+$('#check').innerHTML = DATA.checklist.map(c => {
+  let utama = c.t, nota = c.nota || '';
+  if(!nota){ const p = c.t.split(' — '); if(p.length > 1){ utama = p[0]; nota = p.slice(1).join(' — '); } }
+  return `<li>`
+    + `<button type="button" class="tick" aria-pressed="false" aria-label="Tanda: ${esc(utama)}">`
+    + `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>`
+    + `<span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true">${CHK_ICON[c.i]||CHK_ICON.beg}</svg></span>`
+    + `<span class="ct">${esc(utama)}${nota ? `<i>${esc(nota)}</i>` : ''}</span></li>`;
+}).join('');
+$('#check').addEventListener('click', e => {
+  const b = e.target.closest('.tick'); if(!b) return;
+  const on = b.getAttribute('aria-pressed') === 'true';
+  b.setAttribute('aria-pressed', String(!on));
+  b.closest('li').classList.toggle('ditanda', !on);
+});
 
 /* ============================================================
    APA YANG BERUBAH
@@ -880,9 +927,15 @@ $('#check').innerHTML = DATA.checklist.map(c => `<li><span class="ci"><svg viewB
   let versiDilihat = null;
 
   const senarai = it => `<ul>${it.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
-  const badan = c => c.kumpulan
-    ? c.kumpulan.map(k => `<div class="ub-kump"><h4>${esc(k.tajuk)}</h4>${senarai(k.items)}</div>`).join('')
-    : senarai(c.items || []);
+  // Penggantian tempat dipapar sebagai jadual sebelum → selepas; selebihnya senarai biasa.
+  const PANAH = '<svg class="ub-panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+  const jadual = g => `<table class="ub-jadual"><thead><tr><th>Sebelum</th><th></th><th>Selepas</th></tr></thead><tbody>`
+    + g.map(r => `<tr><td class="lama">${esc(r.sebelum)}</td><td class="pnh">${PANAH}</td><td class="baharu">${esc(r.selepas)}</td></tr>`).join('')
+    + `</tbody></table>`;
+  const badan = c => (c.ganti && c.ganti.length ? jadual(c.ganti) : '')
+    + (c.kumpulan
+        ? c.kumpulan.map(k => `<div class="ub-kump"><h4>${esc(k.tajuk)}</h4>${senarai(k.items)}</div>`).join('')
+        : senarai(c.items || []));
 
   isi.innerHTML = log.map((c, i) => `<details class="ub-v"${i === 0 ? ' open' : ''}>
       <summary><b>Versi ${esc(c.v)}</b><span>${esc(c.tarikh)}</span></summary>
@@ -904,3 +957,34 @@ $('#check').innerHTML = DATA.checklist.map(c => `<li><span class="ci"><svg viewB
   box.addEventListener('click', e => { if(e.target === box) tutup(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !box.hidden) tutup(); });
 })();
+
+
+// Confetti halus di belakang ucapan penutup. Statik kalau pengguna minta
+// kurangkan gerakan — kepingan tetap ada, cuma tidak bergerak.
+function taburConfetti(el){
+  if(el.parentElement.classList.contains('ucapan-bekas')) return;
+  const bekas = document.createElement('div');
+  bekas.className = 'ucapan-bekas';
+  el.parentNode.insertBefore(bekas, el);
+  bekas.appendChild(el);
+
+  const diam = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const warna = ['var(--d1)','var(--d2)','var(--d3)','var(--ink-3)'];
+  const lapis = document.createElement('div');
+  lapis.className = 'confetti';
+  lapis.setAttribute('aria-hidden','true');
+  let html = '';
+  for(let n = 0; n < 26; n++){
+    const w = 4 + Math.round(Math.random()*4);
+    const h = 6 + Math.round(Math.random()*6);
+    const kiri = Math.round(Math.random()*100);
+    const putar = Math.round(120 + Math.random()*300);
+    const sisi = Math.round(-30 + Math.random()*60);
+    const gaya = diam
+      ? `left:${kiri}%;top:${8 + Math.round(Math.random()*84)}%;--putar:${putar}deg`
+      : `left:${kiri}%;--putar:${putar}deg;--sisi:${sisi}px;animation-duration:${(7 + Math.random()*6).toFixed(1)}s;animation-delay:-${(Math.random()*10).toFixed(1)}s`;
+    html += `<i style="${gaya};width:${w}px;height:${h}px;background:${warna[n % warna.length]}"></i>`;
+  }
+  lapis.innerHTML = html;
+  bekas.insertBefore(lapis, el);
+}

@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '4 September 2026, 10.08 pagi',
+    updated: '4 September 2026, 10.35 pagi',
     toddler: 2,
-    version: 'v4.0'
+    version: 'v4.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -118,22 +118,22 @@ const DATA = {
     klia2:     { name:"KLIA2", lat:2.7442, lng:101.6858, addr:"Sepang, Selangor", kind:"plane" },
     lta:       { name:"Lapangan Terbang Antarabangsa Pulau Pinang (LTAPP)", lat:5.296, lng:100.2752, addr:"Bayan Lepas", kind:"plane", tips:"Parking RM3 sejam, maksimum RM33 sehari." },
     homestay:  { name:"Homestay Karpal Singh Drive", lat:5.3967, lng:100.3279, addr:"12, Lebuh Sungai Pinang 3, Jelutong, 11600 George Town", kind:"home" },
-    beratur:   { short:"Beratur 786", name:"Nasi Kandar Beratur 786", lat:5.2993, lng:100.2671, addr:"1-1-11 Summerskye Residence, Jalan Sungai Tiram 8, Bayan Lepas", hours:"9.00 pg – 11.00 mlm, setiap hari", halal:"muslim", rating:4.2, reviews:1283, tagline:"Nasi kandar berhawa dingin, giliran bergerak laju", special:"Nasi kandar. Ayam goreng digoreng di depan.", tips:"6 minit dari LTAPP. Berhawa dingin, tempat duduk betul, tak seperti gerai asal yang panas. Giliran bergerak laju sebab ramai staf." },
-    queensbay: { name:"Queensbay Mall", lat:5.3331, lng:100.307, addr:"100, Persiaran Bayan Indah, Bayan Lepas", hours:"10.30 pg – 10.30 mlm", rating:4.4, reviews:26288, tagline:"Mall terbesar Pulau Pinang, ada surau dan medan selera", special:"Mall terbesar Pulau Pinang, berhawa dingin, ada surau dan medan selera besar.", tips:"12 minit ke LTAPP. Parking bertingkat percuma beberapa jam pertama.", short:"Queensbay" },
-    kgagong:   { name:"Kampung Agong", lat:5.5396, lng:100.3791, addr:"841 Kampung Bakar Kapor, 13100 Penaga", hours:"9.00 pg – 6.00 ptg", rating:4.5, reviews:5928, cost:"RM10 dewasa, RM5 kanak-kanak 4–12 tahun, bawah 4 percuma. Sewa kostum tradisional RM30, slot terhad.", tagline:"Di tanah besar, seberang jambatan", tips:"Tanah besar, seberang jambatan. Panas tengah hari — bawa topi dan air.", short:"Kg Agong" },
+    beratur:   { short:"Beratur 786", name:"Nasi Kandar Beratur 786", lat:5.2993, lng:100.2671, addr:"1-1-11 Summerskye Residence, Jalan Sungai Tiram 8, Bayan Lepas", hours:"9.00 pg – 11.00 mlm, setiap hari", halal:"muslim", rating:4.2, reviews:1283, phone:"+60 4-299 9772", tagline:"Nasi kandar berhawa dingin, giliran bergerak laju", special:"Nasi kandar. Ayam goreng digoreng di depan.", tips:"6 minit dari LTAPP. Berhawa dingin, tempat duduk betul, tak seperti gerai asal yang panas. Giliran bergerak laju sebab ramai staf." },
+    queensbay: { name:"Queensbay Mall", lat:5.3331, lng:100.307, addr:"100, Persiaran Bayan Indah, Bayan Lepas", hours:"10.30 pg – 10.30 mlm", rating:4.4, reviews:26293, phone:"+60 4-619 8989", tagline:"Mall terbesar Pulau Pinang, ada surau dan medan selera", special:"Mall terbesar Pulau Pinang, berhawa dingin, ada surau dan medan selera besar.", tips:"12 minit ke LTAPP. Parking bertingkat percuma beberapa jam pertama.", short:"Queensbay" },
+    kgagong:   { name:"Kampung Agong", lat:5.5396, lng:100.3791, addr:"841 Kampung Bakar Kapor, 13100 Penaga", hours:"9.00 pg – 6.00 ptg", rating:4.5, reviews:5942, phone:"+60 12-481 7795", cost:"RM10 dewasa, RM5 kanak-kanak 4–12 tahun, bawah 4 percuma. Sewa kostum tradisional RM30, slot terhad.", tagline:"Di tanah besar, seberang jambatan", tips:"Tanah besar, seberang jambatan. Panas tengah hari — bawa topi dan air.", short:"Kg Agong" },
     pakteh:    { name:"PakTeh Fruits, Kg. Pelet", lat:5.4152, lng:100.4624, addr:"Jalan Guar Perahu, Kubang Semang, Bukit Mertajam", hours:"10.00 pg – 11.00 mlm", halal:"muslim", rating:4, reviews:603, tagline:"Kedai buah viral — durian dan mangga", special:"Kedai buah viral (durian, mangga).", tips:"Ini di Bukit Mertajam, bukan di Penaga — jalan pusing 30 km dari Kg Agong." },
-    laluna:    { name:"La.Luna", lat:5.3127634, lng:100.2995774, addr:"Kompleks Selera Sri Pantai, Lebuhraya Tun Dr. Lim Chong Eu, 11900 Bayan Lepas, Pulau Pinang", phone:"018-955 1677", hours:"Selasa hingga Ahad 4.00 ptg – 11.00 mlm. Tutup Isnin.", rating:4.7, reviews:394, cost:"Taco RM10 sebiji, set dengan fries dan minuman lebih kurang RM18.50 seorang.", tagline:"Taco gaya Malaysia tepi laut, ambil bungkus", special:"Taco gaya Malaysia, isi padat, pilihan ayam, daging atau kambing. Tepi laut, angin kuat. Kompleks sama ada gerai ikan bakar juga: BOSS Ikan Bakaq (4.3/86) dan Medan Selera Seri Pantai (3.9/457), jadi semua umur ada pilihan.", tips:["Beratur untuk order dan bayar dahulu, kemudian tunggu nombor dipanggil. Barisan bergerak laju.","Waktu paling sibuk 6 hingga 8 malam — kita sampai 6.40 ptg, jadi jangkakan beratur.","Kereta yang tidak ke La.Luna boleh terus ke homestay untuk solat Maghrib dahulu."], short:"La.Luna" },
-    padang:    { name:"Padang Kota Lama (Medan Renong)", lat:5.4228, lng:100.3407, addr:"4, Jalan Tun Syed Sheh Barakbah, George Town", hours:"11.45 pg – 12.30 tgh malam", halal:"muslim", rating:3.7, reviews:4857, tagline:"Medan selera tepi laut: pasembur, mee udang", special:"Medan selera tepi laut: pasembur, mee udang, kerang bakar.", tips:"Parking susah hujung minggu — sampai awal atau parking di Fort Cornwallis/Esplanade.", short:"Esplanade" },
-    hutton:    { name:"Roti Bakar Hutton Lane", lat:5.4174, lng:100.3305, addr:"300, Jalan Phee Choon, George Town", hours:"5.00 pg – 1.30 ptg", halal:"muslim", rating:4.3, reviews:2710, tagline:"Roti bakar telur goyang dan nasi dalca sejak 1974", special:"Roti bakar telur goyang, nasi dalca, kopi O. Sejak 1974." },
+    laluna:    { name:"La Luna", q:"La.Luna", lat:5.3127634, lng:100.2995774, addr:"Kompleks Selera Sri Pantai, Lebuhraya Tun Dr. Lim Chong Eu, 11900 Bayan Lepas, Pulau Pinang", phone:"+60 18-955 1677", hours:"Selasa hingga Ahad 4.00 ptg – 11.00 mlm. Tutup Isnin.", rating:4.7, reviews:396, cost:"Taco RM10 sebiji, set dengan fries dan minuman lebih kurang RM18.50 seorang.", tagline:"Taco gaya Malaysia tepi laut, ambil bungkus", special:"Taco gaya Malaysia, isi padat, pilihan ayam, daging atau kambing. Tepi laut, angin kuat. Kompleks sama ada gerai ikan bakar juga: BOSS Ikan Bakaq (4.3/86) dan Medan Selera Seri Pantai (3.9/457), jadi semua umur ada pilihan.", tips:["Beratur untuk order dan bayar dahulu, kemudian tunggu nombor dipanggil. Barisan bergerak laju.","Waktu paling sibuk 6 hingga 8 malam — kita sampai 6.40 ptg, jadi jangkakan beratur.","Kereta yang tidak ke La Luna boleh terus ke homestay untuk solat Maghrib dahulu."], short:"La Luna" },
+    padang:    { name:"Padang Kota Lama (Medan Renong)", lat:5.4228, lng:100.3407, addr:"4, Jalan Tun Syed Sheh Barakbah, George Town", hours:"11.45 pg – 12.30 tgh malam", halal:"muslim", rating:3.7, reviews:4857, phone:"+60 19-477 5786", tagline:"Medan selera tepi laut: pasembur, mee udang", special:"Medan selera tepi laut: pasembur, mee udang, kerang bakar.", tips:"Parking susah hujung minggu — sampai awal atau parking di Fort Cornwallis/Esplanade.", short:"Esplanade" },
+    hutton:    { name:"Roti Bakar Hutton Lane", lat:5.4174, lng:100.3305, addr:"300, Jalan Phee Choon, George Town", hours:"5.00 pg – 1.30 ptg", halal:"muslim", rating:4.3, reviews:2709, phone:"+60 13-402 5497", tagline:"Roti bakar telur goyang dan nasi dalca sejak 1974", special:"Roti bakar telur goyang, nasi dalca, kopi O. Sejak 1974." },
     hill:      { name:"Penang Hill (stesen bawah)", lat:5.4082, lng:100.2771, addr:"Jalan Bukit Bendera, Air Itam", hours:"Tren 6.30 pg – 11.00 mlm, kaunter 6.15 pg", rating:4.3, reviews:653, cost:"MyKad: RM16 dewasa, RM8 kanak-kanak 4–12 & warga emas (pergi-balik). Express lane RM40 / RM20.", tagline:"Naik tren ke puncak, tren setiap 30 minit", tips:["Express lane dan normal lane naik funicular yang SAMA. Bezanya hanya barisan; penumpang express masuk platform dahulu.","Kalau separuh kumpulan beli express, mereka naik train lebih awal dan kumpulan akan terpisah. Semua mesti pilih lane yang sama.","Beli tiket online sekurang-kurangnya 24 jam awal. Tiket online tidak boleh ditebus pada hari sama, dan ia melangkau barisan kaunter.","Beli online di sales.penanghill.gov.my, tunjuk MyKad masa tebus.","Tren setiap 30 minit, lebih kerap bila ramai. Ahad pagi giliran lebih pendek.","Bawa air untuk setiap orang, barisan sebahagiannya terdedah.","Bawa topi atau payung.","Bawa snek untuk budak-budak.","Seorang dewasa beratur, yang lain tunggu di kawasan teduh.","Beli tiket online 24 jam awal supaya terus ke barisan naik."], short:"Penang Hill" },
-    hameed:    { name:"Nasi Kandar Hameediyah", lat:5.4186, lng:100.3325, addr:"164A, Lebuh Campbell, George Town", hours:"10.00 pg – 10.00 mlm", halal:"sijil", rating:4.1, reviews:7366, tagline:"Nasi kandar tertua Malaysia, sejak 1907", special:"Nasi kandar tertua Malaysia (1907).", tips:"Masuk Hameediyah Tandoori House sebelah — berhawa dingin, ada tempat duduk.", short:"Hameediyah" },
+    hameed:    { name:"Nasi Kandar Hameediyah", lat:5.4186, lng:100.3325, addr:"164A, Lebuh Campbell, George Town", hours:"10.00 pg – 10.00 mlm", halal:"sijil", rating:4.1, reviews:7373, phone:"+60 4-261 1095", tagline:"Nasi kandar tertua Malaysia, sejak 1907", special:"Nasi kandar tertua Malaysia (1907).", tips:"Masuk Hameediyah Tandoori House sebelah — berhawa dingin, ada tempat duduk.", short:"Hameediyah" },
     habib:     { name:"Masjid Habib (Masjid Daerah Timur Laut)", lat:5.4495, lng:100.3082, addr:"5, Jalan Seri Tanjung Pinang, Tanjung Tokong", tagline:"Masjid baru 2026, kubah bentuk intan", special:"Masjid baru, dibuka Januari 2026. Kubah bentuk intan.", tips:"Parking luas.", rating:5, reviews:195 },
     kapitan:   { name:"Masjid Kapitan Keling", lat:5.417, lng:100.3371, addr:"14, Lebuh Buckingham, George Town", tagline:"Masjid warisan 1801 di tengah George Town", special:"Masjid warisan 1801.", tips:"4 minit jalan kaki dari Hameediyah, di laluan ke Armenian Street.", rating:4.6, reviews:3413 },
     armenian:  { name:"Armenian Street", lat:5.4154, lng:100.3371, addr:"Lebuh Armenian, George Town", tagline:"Mural dan kedai warisan George Town", special:"Mural, kedai warisan.", tips:"Parking tepi jalan MBPP 60 sen setiap 30 minit, bayar melalui app Penang Smart Parking.", short:"Armenian St" },
     chew:      { name:"Chew Jetty", lat:5.4127, lng:100.3398, addr:"Pengkalan Weld, George Town", hours:"9.00 pg – 9.00 mlm", rating:4.1, reviews:10583, tagline:"Boardwalk rata, sesuai untuk stroller", tips:"10 minit jalan kaki dari Armenian Street — tak perlu alih kereta. Boardwalk rata, sesuai stroller.", short:"Chew Jetty" },
-    fizzy:     { name:"Makan Pagi by Fizzy", lat:5.4167, lng:100.3306, addr:"266, Jalan Dr Lim Chwee Leong, George Town", hours:"7.00 pg – 2.00 ptg", halal:"muslim", rating:4.2, reviews:2008, tagline:"Nasi lemak, roti goyang, satay dan lontong", special:"Nasi lemak, roti goyang, satay, lontong.", tips:"Hujung minggu giliran boleh sejam; Isnin lebih lengang. Parking persendirian sebelah kafe mahal — guna parking Chowrasta." },
+    fizzy:     { name:"Makan Pagi by Fizzy", lat:5.4167, lng:100.3306, addr:"266, Jalan Dr Lim Chwee Leong, George Town", hours:"7.00 pg – 2.00 ptg", halal:"muslim", rating:4.2, reviews:2019, phone:"+60 13-984 2274", tagline:"Nasi lemak, roti goyang, satay dan lontong", special:"Nasi lemak, roti goyang, satay, lontong.", tips:"Hujung minggu giliran boleh sejam; Isnin lebih lengang. Parking persendirian sebelah kafe mahal — guna parking Chowrasta." },
     chowrasta: { name:"Pasar Chowrasta", lat:5.4182, lng:100.3313, addr:"Lot 124, Jalan Penang, George Town", hours:"6.30 pg – 7.00 mlm", rating:4.2, reviews:9961, cost:"Parking bertingkat atas pasar, kira-kira RM1 sejam (buka 5 pg – 10 mlm).", tagline:"Buah tangan: tau sar pneah, buah pala, dodol", special:"Buah tangan: tau sar pneah, buah pala, dodol, kerepek.", tips:"Jeruk Madu Pak Ali (423 Jalan Penang) 2 minit jalan kaki.", short:"Chowrasta" },
-    dimsum:    { name:"Dim Sum Valet (Cina Muslim)", lat:5.4169, lng:100.3311, addr:"16, Lebuh Keng Kwee, George Town", hours:"9.00 pg – 6.00 ptg, tutup Selasa", halal:"sijil", rating:4.4, reviews:786, tagline:"Dim sum halal, pilih sendiri dari bakul", special:"Dim sum halal, pilih sendiri dari bakul di pintu masuk, lebih kurang RM4.50 sepinggan. Char koay teow di sini pun dipuji ramai.", tips:"Ada tingkat atas untuk kumpulan besar.", short:"Dim Sum Valet" },
+    dimsum:    { name:"Dim Sum Valet (Cina Muslim)", lat:5.4169, lng:100.3311, addr:"16, Lebuh Keng Kwee, George Town", hours:"9.00 pg – 6.00 ptg, tutup Selasa", halal:"sijil", rating:4.4, reviews:785, phone:"+60 19-916 1631", tagline:"Dim sum halal, pilih sendiri dari bakul", special:"Dim sum halal, pilih sendiri dari bakul di pintu masuk, lebih kurang RM4.50 sepinggan. Char koay teow di sini pun dipuji ramai.", tips:"Ada tingkat atas untuk kumpulan besar.", short:"Dim Sum Valet" },
     laksa:     { name:"Penang Road Famous Laksa", lat:5.4167, lng:100.3312, addr:"5–7, Lebuh Keng Kwee, George Town", hours:"9.00 pg – 5.30 ptg, tutup Rabu", halal:"semak", rating:4.3, reviews:2341, tagline:"Laksa terkenal di Lebuh Keng Kwee", tips:"Order dulu baru duduk. Giliran 20–30 minit hujung minggu.", halalNote:"Sijil halal JAKIM ditarik balik pada 13 Jun 2025 dan masih dalam tempoh tindakan pembetulan." },
     olo:       { name:"OLO Studio", lat:5.395, lng:100.3171, addr:"Level 3, Straits Garden, Jelutong", hours:"11.00 pg – 7.00 mlm", tagline:"Kraf dan tufting, berbumbung", special:"Kraf & tufting, berbumbung.", tips:"5 minit dari homestay.", rating:4.9, reviews:748 },
     gurney:    { name:"Gurney Plaza", lat:5.438, lng:100.31, addr:"170, Persiaran Gurney", hours:"10.00 pg – 10.00 mlm", rating:4.4, reviews:21373 }
@@ -167,13 +167,13 @@ const DATA = {
         { move:{ km:15.1, min:20, via:'Lebuhraya Tun Dr Lim Chong Eu' } },
         { t:'13:05', e:'14:15', type:'homestay', title:'Check-in homestay, solat Zuhur (jamak Asar)', place:'homestay', meta:'Check-in rasmi 3.00 ptg. Wafi minta awal, tetapi belum disahkan — anggap ia belum pasti sampai homestay jawab.', flags:[{k:'warn',v:'Check-in awal belum disahkan'}], planB:[{ text:"Kalau tak boleh masuk: letak beg di lobi atau dalam kereta, solat Zuhur jamak Asar di Masjid Jamek Jelutong (5 minit) atau surau berdekatan, kemudian gerak terus ke Kampung Agong. Beg masuk bilik lepas balik malam." }, { text:"Jangan pusing-pusing menunggu — Kampung Agong tutup 6.00 ptg, jadi masa lebih baik dihabiskan di sana." }, { text:"Sahkan dengan tuan homestay seminggu sebelum trip supaya tak jadi teka-teki pada hari itu." }] },
         { move:{ km:37.4, min:65, via:'Jambatan Pulau Pinang → Butterworth → Kepala Batas → Penaga. Kira masa ikut keadaan trafik semasa.' } },
-        { t:'15:20', e:'17:30', type:'stop', title:'Kampung Agong', place:'kgagong', flags:[{k:'warn',v:'Tutup 6.00 ptg'}], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La.Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
+        { t:'15:20', e:'17:30', type:'stop', title:'Kampung Agong', place:'kgagong', flags:[{k:'warn',v:'Tutup 6.00 ptg'}], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
         { move:{ km:40.2, min:70, via:'Melalui Jambatan Pulau Pinang terus ke Bayan Lepas.'} },
-        { t:'18:40', e:'19:10', type:'meal', title:'La.Luna — take away', place:'laluna', flags:[{k:'warn', v:'Take away sahaja'}], meta:'Ambil bungkus sahaja, bukan makan di situ. Untuk dimakan kemudian atau sebagai snek.', planB:[{ name:"Jeruk Madu Pak Ali", addr:"Jalan Penang", why:"Kalau tak sempat, buah tangan sama boleh dapat di sini pada Hari 3, 2 minit dari Chowrasta.", rating:4.1, reviews:1667, kei:"Jeruk dan buah tangan" }] },
+        { t:'18:40', e:'19:10', type:'meal', title:'La Luna — take away', place:'laluna', flags:[{k:'warn', v:'Take away sahaja'}], meta:'Ambil bungkus sahaja, bukan makan di situ. Untuk dimakan kemudian atau sebagai snek.', planB:[{ name:"Jeruk Madu Pak Ali", addr:"Jalan Penang", why:"Kalau tak sempat, buah tangan sama boleh dapat di sini pada Hari 3, 2 minit dari Chowrasta.", rating:4.1, reviews:1667, kei:"Jeruk dan buah tangan" }] },
         { move:{ km:14.3, min:20 } },
         { t:'19:30', e:'20:20', type:'solat', title:'Tiba homestay — solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib masuk 7.21 mlm.'},
         { move:{ km:4.7, min:12 } },
-        { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip La.Luna dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana.", kei:"Mee sotong, gerai medan selera Esplanade" }] },
+        { t:'20:35', e:'22:30', type:'meal', title:'Makan malam — Padang Kota Lama, Esplanade', place:'padang', meta:'Medan Renong buka sampai lewat malam. Budak-budak boleh main di padang.', planB:[{ name:"Hameed Pata Mee Sotong", addr:"Esplanade Park Food Court", why:"Berada di Esplanade Park Food Court sebelah. Nak makan di situ, kena sampai sebelum 7.30 mlm — bermakna skip La Luna dan solat Maghrib di Masjid Kapitan Keling selepas makan.", hours:"Isnin–Sabtu 11.00 pg – 8.00 mlm", note:"Tutup 8.00 malam, dan Esplanade Park Food Court tutup Ahad. Malam ini kita tidak ke sana.", kei:"Mee sotong, gerai medan selera Esplanade" }] },
         { move:{ km:4.4, min:12 } },
         { t:'22:45', type:'homestay', title:'Balik homestay', place:'homestay' }
       ]
@@ -238,6 +238,10 @@ const DATA = {
     3:['homestay','fizzy','chowrasta','dimsum','queensbay','lta']
   },
   // Marker bernombor (satu setiap lokasi berhenti; homestay & LTAPP dipapar berasingan)
+  // Larian sampingan yang bukan laluan utama semua orang.
+  larian: {
+    2: { titik:['homestay','lta','hutton'], label:'Kereta 2 sahaja — ambil Halima & Kak Ayman' }
+  },
   markers: {
     1:['beratur','kgagong','laluna','padang'],
     2:['hutton','hill','hameed','habib','armenian','chew'],
@@ -348,20 +352,27 @@ const DATA = {
   // Apa yang berubah, ditulis untuk ahli keluarga. Terbaru di atas.
   // Entri boleh guna 'items' (senarai ringkas) atau 'kumpulan' (bertajuk).
   changelog: [
+    { v:'4.1', tarikh:'4 September 2026', items:[
+      'Rating dan nombor telefon setiap tempat dikemas kini — tekan nombor telefon terus dail.',
+      'Senarai barang bawa ada kotak tanda, boleh tanda sendiri semasa mengemas beg.',
+      'Carta pergerakan tiga hari kini bersambung dengan waktu sebenar di bawahnya.',
+      'Peta hari Ahad tunjuk larian Kereta 2 ke lapangan terbang untuk ambil Halima & Kak Ayman.'
+    ]},
     { v:'4.0', tarikh:'3 September 2026', items:[
       'Ada butang "Apa yang berubah" di bawah sekali. Tekan bila-bila untuk lihat apa yang baharu sejak kali terakhir anda buka.'
     ]},
-    { v:'3.4', tarikh:'3 September 2026', kumpulan:[
-      { tajuk:'Tempat berubah', items:[
-        'Makan tengah hari Sabtu tukar ke Nasi Kandar Beratur 786 — berhawa dingin dan tidak tutup awal.',
-        'Petang Sabtu tukar ke La.Luna, ambil bungkus makan tepi laut, ganti tempat lama.',
-        'Mentari Pagi by Sofea dikeluarkan terus dari senarai. Jangan cari, ia sudah tiada.',
-        'Setiap tempat makan dan tempat lawat kini ada Plan B kalau penuh, tutup, atau hujan.'
-      ]},
+    { v:'3.4', tarikh:'3 September 2026',
+      ganti:[
+        { sebelum:'Mentari Pagi', selepas:'Nasi Kandar Beratur 786' },
+        { sebelum:'PakTeh Fruits', selepas:'La Luna' },
+        { sebelum:'The Farm', selepas:'Queensbay Mall' }
+      ],
+      kumpulan:[
       { tajuk:'Baru dalam halaman', items:[
         'Galeri 21 gambar homestay — tekan "Lihat gambar" di bahagian Penginapan, boleh leret kiri kanan.',
         'Pelan tempat duduk kedua-dua kereta dengan nama setiap orang, jadi semua tahu duduk di mana.',
         'Agihan bilik homestay — siapa sebilik dengan siapa.',
+        'Setiap tempat makan dan tempat lawat ada Plan B kalau penuh, tutup, atau hujan.',
         'Tekan nombor bulat dalam jadual harian, peta terus tunjuk tempat itu.',
         'Setiap perjalanan ada jam mula dan jam sampai, bukan sekadar jarak.',
         'Trip Summary satu skrin — semua benda penting tanpa perlu skrol.',
@@ -381,7 +392,7 @@ const DATA = {
     km:'Laluan utama 179 km sebuah kereta (126 Hari 1 + 30 Hari 2 + 23 Hari 3), diukur dari jalan sebenar OSRM. Kereta 2 tambah lebih kurang 35 km untuk ambil Halima & Kak Ayman di LTAPP hari Ahad. Jumlah kedua-dua kereta: lebih kurang 393 km, iaitu 39.3 liter pada 10 liter setiap 100 km.',
     bahanapi:[
       { jenis:'Diesel, subsidi BUDI', harga:'RM2.10', kereta:'RM41', total:'RM83' },
-      { jenis:'Diesel, harga pasaran', harga:'RM4.62', kereta:'RM91', total:'RM182' },
+      { jenis:'Diesel, harga pasaran', utama:true, harga:'RM4.62', kereta:'RM91', total:'RM182' },
       { jenis:'RON95, subsidi BUDI95', harga:'RM1.99', kereta:'RM39', total:'RM78' },
       { jenis:'RON95, harga pasaran', harga:'RM3.82', kereta:'RM75', total:'RM150' }
     ],
@@ -389,6 +400,7 @@ const DATA = {
       { apa:'Jambatan Pulau Pinang, kelas 1', kadar:'RM7.00 sekali masuk', bila:'Hari 1 sahaja, balik dari Penaga', total:'RM14 (2 kereta)' },
       { apa:'Keluar ke tanah besar', kadar:'Percuma', bila:'Tiada tol arah keluar', total:'RM0' }
     ],
+    notaFuel:'Staria guna diesel. Kadar subsidi BUDI hanya terpakai kalau pemandu sahkan dengan MyKad di pam.',
     nota:'Harga bahan api berubah setiap Rabu. Angka di atas ialah kadar Ogos 2026. Subsidi BUDI disahkan dengan MyKad di pam, kuota 200 liter sebulan.',
     rental:'Kebanyakan syarikat sewa guna dasar penuh-ke-penuh: ambil tangki penuh, pulangkan penuh. Isi minyak di stesen berhampiran LTAPP sebelum pulangkan, dan simpan resit.'
   },
@@ -418,18 +430,18 @@ const DATA = {
   ],
 
   checklist:[
-    { i:'id', t:'MyKad semua orang — kadar tempatan Penang Hill dan Kampung Agong' },
-    { i:'id', t:'MyKid anak-anak untuk tiket kanak-kanak' },
-    { i:'solat', t:'Telekung, sejadah kecil — banyak solat jamak di masjid dan surau' },
-    { i:'hujan', t:'Payung lipat atau baju hujan, September musim peralihan monsun' },
-    { i:'panas', t:'Topi, sunblock, botol air — Kampung Agong terdedah dan panas tengah hari' },
-    { i:'kad', t:'Touch \u2019n Go untuk parking Salak Tinggi dan tol jambatan, plus app Penang Smart Parking untuk tepi jalan George Town' },
-    { i:'bateri', t:'Powerbank dan kabel — hari panjang dan peta dalam telefon' },
-    { i:'ubat', t:'Ubat asas, ubat sendiri, plaster' },
-    { i:'kasut', t:'Kasut selesa — Armenian Street dan Chew Jetty banyak jalan kaki' },
-    { i:'snek', t:'Snek dan air budak-budak dalam kereta, terutama larian ke Penaga' },
-    { i:'beg', t:'Beg kecil kosong untuk buah tangan Chowrasta, dan timbang beg sebelum balik' },
-    { i:'tiket', t:'Screenshot tiket AirAsia dan tiket Penang Hill — signal lemah atas bukit' }
+    { i:'id', t:'MyKad semua orang', nota:'Kadar tempatan di Penang Hill dan Kampung Agong' },
+    { i:'id', t:'MyKid anak-anak', nota:'Untuk tiket kanak-kanak' },
+    { i:'solat', t:'Telekung dan sejadah kecil', nota:'Banyak solat jamak di masjid dan surau' },
+    { i:'hujan', t:'Payung lipat atau baju hujan', nota:'September musim peralihan monsun' },
+    { i:'panas', t:'Topi, sunblock, botol air', nota:'Kampung Agong terdedah dan panas tengah hari' },
+    { i:'kad', t:'Touch ’n Go', nota:'Tol jambatan dan parking Salak Tinggi. App Penang Smart Parking untuk tepi jalan George Town' },
+    { i:'bateri', t:'Powerbank dan kabel', nota:'Hari panjang, peta makan bateri' },
+    { i:'ubat', t:'Ubat asas dan plaster', nota:'Termasuk ubat sendiri' },
+    { i:'kasut', t:'Kasut selesa', nota:'Armenian Street dan Chew Jetty banyak jalan kaki' },
+    { i:'snek', t:'Snek dan air budak-budak', nota:'Terutama larian ke Penaga' },
+    { i:'beg', t:'Beg kecil kosong', nota:'Buah tangan Chowrasta. Timbang beg sebelum balik' },
+    { i:'tiket', t:'Screenshot tiket AirAsia dan Penang Hill', nota:'Signal lemah atas bukit' }
   ]
 
 };

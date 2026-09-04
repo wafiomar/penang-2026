@@ -53,6 +53,9 @@ section+section{border-top:1px solid var(--line)}
 .hero-grid b{display:flex;align-items:center;gap:7px;font-size:1.35rem;font-weight:700;letter-spacing:-0.02em}
 .hero-grid b svg{flex:none;width:18px;height:18px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .hero-grid b span{min-width:0;overflow-wrap:break-word}
+/* Sel pax: "21" dan "pax" mesti duduk sebaris, bersebelahan */
+.hero-grid .hp b{display:inline-flex;vertical-align:baseline}
+.hero-grid .hp>span{margin-left:6px}
 .hero-grid span{color:var(--ink-2);font-size:.85rem}
 .hero-grid .pecah{display:block;margin-top:3px;font-size:.7rem;line-height:1.3;color:var(--ink-2);text-wrap:balance}
 .btn-ringkas{margin-top:12px;font:inherit;font-size:.9rem;font-weight:600;padding:9px 16px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
@@ -264,7 +267,7 @@ details.planb[open] summary::before{content:"–"}
    ============================================================ */
 .lane-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 12px 8px}
 .lane{min-width:0}
-.lane-head,.lane-row{display:grid;grid-template-columns:96px repeat(3,1fr);gap:0 6px;align-items:center}
+.lane-head,.lane-row{display:grid;grid-template-columns:96px repeat(3,1fr);gap:0;align-items:center}
 .lane-head{font-size:.8rem;color:var(--ink-2);font-weight:600;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .lane-head span{text-align:center}
 .lane-row{padding:9px 0;border-bottom:1px solid var(--line-2)}
@@ -272,7 +275,14 @@ details.planb[open] summary::before{content:"–"}
 .lane-name{font-size:.8rem;font-weight:600;line-height:1.2;overflow-wrap:break-word}
 .lane-name small{display:block;font-weight:500;color:var(--ink-3);font-size:.7rem}
 .own .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0}
-.lane-cell{position:relative;height:32px;background:repeating-linear-gradient(90deg,var(--line-2) 0 1px,transparent 1px 25%);border-radius:4px}
+.lane-cell{position:relative;height:32px;background:repeating-linear-gradient(90deg,var(--line-2) 0 1px,transparent 1px 25%)}
+/* Tiga hari bersambung: bulat di hujung sahaja, garis nipis pada peralihan hari */
+.lane-row .lane-cell:first-of-type{border-radius:4px 0 0 4px}
+.lane-row .lane-cell:last-of-type{border-radius:0 4px 4px 0}
+.lane-row .lane-cell + .lane-cell{box-shadow:inset 1px 0 0 var(--line)}
+.lane-name{padding-right:9px}
+.lane-head span+span{border-left:1px solid var(--line)}
+.lane-foot i.tengahmalam{color:var(--ink-2);font-weight:700}
 .seg{position:absolute;top:3px;bottom:3px;border-radius:4px}
 .seg.here{background:var(--g)}
 .seg.transit{background:repeating-linear-gradient(135deg,var(--g) 0 3px,transparent 3px 7px);opacity:.75}
@@ -430,10 +440,34 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .rain p{color:var(--ink-2)}
 .check{columns:2;column-gap:18px;margin:0;padding:0;list-style:none;font-size:.92rem}
 @media (max-width:480px){.check{columns:1}}
-.check li{break-inside:avoid;display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line-2)}
+.check li{break-inside:avoid;display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--line-2)}
+/* Kotak tanda: boleh ditekan untuk tanda sendiri, tidak disimpan */
+.check li .tick{flex:none;display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;margin-top:3px;padding:0;border:1.5px solid var(--line);border-radius:6px;background:var(--paper);color:transparent;cursor:pointer;transition:background .12s,border-color .12s,color .12s}
+.check li .tick svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.check li .tick:hover,.check li .tick:focus-visible{border-color:var(--ink-3);outline:none}
+.check li .tick[aria-pressed="true"]{background:var(--d3);border-color:var(--d3);color:#fff}
+.check li.ditanda .ct{color:var(--ink-3)}
+.check li.ditanda .ct i{opacity:.65}
+/* Perkara utama saiz asal, maklumat tambahan lebih kecil dan pudar */
+.check li .ct{min-width:0}
+.check li .ct i{display:block;margin-top:2px;font-style:normal;font-size:.78rem;line-height:1.35;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){.check li .tick{transition:none}}
 .check li .ci{flex:none;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--d3-soft);margin-top:1px}
 .check li .ci svg{width:15px;height:15px;fill:none;stroke:var(--d3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.ucapan{margin:0;padding:72px 24px;text-align:center;font-size:clamp(1.6rem,6vw,2.4rem);font-weight:600;letter-spacing:-0.02em;line-height:1.25;color:var(--ink)}
+/* Ucapan penutup dengan confetti halus di belakang teks */
+.ucapan-bekas{position:relative;overflow:hidden}
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:0}
+.confetti i{position:absolute;top:-12px;display:block;border-radius:1px;opacity:.55;animation:gugur linear infinite}
+@keyframes gugur{
+  0%{transform:translate3d(0,-10px,0) rotate(0deg);opacity:0}
+  12%{opacity:.55}
+  100%{transform:translate3d(var(--sisi,10px),320px,0) rotate(var(--putar,220deg));opacity:0}
+}
+/* Kalau pengguna minta kurangkan gerakan: confetti statik, tiada animasi */
+@media (prefers-reduced-motion:reduce){
+  .confetti i{animation:none;opacity:.4;top:auto;transform:translate3d(0,0,0) rotate(var(--putar,220deg))}
+}
+.ucapan{position:relative;z-index:1;margin:0;padding:72px 24px;text-align:center;font-size:clamp(1.6rem,6vw,2.4rem);font-weight:600;letter-spacing:-0.02em;line-height:1.25;color:var(--ink)}
 .ucapan:empty{display:none}
 .pb-hours{display:block;margin-top:3px;color:var(--ink-3);font-size:.78rem}
 .pb-note-kecil{margin-top:5px;padding-top:5px;border-top:1px solid var(--line-2);color:var(--ink-3);font-size:.78rem;line-height:1.4}
@@ -464,10 +498,12 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .pb-kei{margin-top:3px;color:var(--ink-2);font-size:.82rem;line-height:1.4}
 .pb-kei b{color:var(--ink)}
 /* Penanda masa carta pergerakan */
-.lane-foot{display:grid;grid-template-columns:96px repeat(3,1fr);gap:0 6px;margin-top:5px}
-.lane-foot .lane-cell{position:relative;height:16px;background:transparent;border:0;overflow:visible}
-.lane-foot i{position:absolute;top:3px;transform:translateX(-50%);font-style:normal;font-size:.58rem;color:var(--ink-3);white-space:nowrap}
+.lane-foot{display:grid;grid-template-columns:96px repeat(3,1fr);gap:0;margin-top:5px}
+.lane-foot .lane-cell{position:relative;height:29px;background:transparent;border:0;overflow:visible}
+.lane-foot i{position:absolute;top:16px;transform:translateX(-50%);font-style:normal;font-size:.58rem;color:var(--ink-3);white-space:nowrap}
 .lane-foot i::before{content:"";position:absolute;left:50%;top:-5px;width:1px;height:3px;background:var(--line)}
+.lane-foot i.tengahmalam{top:1px}
+.lane-foot i.tengahmalam::before{top:-4px;height:14px;background:var(--ink-3)}
 /* Penerbangan: kumpulan Pergi dan Balik */
 .board-grp{padding:9px 14px;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);background:var(--paper);border-bottom:1px solid var(--line)}
 .board-grp+.board-row{border-top:0}
@@ -480,7 +516,13 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 /* Kad fakta homestay dan galeri */
 .stay .facts .fi{display:block;margin-bottom:3px}
 .stay .facts .fi svg{width:16px;height:16px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.btn-galeri{margin-top:12px;font:inherit;font-size:.84rem;font-weight:600;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+/* Tajuk homestay dan butang gambar sebaris */
+.stay-tajuk{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.stay-tajuk h3{min-width:0}
+.btn-galeri{flex:none;display:inline-flex;align-items:center;gap:6px;margin:0;font:inherit;font-size:.8rem;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.btn-galeri svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.btn-galeri:hover,.btn-galeri:focus-visible{border-color:var(--ink-3);background:var(--panel);outline:none}
+.bilik-nota{margin-top:3px;font-size:.78rem;line-height:1.4;color:var(--ink-3)}
 /* Galeri: satu jalur mendatar yang boleh dileret, satu gambar satu skrin */
 #galeri .rk-kotak{height:auto}
 .gl-isi{flex:0 1 auto;min-height:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;gap:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
@@ -543,3 +585,18 @@ footer a{color:var(--ink-2)}
      daripada bekasnya pada 320px; benarkan ia turun baris di situ. */
   .opt-tbl th:nth-child(2),.opt-tbl td:nth-child(2){white-space:normal}
 }
+
+/* Baris bahan api yang paling mungkin terpakai untuk Staria */
+#fuel-tbl tr.utama td{font-weight:700;color:var(--ink);background:var(--d3-soft)}
+.fuel-nota{margin-top:8px;font-size:.78rem;line-height:1.4;color:var(--ink-3)}
+/* Nota larian sampingan dalam popup marker */
+.pp-larian{margin-top:7px;padding-top:7px;border-top:1px solid var(--line-2);font-size:.76rem;line-height:1.35;color:var(--ink-2)}
+/* Changelog: jadual sebelum dan selepas */
+.ub-jadual{width:100%;border-collapse:collapse;margin-bottom:12px;table-layout:auto}
+.ub-jadual th{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);padding:0 0 5px;border:0;background:transparent}
+.ub-jadual th:nth-child(2){width:26px}
+.ub-jadual td{padding:6px 0;border-top:1px solid var(--line-2);font-size:.84rem;line-height:1.35;vertical-align:middle}
+.ub-jadual td.lama{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--line)}
+.ub-jadual td.baharu{color:var(--ink);font-weight:600}
+.ub-jadual td.pnh{width:26px;text-align:center;padding:6px 4px}
+.ub-panah{width:15px;height:15px;fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
