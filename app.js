@@ -516,7 +516,7 @@ function planbHtml(list){
         return;
       }
       const p = it.place ? P[it.place] : null;
-      const isStop = (it.type==='stop'||it.type==='meal'||it.type==='rehat') && it.place && DATA.markers[n].includes(it.place);
+      const isStop = (it.type==='stop'||it.type==='meal'||it.type==='rehat'||it.type==='solat') && it.place && DATA.markers[n].includes(it.place);
       const pf = it.flightRef ? DATA.flights.find(x => x.flightNo === it.flightRef) : null;
       const fr = pf ? pautanFr24(pf) : '';
       const num = isStop ? `<button type="button" class="n" data-mday="${n}" data-mplace="${esc(it.place)}" aria-label="Tunjuk ${esc(p?p.name:it.title)} pada peta">${++stopIdx}</button>` : '';
@@ -554,7 +554,7 @@ function planbHtml(list){
       const amaran = p && p.halalNote ? `<div class="halal-note">${esc(p.halalNote)}</div>` : '';
       const cost = (!p || it.type==='note') && p && p.cost ? `<div class="ti-cost">${esc(p.cost)}</div>` : '';
 
-      html += `<div class="ti d${n}">
+      html += `<div class="ti d${n}${it.pilihan?' pilihan':''}">
         <div class="ti-time">${fmtT(it.t)}${it.e?`<span>– ${fmtT(it.e)}</span>`:''}</div>
         <div class="ti-body">
           <div class="ti-title">${ic}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}${fr ? ' '+fr : ''}</span>${num}</div>

@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '4 September 2026, 6.58 petang',
+    updated: '5 September 2026, 10.32 pagi',
     toddler: 2,
-    version: 'v4.4'
+    version: 'v4.5'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -130,7 +130,12 @@ const DATA = {
     habib:     { name:"Masjid Habib (Masjid Daerah Timur Laut)", lat:5.4495, lng:100.3082, addr:"5, Jalan Seri Tanjung Pinang, Tanjung Tokong", tagline:"Masjid baru 2026, kubah bentuk intan", special:"Masjid baru, dibuka Januari 2026. Kubah bentuk intan.", tips:"Parking luas.", rating:5, reviews:195 },
     kapitan:   { name:"Masjid Kapitan Keling", lat:5.417, lng:100.3371, addr:"14, Lebuh Buckingham, George Town", tagline:"Masjid warisan 1801 di tengah George Town", special:"Masjid warisan 1801.", tips:"4 minit jalan kaki dari Hameediyah, di laluan ke Armenian Street.", rating:4.6, reviews:3413 },
     armenian:  { name:"Armenian Street", lat:5.4154, lng:100.3371, addr:"Lebuh Armenian, George Town", tagline:"Mural dan kedai warisan George Town", special:"Mural, kedai warisan.", tips:"Parking tepi jalan MBPP 60 sen setiap 30 minit, bayar melalui app Penang Smart Parking.", short:"Armenian St" },
-    chew:      { name:"Chew Jetty", lat:5.4127, lng:100.3398, addr:"Pengkalan Weld, George Town", hours:"9.00 pg – 9.00 mlm", rating:4.1, reviews:10583, tagline:"Boardwalk rata, sesuai untuk stroller", tips:"10 minit jalan kaki dari Armenian Street — tak perlu alih kereta. Boardwalk rata, sesuai stroller.", short:"Chew Jetty" },
+    udm:       { name:"Upside Down Museum", lat:5.4158046, lng:100.3335296, addr:"45, Lebuh Kimberley, George Town", hours:"9.30 pg – 6.30 ptg setiap hari", rating:4.2, reviews:5834, phone:"+60 4-264 2660", tagline:"Bilik terbalik untuk gambar, berhawa dingin penuh", cost:"Harga tiket belum disahkan — semak di premis.", tips:"Staf di setiap bilik tolong pose dan ambil gambar, jadi kumpulan besar tak kelam-kabut. Lawatan 15–25 minit ikut kesesakan.", short:"Upside Down" },
+    ksd:       { name:"Karpal Singh Drive", lat:5.3974713, lng:100.3294059, addr:"Persiaran Karpal Singh, Jelutong, George Town", rating:4.6, reviews:198, tagline:"Tepi laut betul-betul di luar homestay, angin laut, sesuai untuk senja", tips:"Tak perlu memandu langsung. Berbasikal dan berjoging popular di sini. Hati-hati dengan penunggang basikal laju.", short:"Karpal Singh Drive" },
+    trick3d:   { name:"Penang 3D Trick Art Museum", lat:5.4198087, lng:100.3417021, addr:"10, Lebuh Penang, George Town", hours:"9.00 pg – 6.00 ptg", rating:4.3, reviews:4427, phone:"+60 4-263 1628", tagline:"Muzium gambar 3D, berhawa dingin" },
+    kamera:    { name:"Asia Camera Museum", lat:5.4154278, lng:100.3368096, addr:"71, Lebuh Armenian, George Town", hours:"10.00 pg – 6.00 ptg", rating:4.7, reviews:921, phone:"+60 11-1859 9878", tagline:"Atas Armenian Street sendiri, ada tour interaktif" },
+    peranakan: { name:"Pinang Peranakan Mansion", lat:5.4178275, lng:100.3412046, addr:"29, Church Street, George Town", hours:"9.30 pg – 5.30 ptg", rating:4.5, reviews:6473, phone:"+60 4-264 2929", cost:"RM30 seorang.", tagline:"Rumah agam Baba-Nyonya" },
+    gurneybay: { name:"Gurney Bay Park", lat:5.4326214, lng:100.3188222, addr:"Persiaran Gurney, George Town", hours:"Buka 24 jam", rating:4.5, reviews:896, cost:"Percuma.", tagline:"Taman tepi laut baru dengan taman permainan dan skate park", note:"Pokok masih muda, tiada teduh — paling elok menjelang senja, bukan tengah hari." },
     fizzy:     { name:"Makan Pagi by Fizzy", lat:5.4167, lng:100.3306, addr:"266, Jalan Dr Lim Chwee Leong, George Town", hours:"7.00 pg – 2.00 ptg", halal:"muslim", rating:4.2, reviews:2019, phone:"+60 13-984 2274", tagline:"Nasi lemak, roti goyang, satay dan lontong", special:"Nasi lemak, roti goyang, satay, lontong.", tips:"Hujung minggu giliran boleh sejam; Isnin lebih lengang. Parking persendirian sebelah kafe mahal — guna parking Chowrasta." },
     chowrasta: { name:"Pasar Chowrasta", lat:5.4182, lng:100.3313, addr:"Lot 124, Jalan Penang, George Town", hours:"6.30 pg – 7.00 mlm", rating:4.2, reviews:9961, cost:"Parking bertingkat atas pasar, kira-kira RM1 sejam (buka 5 pg – 10 mlm).", tagline:"Buah tangan: tau sar pneah, buah pala, dodol", special:"Buah tangan: tau sar pneah, buah pala, dodol, kerepek.", tips:"Jeruk Madu Pak Ali (423 Jalan Penang) 2 minit jalan kaki.", short:"Chowrasta" },
     dimsum:    { name:"Dim Sum Valet (Cina Muslim)", lat:5.4169, lng:100.3311, addr:"16, Lebuh Keng Kwee, George Town", hours:"9.00 pg – 6.00 ptg, tutup Selasa", halal:"sijil", rating:4.4, reviews:785, phone:"+60 19-916 1631", tagline:"Dim sum halal, pilih sendiri dari bakul", special:"Dim sum halal, pilih sendiri dari bakul di pintu masuk, lebih kurang RM4.50 sepinggan. Char koay teow di sini pun dipuji ramai.", tips:"Ada tingkat atas untuk kumpulan besar.", short:"Dim Sum Valet" },
@@ -183,7 +188,7 @@ const DATA = {
       intro:['Dua kereta berpecah pagi ini: Kereta 2 ke LTAPP ambil Halima & Kak Ayman, Kereta 1 terus ke sarapan.',
              'Semua bertemu semula di Roti Bakar Hutton Lane sebelum 9.00 pg.',
              'Selepas itu semua tempat rapat dalam George Town, kecuali Masjid Habib.'],
-      ringkas:['hill','hameed','armenian','chew'],
+      ringkas:['hill','hameed','armenian','udm'],
       km:30, toll:'—', fuel:'±RM20', fuelNote:'termasuk larian LTAPP',
       items:[
         { t:'07:30', type:'move2', title:'Kereta 2 (Syafi) ke LTAPP — ambil Halima & Kak Ayman', meta:'Homestay ke LTAPP 20 minit. Flight tiba 8.00 pg. Dari LTAPP terus ke tempat sarapan, sampai kira-kira 8.45.' },
@@ -197,10 +202,11 @@ const DATA = {
         { t:'14:05', e:'14:40', type:'solat', title:'Masjid Habib — Zuhur (jamak Asar)', place:'habib', flags:[{k:'warn',v:'Jalan pusing 40 min'}], planB:[{ text:"Jimat 40 minit: solat di Masjid Kapitan Keling, 4 minit jalan kaki dari Hameediyah, terus ke Armenian Street. Singgah Masjid Habib untuk Maghrib sebelum makan malam — ia di laluan ke Tanjung Tokong/Gurney." }] },
         { move:{ km:7, min:18, via:'Balik ke George Town. Parking tepi jalan di Lebuh Acheh / Lebuh Cannon.' } },
         { t:'15:00', e:'16:00', type:'stop', title:'Armenian Street', place:'armenian' },
-        { move:{ km:0.8, min:10, walk:true } },
-        { t:'16:10', e:'17:15', type:'stop', title:'Chew Jetty', place:'chew', meta:'Petang angin laut, cahaya lembut, kurang terik.', planB:[{ name:"Hin Bus Depot", why:"Seni, kafe.", rating:4.6, reviews:2395, kei:"Ruang seni dan kafe" }, { place:"gurney", why:"Kalau hujan petang.", kei:"Mall di Persiaran Gurney" }] },
+        { move:{ km:0.6, min:10, walk:true } },
+        { t:'16:10', e:'17:15', type:'stop', title:'Upside Down Museum', place:'udm', meta:'Berhawa dingin, tak terjejas kalau hujan atau panas.', planB:[{ place:"trick3d", why:"Muzium gambar 3D berdekatan.", kei:"Muzium gambar 3D, berhawa dingin" }, { place:"kamera", why:"Atas Armenian Street sendiri, tak perlu alih kereta.", kei:"Tour interaktif kamera lama" }, { place:"peranakan", why:"Rumah agam Baba-Nyonya, 5 minit dari sini.", kei:"Rumah agam Baba-Nyonya, RM30 seorang" }, { place:"gurneybay", why:"Kalau nak lapang dan percuma, paling elok menjelang senja.", kei:"Taman tepi laut, taman permainan dan skate park" }, { place:"gurney", why:"Kalau hujan petang.", kei:"Mall di Persiaran Gurney" }] },
         { move:{ km:4, min:12 } },
         { t:'17:30', e:'18:50', type:'homestay', title:'Balik homestay — rehat, mandi', place:'homestay' },
+        { t:'17:45', e:'18:30', type:'stop', pilihan:true, title:'Jalan-jalan di Karpal Singh Drive', place:'ksd', flags:[{k:'opt',v:'Pilihan'}], meta:'Sesiapa yang penat boleh terus rehat di homestay. Tak perlu memandu — ia betul-betul di luar homestay.' },
         { t:'19:00', e:'19:45', type:'solat', title:'Solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib 7.21 mlm.' },
         { t:'20:00', e:'22:00', type:'meal', title:'Makan malam bersama Umi Wan', meta:'Lokasi setakat ini di tanah besar. Akan dikemas kini.', planB:[{ name:"Premium Chinese Muslim Cuisine", rating:4.3, reviews:297, kei:"Masakan Cina Muslim" }, { name:"Tok Ma Malay Kitchen", addr:"George Town", kei:"Masakan Melayu" }, { name:"The Table Penang", rating:4.4, reviews:1025, kei:"Restoran makan malam" }, { name:"Rumah Kacha", rating:4.3, reviews:710, kei:"Restoran makan malam" }, { name:"Jawi House Cafe Gallery", rating:4.5, reviews:1573, kei:"Kafe dan galeri" }] },
         { t:'22:30', type:'homestay', title:'Balik homestay', place:'homestay', planB:[{ name:"Avatar Secret Garden", addr:"Tanjung Tokong", why:"Masih bertenaga: lampu malam.", kei:"Taman lampu malam" }, { name:"Gurney Bay Park", rating:4.5, reviews:893, why:"Basikal pantai.", kei:"Taman tepi laut, sesuai berbasikal" }, { name:"Feringghi Walk", why:"Basikal pantai.", kei:"Laluan tepi pantai, sesuai berbasikal" }] }
@@ -234,7 +240,7 @@ const DATA = {
   // Turutan lokasi untuk garisan laluan peta (mengikut hari)
   routes: {
     1:['lta','beratur','homestay','kgagong','laluna','homestay','padang','homestay'],
-    2:['homestay','hutton','hill','hameed','habib','armenian','chew','homestay'],
+    2:['homestay','hutton','hill','hameed','habib','armenian','udm','homestay'],
     3:['homestay','fizzy','chowrasta','dimsum','queensbay','lta']
   },
   // Marker bernombor (satu setiap lokasi berhenti; homestay & LTAPP dipapar berasingan)
@@ -244,7 +250,7 @@ const DATA = {
   },
   markers: {
     1:['beratur','kgagong','laluna','padang'],
-    2:['hutton','hill','hameed','habib','armenian','chew'],
+    2:['hutton','hill','hameed','habib','armenian','udm'],
     3:['fizzy','chowrasta','dimsum','queensbay']
   },
 
@@ -354,6 +360,14 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'4.5', tarikh:'5 September 2026',
+      ganti:[
+        { sebelum:'Chew Jetty', selepas:'Upside Down Museum' }
+      ],
+      baru:[
+        'Chew Jetty ditukar kerana kebakaran 5 September memusnahkan premis berhampiran jeti.',
+        'Petang Ahad ada pilihan jalan-jalan tepi laut di Karpal Singh Drive, betul-betul luar homestay.'
+      ]},
     { v:'4.3', tarikh:'4 September 2026', baru:[
       'Gambar homestay boleh dilihat terus dalam halaman.',
       'Peta hari Ahad tunjuk larian Kereta 2 ke lapangan terbang.'
