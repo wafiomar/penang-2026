@@ -225,6 +225,15 @@ section+section{border-top:1px solid var(--line)}
 @media (max-width:400px){.kad{padding:12px}}
 @media (max-width:340px){.kad{padding:10px}}
 .tl{position:relative}
+/* Pil piawai di bawah tajuk item jadual */
+.ti-pils{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:5px}
+.ti-pils .pil{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:.72rem;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.ti-pils .pil.mkn{background:var(--d1-soft,#F6EADB);color:var(--d1)}
+.ti-pils .pil.slt{background:var(--d3-soft);color:var(--d3)}
+.ti-pils .pil.lain{background:var(--line-2);color:var(--ink-2)}
+/* Teks kecil butiran ringkas */
+.ti-kecil{margin-top:4px;font-size:.8rem;line-height:1.4;color:var(--ink-2)}
+
 .ti{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line-2)}
 .ti:first-child{border-top:0}
 .ti-time{font-weight:700;font-size:1.05rem;line-height:1.2;letter-spacing:-0.01em}
@@ -286,7 +295,7 @@ section+section{border-top:1px solid var(--line)}
 .ti.pilihan .ti-time{opacity:.7}
 .ti.pilihan .ti-title>span{font-weight:600}
 .ti-move{padding:6px 0}
-.ti-move .ti-time{visibility:hidden}
+
 .ti-move .ti-body{display:flex;align-items:center;gap:8px;color:var(--ink-2);font-size:.85rem;border-left:2px dashed var(--line);margin-left:-8px;padding-left:12px}
 .ti-move .ti-time{font-size:.78rem;font-weight:500;color:var(--ink-3);letter-spacing:0}
 .ti-move svg{width:16px;height:16px;flex:none;stroke:var(--ink-3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -437,11 +446,11 @@ details.planb[open] summary::before{content:"–"}
 .stay{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
 .stay h3{font-size:1.1rem}
 .stay p{color:var(--ink-2);font-size:.92rem;margin-top:4px}
-.stay .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.stay .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}
 @media (max-width:460px){.stay .facts{grid-template-columns:repeat(2,1fr)}}
-.stay .facts div{padding:8px 10px;border-radius:8px;background:var(--paper)}
-.stay .facts b{display:block;font-size:1.05rem}
-.stay .facts span{font-size:.76rem;color:var(--ink-2)}
+.stay .facts div{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1px;padding:9px 6px;border-radius:10px;background:var(--paper);border:1px solid var(--line)}
+.stay .facts b{display:block;font-size:1.45rem;line-height:1.1;letter-spacing:-.02em}
+.stay .facts span{font-size:.72rem;line-height:1.25;color:var(--ink-2)}
 .rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
 @media (max-width:480px){.rooms{grid-template-columns:repeat(2,1fr)}}
 .room{padding:10px;border-radius:8px;border:1px solid var(--line);border-left:5px solid var(--g);font-size:.82rem;line-height:1.25;min-height:64px;background:#fff}
@@ -459,14 +468,14 @@ td.num,th.num{text-align:right}
 td small{color:var(--ink-2);display:block;font-size:.8rem}
 .solat-tbl td{white-space:nowrap}
 .solat-tbl td:first-child{font-weight:600}
-#cost-tbl th.num{width:40%}
+.kos-tbl th.num{width:40%}
 #bag-tbl td:first-child{font-weight:600;width:38%}
 #fuel-tbl td:first-child,#fuel-tbl th:first-child{font-weight:600;width:37%}
 #toll-tbl td:first-child,#toll-tbl th:first-child{font-weight:600;width:40%}
 #fuel-tbl,#toll-tbl{font-size:.84rem}
 #fuel-tbl th,#fuel-tbl td,#toll-tbl th,#toll-tbl td{padding:9px 7px}
 @media (max-width:460px){#fuel-tbl,#toll-tbl{font-size:.78rem}#fuel-tbl th,#fuel-tbl td,#toll-tbl th,#toll-tbl td{padding:8px 5px}}
-#cost-tbl td.num{font-weight:600}
+.kos-tbl td.num{font-weight:600}
 .rain{display:grid;gap:10px}
 .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
 .lad{display:block;padding:10px 11px;border-radius:8px;border:1px solid var(--line);background:var(--panel);font-size:.85rem;color:var(--ink-2)}
@@ -520,6 +529,7 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 /* Pautan Flightradar: ikon radar + nombor, jelas ia boleh ditekan */
 .fr24{display:inline-flex;align-items:center;gap:4px;color:inherit;font-weight:600;padding:1px 6px 1px 5px;border:1px solid var(--line-2);border-radius:999px;text-decoration:none;vertical-align:baseline}
 .fr24>span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:var(--line)}
+.fr24>i{font-style:normal;font-size:.66rem;font-weight:500;color:var(--ink-3);margin-left:5px;padding-left:6px;border-left:1px solid var(--line-2)}
 .fr24:hover,.fr24:focus-visible{border-color:var(--ink-3);background:var(--panel);outline:none}
 .fr24:hover>span,.fr24:focus-visible>span{text-decoration-color:currentColor}
 .fr-ico{width:13px;height:13px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
@@ -560,8 +570,8 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 /* Nota di bawah jadual: nasihat dan syarat, bukan dalam lajur */
 .opt-nota{margin-top:6px;font-size:.76rem;line-height:1.45;color:var(--ink-3)}
 /* Kad fakta homestay dan galeri */
-.stay .facts .fi{display:block;margin-bottom:3px}
-.stay .facts .fi svg{width:16px;height:16px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.stay .facts .fi{display:block;margin-bottom:1px}
+.stay .facts .fi svg{width:20px;height:20px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 /* Tajuk homestay dan butang gambar sebaris */
 .stay-tajuk{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .stay-tajuk h3{min-width:0}
@@ -584,8 +594,8 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .gl-bar #gl-kira{min-width:56px;text-align:center;font-size:.84rem;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){.gl-isi{scroll-behavior:auto}}
 /* Kos: baris kumpulan dan lajur dewasa/kanak-kanak */
-#cost-tbl tr.grp td{background:var(--paper);font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);padding:8px 12px}
-#cost-tbl th:nth-child(2),#cost-tbl td:nth-child(2),#cost-tbl th:nth-child(3),#cost-tbl td:nth-child(3){width:23%}
+.kos-tbl tr.grp td{background:var(--paper);font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);padding:8px 12px}
+.kos-tbl th:nth-child(2),.kos-tbl td:nth-child(2),.kos-tbl th:nth-child(3),.kos-tbl td:nth-child(3){width:23%}
 /* Tangga bagasi jadi grid empat kotak */
 .lad .li{display:block;margin-bottom:4px}
 .lad .li svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -621,13 +631,13 @@ footer a{color:var(--ink-2)}
 
 /* Skrin sangat sempit: lajur nilai jadual kos perlu ruang tetap,
    jika tidak perkataan seperti "Percuma" pecah di tengah. Diletak di hujung
-   fail supaya ia menang ke atas #cost-tbl th.num di atas. */
+   fail supaya ia menang ke atas .kos-tbl th.num di atas. */
 @media (max-width:400px){
-  #cost-tbl th.num,#cost-tbl td.num{width:76px}
+  .kos-tbl th.num,.kos-tbl td.num{width:76px}
 }
 @media (max-width:340px){
-  #cost-tbl th,#cost-tbl td{padding:9px 4px;font-size:.9em}
-  #cost-tbl th.num,#cost-tbl td.num{width:66px}
+  .kos-tbl th,.kos-tbl td{padding:9px 4px;font-size:.9em}
+  .kos-tbl th.num,.kos-tbl td.num{width:66px}
   /* Lajur Masa nowrap memaksa jadual langkah KLIA2 lebih lebar
      daripada bekasnya pada 320px; benarkan ia turun baris di situ. */
   .opt-tbl th:nth-child(2),.opt-tbl td:nth-child(2){white-space:normal}
@@ -656,3 +666,44 @@ footer a{color:var(--ink-2)}
 /* Harga tiket dalam kad Plan B */
 .pb-kos{margin-top:3px;font-size:.82rem;line-height:1.4;color:var(--ink-2)}
 .pb-kos b{color:var(--ink)}
+/* Kad pilihan KLIA2: butiran dilipat */
+.opt-lagi{margin-top:7px}
+.opt-lagi>summary{display:inline-flex;align-items:center;gap:5px;cursor:pointer;list-style:none;font-size:.76rem;font-weight:600;color:var(--ink-2);padding:4px 11px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
+.opt-lagi>summary::-webkit-details-marker{display:none}
+.opt-lagi>summary::after{content:"";width:6px;height:6px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg) translateY(-1px)}
+.opt-lagi[open]>summary::after{transform:rotate(-135deg) translateY(-1px)}
+.opt-lagi>summary:hover,.opt-lagi>summary:focus-visible{border-color:var(--ink-3);color:var(--ink);outline:none}
+.opt-lagi .opt-tbl{margin-top:8px}
+/* C) Kad waktu sampai KLIA2: dua kad bersebelahan */
+#cutoff{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cut-kad{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px;border-radius:var(--radius);border:1px solid var(--line);background:var(--paper)}
+.cut-kad>b{font-size:1.25rem;letter-spacing:-.02em}
+.cut-i{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--d3-soft)}
+.cut-i svg{width:17px;height:17px;fill:none;stroke:var(--d3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cut-l{font-size:.8rem;line-height:1.35;color:var(--ink-2)}
+.cut-pil{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--d3-soft);color:var(--d3);font-size:.7rem;font-weight:700;white-space:nowrap}
+.cut-tips{margin-top:2px}
+.cut-tips>summary{cursor:pointer;list-style:none;font-size:.74rem;font-weight:600;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:2px}
+.cut-tips>summary::-webkit-details-marker{display:none}
+.cut-tips>summary:hover{color:var(--ink)}
+.cut-tips em{display:block;margin-top:5px;font-style:normal;font-size:.76rem;line-height:1.45;color:var(--ink-3)}
+@media (max-width:380px){#cutoff{grid-template-columns:1fr}}
+/* D) Kad tips seat pesawat */
+.kad-tips{margin-top:14px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel)}
+.kad-tips>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;font-size:.92rem}
+.kad-tips>summary::-webkit-details-marker{display:none}
+.kad-tips>summary::after{content:"";margin-left:auto;width:7px;height:7px;border-right:1.7px solid var(--ink-3);border-bottom:1.7px solid var(--ink-3);transform:rotate(45deg)}
+.kad-tips[open]>summary::after{transform:rotate(-135deg)}
+.kt-i{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;border-radius:8px;background:var(--d3-soft)}
+.kt-i svg{width:16px;height:16px;fill:none;stroke:var(--d3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.kt-list{margin:9px 0 0;padding-left:18px;font-size:.85rem;line-height:1.5;color:var(--ink-2)}
+.kt-list li{margin-bottom:4px}
+/* F) Kumpulan kos yang boleh dilipat */
+.kos-grp{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);margin-bottom:8px;overflow:hidden}
+.kos-grp>summary{display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;padding:11px 13px;font-size:.9rem}
+.kos-grp>summary::-webkit-details-marker{display:none}
+.kos-grp>summary span{margin-left:-2px;color:var(--ink-3);font-weight:500;font-size:.82rem}
+.kos-grp>summary::after{content:"";margin-left:auto;width:7px;height:7px;border-right:1.7px solid var(--ink-3);border-bottom:1.7px solid var(--ink-3);transform:rotate(45deg)}
+.kos-grp[open]>summary::after{transform:rotate(-135deg)}
+.kos-tbl{border:0;border-radius:0;margin:0}
+.kos-tbl th{background:var(--paper)}

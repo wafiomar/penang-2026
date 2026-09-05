@@ -65,7 +65,7 @@ function pautanFr24(f){
   if(!f || !f.flightNo) return '';
   return `<a class="fr24" data-flight="${esc(f.flightNo)}" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
     + ` target="_blank" rel="noopener" title="Jejak penerbangan langsung" aria-label="Jejak penerbangan langsung ${esc(f.flightNo)}">`
-    + `${ICON.radar}<span>${esc(f.flightNo)}</span></a>`;
+    + `${ICON.radar}<span>${esc(f.flightNo)}</span><i>tekan untuk jejak langsung</i></a>`;
 }
 // Titik LANGSUNG disegarkan berkala, supaya ia muncul dan hilang sendiri
 // walaupun halaman dibiarkan terbuka merentas waktu berlepas dan mendarat.
@@ -674,6 +674,12 @@ function planbHtml(list){
       if(p && p.rating){ bdg += pilBintang(p.rating, p.reviews); }
       const badges = bdg ? `<div class="badges">${bdg}</div>` : '';
       const flags = (it.flags||[]).map(f => `<span class="flag ${f.k}">${esc(f.v)}</span>`).join('');
+      // Pil piawai di bawah tajuk
+      const KELAS_PIL = { 'Breakfast':'mkn', 'Lunch':'mkn', 'Dinner':'mkn', 'Snacking':'mkn',
+        'Solat jamak':'slt', 'Take away':'lain', 'Pilihan':'lain', 'Check-in':'lain', 'Check-out':'lain' };
+      const pils = (it.pills||[]).map(v => `<span class="pil ${KELAS_PIL[v]||'lain'}">${esc(v)}</span>`).join('');
+      const pilBaris = (pils || fr) ? `<div class="ti-pils">${fr}${pils}</div>` : '';
+      const kecil = it.kecil ? `<div class="ti-kecil">${esc(it.kecil)}</div>` : '';
       const planB = it.planB && it.planB.length ? `<details class="planb"><summary>Plan B</summary>${planbHtml(it.planB)}</details>` : '';
       const links = p && p.lat && p.kind!=='plane' && it.type!=='note' && it.type!=='move2' ? `<div class="ti-links"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>` : '';
 
@@ -693,10 +699,16 @@ function planbHtml(list){
           : `<b>Tips:</b> ${esc(p.tips)}`));
         if(p.cost)   baris.push(det('kos', `<b>Kos:</b> ${esc(p.cost)}`));
         if(it.meta)  baris.push(det('nota', `<b>Nota:</b> ${esc(it.meta)}`));
-        butiran = `<details class="det"><summary>Details</summary><ul class="det-list">${baris.join('')}</ul></details>`;
+        butiran = `<details class="det"><summary>More info</summary><ul class="det-list">${baris.join('')}</ul></details>`;
       } else {
         const meta = [it.meta, p && p.addr && (it.type!=='note') ? p.addr : '', p && p.hours ? 'Buka ' + p.hours : ''].filter(Boolean);
-        metaP = meta.length ? `<div class="ti-meta">${metaHtml(meta, it.metaLink)}</div>` : '';
+        if(meta.length){
+          const isi = metaHtml(meta, it.metaLink);
+          const panjang = meta.join(' ').length > 90;
+          metaP = panjang
+            ? `<details class="det"><summary>More info</summary><div class="ti-meta">${isi}</div></details>`
+            : `<div class="ti-meta">${isi}</div>`;
+        }
       }
       const amaran = p && p.halalNote ? `<div class="halal-note">${esc(p.halalNote)}</div>` : '';
       const cost = (!p || it.type==='note') && p && p.cost ? `<div class="ti-cost">${esc(p.cost)}</div>` : '';
@@ -704,8 +716,8 @@ function planbHtml(list){
       html += `<div class="ti d${n}${it.pilihan?' pilihan':''}">
         <div class="ti-time">${fmtT(it.t)}${it.e?`<span>– ${fmtT(it.e)}</span>`:''}</div>
         <div class="ti-body">
-          <div class="ti-title">${ic}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}${fr ? ' '+fr : ''}</span>${num}</div>
-          ${lede}${metaP}${badges}${amaran}${cost}${flags?`<div>${flags}</div>`:''}${butiran}${planB}${links}
+          <div class="ti-title">${ic}<span>${p && it.type!=='note' ? `<a href="${gprofile(p)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : esc(it.title)}</span>${num}</div>
+          ${pilBaris}${kecil}${lede}${metaP}${badges}${amaran}${cost}${flags?`<div>${flags}</div>`:''}${butiran}${planB}${links}
         </div></div>`;
     });
     $('#timeline').innerHTML = html;
@@ -789,21 +801,36 @@ function planbHtml(list){
   $('#board').innerHTML = kump.map(([nm, list]) => `<div class="board-grp">${esc(nm)}</div>` + list.map(baris).join('')).join('');
   segarLangsung();
   $('#cut-title').innerHTML = `<svg class="cut-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.6 1.6M9 2.4h6M18.6 6.4l1.4-1.4"/></svg>${esc(DATA.cutoff.title)}`;
-  $('#cutoff').innerHTML = DATA.cutoff.rows.map(c => `<div><b>${fmtT(c.t)}</b><span>${esc(c.l)}</span><em>${esc(c.d)}</em></div>`).join('');
+  const IKON_CUT = {
+    '06:00':'<rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M9 20v1M15 20v1"/>',
+    '07:00':'<path d="M7 8h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9.5 13h5"/>'
+  };
+  const JAM_CUT = { '06:00':'3 jam sebelum flight', '07:00':'2 jam sebelum flight' };
+  $('#cutoff').innerHTML = DATA.cutoff.rows.map(c => `<div class="cut-kad">`
+    + `<span class="cut-i"><svg viewBox="0 0 24 24" aria-hidden="true">${IKON_CUT[c.t]||''}</svg></span>`
+    + `<b>${fmtT(c.t)}</b><span class="cut-l">${esc(c.l)}</span>`
+    + `${JAM_CUT[c.t] ? `<span class="cut-pil">${esc(JAM_CUT[c.t])}</span>` : ''}`
+    + `<details class="cut-tips"><summary>Tips</summary><em>${esc(c.d)}</em></details></div>`).join('');
   $('#cut-foot').textContent = DATA.cutoff.foot;
   $('#kl-rule').textContent = DATA.klRule;
   $('#kl-list').innerHTML = DATA.klSide.map(k => { const g = G(k.g);
     const satu = k.opts.length === 1;
     const opts = k.opts.map(o => `<div class="opt${!satu && o.main ? ' main' : ''}">
         <div class="opt-h">${satu ? '' : `<span class="opt-k">${esc(o.k)}</span>`}<b>${esc(o.name)}</b>${!satu && o.main ? '<em>Pilihan utama</em>' : ''}${o.link ? '<i class="lk">berkait</i>' : ''}</div>
-        <table class="opt-tbl"><thead><tr><th>Langkah</th><th class="num">Masa</th><th class="num">Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join('')}</tbody></table>
+        <details class="opt-lagi"><summary>More info</summary><table class="opt-tbl"><thead><tr><th>Langkah</th><th class="num">Masa</th><th class="num">Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join('')}</tbody></table>
         ${o.nota?`<div class="opt-nota">${esc(o.nota)}</div>`:''}
-        ${o.link?`<div class="opt-link">${esc(o.link)}</div>`:''}
+        ${o.link?`<div class="opt-link">${esc(o.link)}</div>`:''}</details>
       </div>`).join('');
     return `<div class="kl" style="--g:${g.color}"><h3>${esc(k.title)}<span>${esc(k.sub)}</span></h3>${opts}${k.foot?`<div class="kl-foot">${esc(k.foot)}</div>`:''}</div>`;
   }).join('');
 
-  $('#seatnote').innerHTML = `<b>Seat pesawat.</b> AirAsia jual pilihan seat sebagai tambahan. Kalau tak beli, sistem beri secara rawak dan keluarga boleh terpisah. Untuk penerbangan 55 minit ini, cara paling murah ialah beritahu kaunter check-in yang ada anak kecil — mereka biasanya boleh susun supaya duduk bersebelahan tanpa caj.`;
+  $('#seatnote').innerHTML = `<details class="kad-tips">`
+    + `<summary><span class="kt-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 20V8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v6h5a2 2 0 0 1 2 2v4"/><path d="M7 20H5M12 14h5"/></svg></span><b>Seat pesawat</b></summary>`
+    + `<ul class="kt-list">`
+    + `<li>AirAsia jual pilihan seat sebagai tambahan</li>`
+    + `<li>Kalau tak beli, sistem beri rawak dan keluarga boleh terpisah</li>`
+    + `<li>Beritahu kaunter check-in ada anak kecil — biasanya boleh susun bersebelahan tanpa caj</li>`
+    + `</ul></details>`;
 })();
 
 /* ============================================================
@@ -1030,11 +1057,16 @@ function carSvg(c, uid){
    COSTS / RAIN / CHECKLIST
    ============================================================ */
 const KOS_GRP = [['pergi','Perjalanan ke KLIA2'],['pinang','Semasa di Pulau Pinang'],['balik','Balik']];
-$('#cost-tbl').innerHTML = `<thead><tr><th>Perkara</th><th class="num">Dewasa</th><th class="num">Kanak-kanak</th></tr></thead><tbody>`
-  + KOS_GRP.map(([g,nm]) => `<tr class="grp"><td colspan="3">${esc(nm)}</td></tr>`
-      + DATA.costs.filter(c => c.grp === g).map(c => `<tr><td>${esc(c.item)}<small>${esc(c.note||'')}</small></td>`
-        + `<td class="num">${esc(c.dewasa)}</td><td class="num">${esc(c.kanak)}</td></tr>`).join('')).join('')
-  + `</tbody>`;
+// Setiap kumpulan kos jadi satu jadual dalam <details> yang tertutup
+$('#cost-tbl').outerHTML = KOS_GRP.map(([g,nm]) => {
+  const baris = DATA.costs.filter(c => c.grp === g);
+  return `<details class="kos-grp">`
+    + `<summary><b>${esc(nm)}</b><span>(${baris.length})</span></summary>`
+    + `<table id="cost-tbl-${esc(g)}" class="kos-tbl"><thead><tr><th>Perkara</th><th class="num">Dewasa</th><th class="num">Kanak-kanak</th></tr></thead><tbody>`
+    + baris.map(c => `<tr><td>${esc(c.item)}${c.note?`<small>${esc(c.note)}</small>`:''}</td>`
+      + `<td class="num">${esc(c.dewasa)}</td><td class="num">${esc(c.kanak)}</td></tr>`).join('')
+    + `</tbody></table></details>`;
+}).join('');
 $('#road-km').textContent = DATA.jalan.km;
 $('#toll-tbl').innerHTML = `<thead><tr><th>Tol</th><th>Kadar</th><th class="num">Jumlah</th></tr></thead><tbody>` + DATA.jalan.tolrows.map(r => `<tr><td>${esc(r.apa)}<small>${esc(r.bila)}</small></td><td>${esc(r.kadar)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
 $('#fuel-tbl').innerHTML = `<thead><tr><th>Bahan api</th><th class="num">Seliter</th><th class="num">1 kereta</th><th class="num">2 kereta</th></tr></thead><tbody>` + DATA.jalan.bahanapi.map(r => `<tr class="${r.utama?'utama':''}"><td>${esc(r.jenis)}</td><td class="num">${esc(r.harga)}</td><td class="num">${esc(r.kereta)}</td><td class="num">${esc(r.total)}</td></tr>`).join('') + `</tbody>`;
