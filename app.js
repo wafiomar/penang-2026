@@ -642,7 +642,8 @@ function planbHtml(list){
   $('#kl-list').innerHTML = DATA.klSide.map(k => { const g = G(k.g);
     const opts = k.opts.map(o => `<div class="opt${o.main?' main':''}">
         <div class="opt-h"><span class="opt-k">${esc(o.k)}</span><b>${esc(o.name)}</b>${o.main?'<em>Pilihan utama</em>':''}${o.link?'<i class="lk">berkait</i>':''}</div>
-        <table class="opt-tbl"><thead><tr><th>Langkah</th><th>Masa</th><th>Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table>
+        <table class="opt-tbl"><thead><tr><th>Langkah</th><th class="num">Masa</th><th class="num">Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join('')}</tbody></table>
+        ${o.nota?`<div class="opt-nota">${esc(o.nota)}</div>`:''}
         ${o.link?`<div class="opt-link">${esc(o.link)}</div>`:''}
       </div>`).join('');
     return `<div class="kl" style="--g:${g.color}"><h3>${esc(k.title)}<span>${esc(k.sub)}</span></h3>${opts}${k.foot?`<div class="kl-foot">${esc(k.foot)}</div>`:''}</div>`;

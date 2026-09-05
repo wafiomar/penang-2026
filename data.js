@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '5 September 2026, 10.32 pagi',
+    updated: '5 September 2026, 11.01 pagi',
     toddler: 2,
-    version: 'v4.5'
+    version: 'v4.6'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -42,64 +42,74 @@ const DATA = {
   // Cara ke KLIA2 pagi Sabtu, ikut kumpulan
   // Cara ke KLIA2 pagi Sabtu. Setiap kumpulan pilih SATU pilihan.
   klRule:'Setiap keluarga pilih satu pilihan sahaja. Dua pilihan bertanda "berkait" mengubah pilihan kumpulan lain — baca notanya sebelum pilih.',
+// Peraturan lajur: Langkah = tindakan sahaja; Masa = satu tempoh atau waktu jam;
+// Kos = wang sahaja. Apa-apa nasihat atau syarat masuk medan 'nota' di bawah jadual.
   klSide: [
-    { g:'F2', title:'Keluarga Hadi', sub:'4 orang', opts:[
-      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[["Pandu ke Salak Tinggi Park & Ride (berbumbung, 812 petak)","—","Parking Sab–Isn RM36 berbumbung / RM30 terbuka"],["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak 6–15"],["Naik tren 5.00 pg atau 5.30 pg","Tren pertama 5.00 pg","—"]], lines:[
-        'Pandu ke Salak Tinggi Park & Ride (berbumbung, 812 petak). Parking Sabtu–Isnin lebih kurang RM36 berbumbung atau RM30 terbuka. Bayar Touch \u2019n Go atau kad.',
-        'KLIA Transit ke KLIA2: 11 minit. RM4.90 dewasa, RM2.20 kanak-kanak 6–15 tahun, bawah 6 percuma.',
-        'Hujung minggu tren setiap 30 minit, tren pertama 5.00 pg. Naik tren 5.00 pg atau 5.30 pg supaya sampai KLIA2 sebelum 6.00 pg.'
-      ]},
-      { k:'B', name:'Ikut kereta Keluarga Wafi terus ke KLIA2', steps:[["Ikut kereta Keluarga Wafi terus ke KLIA2","—","Tiada tambang ERL"],["Sahkan kereta 7 tempat dan ruang beg untuk 6 orang","—","—"]], lines:[
-        'Tanpa ERL langsung. Jimat masa dan tambang, tapi kereta jadi 6 orang.',
-        'Perlu kereta 7 tempat dan ruang beg untuk 6 orang — sahkan dengan Wafi dahulu.'
-      ], link:'Kalau Hadi pilih B: Keluarga Wafi guna Pilihan B atau C, dan Syafi guna Pilihan D.' }
+    { g:'F2', title:'Keluarga Hadi', sub:'4 orang, dari Cyberjaya', opts:[
+      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[
+        ["Pandu dari Cyberjaya ke Salak Tinggi Park & Ride","\u00b120 minit","\u2014"],
+        ["Parking Salak Tinggi Park & Ride","\u2014","RM36 berbumbung / RM30 terbuka"],
+        ["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak 6\u201315"],
+        ["Naik tren","5.00 pg","\u2014"]
+      ], nota:'Hujung minggu tren setiap 30 minit. Naik tren 5.00 pg atau 5.30 pg supaya sampai KLIA2 sebelum 6.00 pg. Bayar parking dengan Touch \u2019n Go atau kad. Kanak-kanak bawah 6 tahun percuma.' },
+      { k:'B', name:'Ikut kereta Keluarga Wafi terus ke KLIA2', steps:[
+        ["Ikut kereta Keluarga Wafi dari Cyberjaya","\u2014","Tiada tambang ERL"]
+      ], nota:'Perlu kereta 7 tempat dan ruang beg. Sahkan dengan Wafi dahulu.',
+        link:'Kalau Keluarga Hadi pilih B, kereta Wafi jadi 6 orang. Kalau Syafi juga ikut, jadi 7 orang.' }
     ]},
-    { g:'F3', title:'Keluarga Obi', sub:'5 orang', opts:[
-      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[["Pandu ke Salak Tinggi Park & Ride","—","Parking Sab–Isn RM30–36"],["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak"],["Beli tiket tiga anak di kaunter atau mesin sebelum gate","—","—"],["Sasar tren 6.00 pg","6.00 pg","—"]], lines:[
-        'Sama seperti Keluarga Hadi: Salak Tinggi Park & Ride, kemudian KLIA Transit 11 minit.',
-        'Tambang RM4.90 dewasa, RM2.20 kanak-kanak. Tiga anak — beli tiket di kaunter atau mesin sebelum masuk gate.',
-        'Sasar tren 6.00 pg.'
-      ]},
-      { k:'B', name:'Pandu sendiri terus ke KLIA2', steps:[["Pandu sendiri terus ke KLIA2, 5 orang dan beg satu kereta","—","—"],["Parking Gateway@klia2","—","RM55 sehari, 3 hari ±RM165"],["Atau KLIA Long Term Car Park, shuttle setiap 10–15 minit","—","RM27–32 sehari"],["Bertolak dari rumah","±4.30 pg","—"]], lines:[
-        '5 orang dan beg dalam satu kereta, tiada pindah-pindah beg di stesen.',
-        'Parking Gateway@klia2 RM55 sehari, 3 hari lebih kurang RM165. Atau KLIA Long Term Car Park RM27–32 sehari dengan shuttle percuma setiap 10–15 minit.',
-        'Bertolak dari rumah lebih kurang 4.30 pg supaya sampai KLIA2 sebelum 6.00 pg.'
-      ]}
+    { g:'F3', title:'Keluarga Obi', sub:'5 orang, dari Seremban', opts:[
+      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[
+        ["Pandu dari Seremban ke Salak Tinggi Park & Ride","\u00b135 minit","\u2014"],
+        ["Parking Salak Tinggi Park & Ride","\u2014","RM30\u201336"],
+        ["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak"],
+        ["Sasar tren","6.00 pg","\u2014"]
+      ], nota:'Beli tiket tiga anak di kaunter atau mesin sebelum masuk gate.' },
+      { k:'B', name:'Pandu sendiri terus ke KLIA2', steps:[
+        ["Pandu sendiri dari Seremban terus ke KLIA2","\u2014","\u2014"],
+        ["Bertolak dari rumah","\u00b14.30 pg","\u2014"],
+        ["Parking Gateway@klia2","\u2014","RM55 sehari, 3 hari \u00b1RM165"],
+        ["Atau KLIA Long Term Car Park","\u2014","RM27\u201332 sehari"]
+      ], nota:'5 orang dan beg dalam satu kereta, tiada pindah-pindah beg di stesen. Shuttle Long Term Car Park percuma setiap 10\u201315 minit.' }
     ]},
-    { g:'F4', title:'Keluarga Wafi + Syafi', sub:'3 orang', opts:[
-      { k:'A', name:'Salak Tinggi Park & Ride + ERL', main:true, steps:[["Syafi carpool dengan Wafi dari Cyberjaya ke Salak Tinggi","—","—"],["Parking Salak Tinggi Park & Ride, 3 hari","—","±RM36"],["KLIA Transit ke KLIA2","11 minit","RM4.90 seorang sehala"]], lines:[
-        'Parking lebih kurang RM36 untuk 3 hari, tambang RM4.90 seorang sehala.',
-        'Syafi carpool dengan Wafi dari Cyberjaya ke Salak Tinggi.'
-      ]},
-      { k:'B', name:'Parking Gateway@klia2', steps:[["Pandu terus ke KLIA2, jalan ke terminal, tiada tren","—","—"],["Parking Gateway@klia2","—","RM55 sehari, 3 hari ±RM165"]], lines:[
-        'RM55 sehari, 3 hari lebih kurang RM165. Jalan terus ke terminal, tiada tren.'
-      ]},
-      { k:'C', name:'KLIA Long Term Car Park', steps:[["Pandu terus ke KLIA Long Term Car Park","—","RM27–32 sehari, 3 hari ±RM90"],["Shuttle percuma ke KLIA2","Setiap 10–15 minit","Percuma"]], lines:[
-        'RM27–32 sehari, jadi lebih kurang RM90 untuk 3 hari. Shuttle percuma ke KLIA2 setiap 10–15 minit.'
-      ]},
-      { k:'D', name:'Syafi naik ERL Putrajaya sendiri', steps:[["Parking Putrajaya Sentral","—","±RM12 sehari"],["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40"],["Tren pertama","5.22 pg","—"]], lines:[
-        'Putrajaya Sentral ke KLIA2: 20 minit, RM9.40. Tren pertama 5.22 pg. Parking Putrajaya Sentral lebih kurang RM12 sehari.'
-      ], link:'Guna D hanya kalau Keluarga Hadi pilih B. Ketika itu Keluarga Wafi akan pilih Pilihan B atau C.' }
+    { g:'F4', title:'Keluarga Wafi', sub:'2 orang, dari Cyberjaya', opts:[
+      { k:'A', name:'Pandu terus ke KLIA2', main:true, steps:[
+        ["Pandu terus dari Cyberjaya ke KLIA2","\u2014","\u2014"],
+        ["Bertolak dari rumah","5.00 \u2013 5.30 pg","\u2014"],
+        ["Parking Gateway@klia2","\u2014","RM55 sehari, 3 hari \u00b1RM165"],
+        ["Atau KLIA Long Term Car Park","\u2014","RM27\u201332 sehari"]
+      ], nota:'Saranan sampai sebelum 6.00 pagi. Bertolak 5.30 pagi bermakna sampai tepat pada waktu itu tanpa lebihan \u2014 bertolak 5.00 pagi lebih selamat. Shuttle Long Term Car Park percuma setiap 10\u201315 minit.' }
+    ]},
+    { g:'S1', title:'Syafi', sub:'1 orang, dari Cyberjaya', opts:[
+      { k:'A', name:'Ikut kereta Keluarga Wafi', steps:[
+        ["Ikut kereta Keluarga Wafi dari Cyberjaya terus ke KLIA2","\u2014","Tiada tambang ERL"]
+      ], nota:'Kereta Wafi jadi 3 orang. Kalau Keluarga Hadi juga ikut, jadi 7 orang \u2014 sahkan dengan Wafi dahulu.',
+        link:'Berkait dengan pilihan Keluarga Hadi.' },
+      { k:'B', name:'ERL dari Putrajaya Sentral', steps:[
+        ["Pandu ke Putrajaya Sentral","\u2014","Parking \u00b1RM12 sehari"],
+        ["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40"],
+        ["Tren pertama","5.22 pg","\u2014"]
+      ] }
     ]},
     { g:'G2', title:'Fitri, Madno & Fatimah', sub:'3 orang', opts:[
-      { k:'A', name:'ERL dari KL Sentral', main:true, steps:[["KLIA Ekspres tanpa henti dari KL Sentral","33 minit","RM55 dewasa sehala"],["Atau KLIA Transit","39 minit","RM55 dewasa sehala"],["KLIA Ekspres pertama 5.00 pg, tiba KLIA2 5.33 pg","5.00 pg","Tiket online 10% lebih murah"]], lines:[
-        'KLIA Ekspres 33 minit tanpa henti, atau KLIA Transit 39 minit. RM55 dewasa sehala, tiket online 10% lebih murah.',
-        'KLIA Ekspres pertama 5.00 pg dari KL Sentral, tiba KLIA2 5.33 pg — itu satu-satunya tren yang sempat untuk had 6.00 pg.'
-      ]},
-      { k:'B', name:'Grab terus ke KLIA2', steps:[["Grab terus ke KLIA2, turun di pintu berlepas Aras 3","—","Berubah ikut permintaan, biasanya lebih mahal daripada ERL untuk 3 orang"]], lines:[
-        'Turun di pintu berlepas Aras 3. Kos berubah ikut permintaan, biasanya lebih mahal daripada ERL untuk 3 orang.'
-      ]}
+      { k:'A', name:'ERL dari KL Sentral', main:true, steps:[
+        ["KLIA Ekspres tanpa henti dari KL Sentral","33 minit","RM55 dewasa sehala"],
+        ["Atau KLIA Transit","39 minit","RM55 dewasa sehala"],
+        ["KLIA Ekspres pertama dari KL Sentral","5.00 pg","\u2014"]
+      ], nota:'Tiba KLIA2 5.33 pg \u2014 itu satu-satunya tren yang sempat untuk had 6.00 pg. Tiket online 10% lebih murah.' },
+      { k:'B', name:'Grab terus ke KLIA2', steps:[
+        ["Grab terus ke KLIA2","\u2014","Berubah ikut permintaan"]
+      ], nota:'Turun di pintu berlepas Aras 3. Biasanya lebih mahal daripada ERL untuk 3 orang.' }
     ]},
     { g:'G1', title:'Halima & Kak Ayman', sub:'Ahad pagi, 2 orang', opts:[
-      { k:'A', name:'ERL dari Putrajaya', main:true, steps:[["Parking Putrajaya Sentral","—","±RM12 sehari"],["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40 dewasa"],["Tren pertama Ahad 5.22 pg, tiba KLIA2 5.42 pg","5.22 pg","—"]], lines:[
-        'Putrajaya Sentral ke KLIA2: 20 minit, RM9.40 dewasa. Parking Putrajaya Sentral lebih kurang RM12 sehari.',
-        'Tren pertama hari Ahad 5.22 pg, tiba KLIA2 5.42 pg — lebih kurang 1 jam 20 minit sebelum berlepas, memadai untuk cabin sahaja.'
-      ]},
-      { k:'B', name:'Dihantar atau Grab terus ke KLIA2', steps:[["Dihantar atau Grab terus ke KLIA2","—","Tiada parking untuk dibayar"],["Boleh sampai lebih awal — pilih ini kalau ada bagasi check-in","—","—"]], lines:[
-        'Tiada parking untuk dibayar dan boleh sampai lebih awal.',
-        'Pilih ini kalau ada bagasi check-in, sebab ERL pertama terlalu lewat untuk saranan 3 jam.'
-      ]}
-    ], foot:'Waktu berlepas 7.05 pg ialah anggaran — sahkan pada tiket sebenar. Kereta 2 (Syafi) tunggu di pintu ketibaan LTAPP pada 8.00 pg Ahad.' }
+      { k:'A', name:'ERL dari Putrajaya', main:true, steps:[
+        ["Pandu ke Putrajaya Sentral","\u2014","Parking \u00b1RM12 sehari"],
+        ["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40 dewasa"],
+        ["Tren pertama Ahad","5.22 pg","\u2014"]
+      ], nota:'Tiba KLIA2 5.42 pg \u2014 lebih kurang 1 jam 20 minit sebelum berlepas, memadai untuk cabin sahaja.' },
+      { k:'B', name:'Dihantar atau Grab terus ke KLIA2', steps:[
+        ["Dihantar atau Grab terus ke KLIA2","\u2014","Tiada parking untuk dibayar"]
+      ], nota:'Boleh sampai lebih awal. Pilih ini kalau ada bagasi check-in, sebab ERL pertama terlalu lewat untuk saranan 3 jam.' }
+    ], foot:'Waktu berlepas 7.05 pg ialah anggaran \u2014 sahkan pada tiket sebenar. Kereta 2 (Syafi) tunggu di pintu ketibaan LTAPP pada 8.00 pg Ahad.' }
   ],
 
   // Lokasi. Koordinat dari Google Places.
@@ -162,7 +172,7 @@ const DATA = {
       ringkas:['kgagong','laluna','padang'],
       km:126, toll:'RM14', tollNote:'2 kereta masuk pulau', fuel:'±RM53', azanFrom:'10:20',
       items:[
-        { t:'04:30', type:'note',  title:'Bertolak dari rumah masing-masing', meta:'Awal sebab peraturan 3 jam. Lihat "Pagi Sabtu: cara ke KLIA2" untuk laluan setiap kumpulan.', metaLink:{ text:'Pagi Sabtu: cara ke KLIA2', href:'#pagi-sabtu' } },
+        { t:'04:30', type:'note',  title:'Bertolak dari rumah masing-masing', meta:'Waktu bertolak berbeza ikut kumpulan — lihat "Pagi Sabtu: cara ke KLIA2."', metaLink:{ text:'Pagi Sabtu: cara ke KLIA2', href:'#pagi-sabtu' } },
         { t:'05:45', e:'08:45', type:'flight', title:'KLIA2 — check-in bagasi, Subuh, sarapan', place:'klia2', meta:'Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan.' },
         { t:'09:25', type:'flight', title:'Berlepas AK6154', flightRef:'AK6154', meta:'Tempoh 55 minit.' },
         { t:'10:20', type:'flight', title:'Tiba Pulau Pinang, ambil bagasi', place:'lta' },
@@ -360,6 +370,12 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'4.6', tarikh:'5 September 2026', baru:[
+      'Titik mula setiap keluarga dikemas kini: Keluarga Hadi dari Cyberjaya, Keluarga Obi dari Seremban.',
+      'Keluarga Wafi kini pandu terus ke KLIA2, tidak lagi guna ERL.',
+      'Syafi ada dua pilihan: ikut kereta Keluarga Wafi, atau ERL dari Putrajaya Sentral.',
+      'Waktu bertolak kini berbeza ikut kumpulan — lihat Pagi Sabtu: cara ke KLIA2.'
+    ]},
     { v:'4.5', tarikh:'5 September 2026',
       ganti:[
         { sebelum:'Chew Jetty', selepas:'Upside Down Museum' }
@@ -407,7 +423,8 @@ const DATA = {
     { grp:'pinang', item:'Penang Hill (pergi-balik, MyKad)', dewasa:'RM16', kanak:'RM8', note:'Express lane RM40 / RM20. Beli online sales.penanghill.gov.my.' },
     { grp:'pinang', item:'Kampung Agong', dewasa:'RM10', kanak:'RM5', note:'Bawah 4 tahun percuma. Kostum tradisional RM30.' },
     { grp:'pinang', item:'Queensbay Mall', dewasa:'Percuma', kanak:'Percuma', note:'Parking bertingkat, kadar mall biasa. Ada surau dan medan selera.' },
-    { grp:'pinang', item:'Chew Jetty, Armenian Street, Chowrasta', dewasa:'Percuma', kanak:'Percuma', note:'Parking tepi jalan MBPP 60 sen / 30 minit (app Penang Smart Parking). Parking Chowrasta kira-kira RM1 sejam.' },
+    { grp:'pinang', item:'Armenian Street, Chowrasta', dewasa:'Percuma', kanak:'Percuma', note:'Parking tepi jalan MBPP 60 sen / 30 minit (app Penang Smart Parking). Parking Chowrasta kira-kira RM1 sejam.' },
+    { grp:'pinang', item:'Upside Down Museum', dewasa:'Semak sendiri', kanak:'Semak sendiri', note:'Harga tiket belum disahkan — semak di premis atau laman rasmi muzium.' },
     { grp:'pergi', item:'KLIA Transit Salak Tinggi → KLIA2', dewasa:'RM4.90', kanak:'RM2.20', note:'Kanak-kanak 6–15 tahun. Bawah 6 percuma. 11 minit.' },
     { grp:'pergi', item:'KLIA Transit Putrajaya → KLIA2', dewasa:'RM9.40', kanak:'RM4.20', note:'20 minit.' },
     { grp:'pergi', item:'KLIA Ekspres / Transit KL Sentral → KLIA2', dewasa:'RM55', kanak:'RM25', note:'33–39 minit. Online 10% lebih murah.' },
@@ -419,7 +436,7 @@ const DATA = {
 
   rain:[
     { when:'Hari 1 petang', plan:'Hujan lebat sebelum gerak ke Kampung Agong: tukar dengan OLO Studio (Jelutong, 5 minit dari homestay) dan gerak ke Esplanade lebih awal — sempat Hameed Pata sebelum 8 mlm.' },
-    { when:'Hari 2 petang', plan:'Chew Jetty terdedah — tukar dengan Hin Bus Depot atau Gurney Plaza. Penang Hill pagi biasanya selamat.' },
+    { when:'Hari 2 petang', plan:'Upside Down Museum berhawa dingin dan berbumbung — hujan tidak menjejaskannya. Kalau nak tukar juga, Penang 3D Trick Art Museum atau Gurney Plaza. Penang Hill pagi biasanya selamat.' },
     { when:'Hari 2 malam', plan:'Gurney Plaza kalau makan malam Umi Wan ditunda atau hujan tak berhenti.' },
     { when:'Hari 3 pagi', plan:'Chowrasta, Dim Sum Valet dan Queensbay Mall semuanya berbumbung — Hari 3 selamat walaupun hujan.' },
     { when:'Habis awal mana-mana hari', plan:'Hari 1: Jeruk Madu Pak Ali. Hari 2: Avatar Secret Garden (malam), Feringghi Walk. Hari 3: tambah masa di Queensbay Mall sebelum ke LTAPP.' }
@@ -434,7 +451,7 @@ const DATA = {
     { i:'kad', t:'Touch ’n Go', nota:'Tol jambatan dan parking Salak Tinggi. App Penang Smart Parking untuk tepi jalan George Town' },
     { i:'bateri', t:'Powerbank dan kabel', nota:'Hari panjang, peta makan bateri' },
     { i:'ubat', t:'Ubat asas dan plaster', nota:'Termasuk ubat sendiri' },
-    { i:'kasut', t:'Kasut selesa', nota:'Armenian Street dan Chew Jetty banyak jalan kaki' },
+    { i:'kasut', t:'Kasut selesa', nota:'Armenian Street dan Pasar Chowrasta banyak jalan kaki' },
     { i:'snek', t:'Snek dan air budak-budak', nota:'Terutama larian ke Penaga' },
     { i:'beg', t:'Beg kecil kosong', nota:'Buah tangan Chowrasta. Timbang beg sebelum balik' },
     { i:'tiket', t:'Screenshot tiket AirAsia dan Penang Hill', nota:'Signal lemah atas bukit' }

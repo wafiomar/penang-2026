@@ -209,6 +209,10 @@ section+section{border-top:1px solid var(--line)}
 .day-intro ul{margin:0;padding:0 16px 13px 32px;display:grid;gap:5px}
 .day-intro li{line-height:1.4}
 .day-intro.d1{background:var(--d1-soft)}.day-intro.d2{background:var(--d2-soft)}.day-intro.d3{background:var(--d3-soft)}
+/* Kad putih seragam, sama gaya dengan .stay dan .board */
+.kad{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+@media (max-width:400px){.kad{padding:12px}}
+@media (max-width:340px){.kad{padding:10px}}
 .tl{position:relative}
 .ti{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line-2)}
 .ti:first-child{border-top:0}
@@ -542,6 +546,8 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .opt-tbl td{padding:6px 7px;vertical-align:top;color:var(--ink-2)}
 .opt-tbl td:first-child{color:var(--ink)}
 .opt-tbl th:nth-child(2),.opt-tbl td:nth-child(2){white-space:nowrap}
+/* Nota di bawah jadual: nasihat dan syarat, bukan dalam lajur */
+.opt-nota{margin-top:6px;font-size:.76rem;line-height:1.45;color:var(--ink-3)}
 /* Kad fakta homestay dan galeri */
 .stay .facts .fi{display:block;margin-bottom:3px}
 .stay .facts .fi svg{width:16px;height:16px;fill:none;stroke:var(--d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -630,3 +636,9 @@ footer a{color:var(--ink-2)}
 .ub-jadual td.baharu{color:var(--ink);font-weight:600}
 .ub-jadual td.pnh{width:26px;text-align:center;padding:6px 4px}
 .ub-panah{width:15px;height:15px;fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+/* Skrin sangat sempit: jadual legend halal jadi tiga lajur sangat kurus,
+   jadi kecilkan margin dan fon supaya perkataan panjang tidak pecah. */
+@media (max-width:340px){
+  .halal-tbl{margin:0 6px;width:calc(100% - 12px);font-size:.72rem}
+  .halal-tbl td,.halal-tbl th{padding-left:3px;padding-right:3px}
+}
