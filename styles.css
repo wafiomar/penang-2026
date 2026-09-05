@@ -129,6 +129,17 @@ section+section{border-top:1px solid var(--line)}
 .map-ctl button[data-day="2"].on{background:var(--d2);border-color:var(--d2);color:#fff}
 .map-ctl button[data-day="3"].on{background:var(--d3);border-color:var(--d3);color:#fff}
 .map-ctl button[data-day="all"].on{background:var(--ink);border-color:var(--ink);color:#fff}
+/* Butang main semula animasi laluan */
+.map-ulang{position:absolute;right:12px;bottom:14px;z-index:400;display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.94);color:var(--ink);cursor:pointer;box-shadow:0 1px 5px rgba(20,35,46,.16)}
+.map-ulang[hidden]{display:none}
+.map-ulang:hover,.map-ulang:focus-visible{background:#fff;border-color:var(--ink-3);outline:none}
+.map-ulang svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+/* Marker: sorok sebelum garisan sampai, kemudian timbul halus.
+   Digunakan pada div .pin, bukan bekas marker yang transformnya milik Leaflet. */
+.pin.pin-sorok{opacity:0;transform:scale(.4)}
+.pin.pin-timbul{animation:pin-timbul .34s cubic-bezier(.34,1.45,.64,1) both}
+@keyframes pin-timbul{from{opacity:0;transform:scale(.4)}60%{transform:scale(1.12)}to{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.pin.pin-timbul{animation:none}.pin.pin-sorok{opacity:1;transform:none}}
 .map-note{position:absolute;right:12px;top:12px;z-index:400;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:5px 5px 5px 10px;font-size:.78rem;color:var(--ink-2);max-width:220px}
 .map-note[hidden]{display:none}
 .map-note button{flex:none;display:flex;align-items:center;justify-content:center;width:26px;height:26px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--ink-3);cursor:pointer}
@@ -271,7 +282,7 @@ section+section{border-top:1px solid var(--line)}
 .flag.warn{background:var(--warn-soft);color:var(--warn)}
 .flag.info{background:var(--line-2);color:var(--ink-2)}
 /* Aktiviti pilihan, bukan wajib */
-.flag.opt{background:var(--d3-soft);color:var(--d3)}
+.flag.pilih{background:var(--d3-soft);color:var(--d3)}
 .ti.pilihan .ti-time{opacity:.7}
 .ti.pilihan .ti-title>span{font-weight:600}
 .ti-move{padding:6px 0}

@@ -289,7 +289,10 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 /* ============================================================
    MAP
    ============================================================ */
-const MAP = { map:null, layers:{}, all:null, marks:{}, pilihHari:null };
+const MAP = { map:null, layers:{}, all:null, marks:{}, pilihHari:null,
+  garis:{},   // lapisan laluan utama setiap hari (fallback atau geometri OSRM)
+  pin:{},     // marker bernombor mengikut turutan
+  anim:null };
 function initMap(){
   if(typeof L === 'undefined'){ $('#map').style.display='none'; $('#map-fallback').style.display='block'; $('#map-ctl').style.display='none'; $('#map-note').style.display='none'; return; }
   const map = L.map('map', { scrollWheelZoom:false, zoomControl:true, attributionControl:true });
@@ -314,10 +317,12 @@ function initMap(){
       const mk = L.marker([p.lat,p.lng], { icon:L.divIcon({ className:'', html:`<div class="pin d${d}">${i+1}</div>`, iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-12] }) })
         .bindPopup(popupHtml(p, d, item)).addTo(lg);
       MAP.marks[d + ':' + id] = mk;
+      (MAP.pin[d] = MAP.pin[d] || []).push(mk);
     });
     // Route: straight fallback first, replaced by OSRM geometry if available
     const pts = DATA.routes[d].map(id => [P[id].lat, P[id].lng]);
     const fallback = L.polyline(pts, { color:colors[d], weight:3, opacity:.7, dashArray:'6 8' }).addTo(lg);
+    MAP.garis[d] = fallback;
     // Larian sampingan: putus-putus dan lebih pudar supaya jelas ia bukan laluan semua orang
     const lr = DATA.larian && DATA.larian[d];
     if(lr){
@@ -336,11 +341,33 @@ function initMap(){
     const btn = e.target.closest('button'); if(!btn) return;
     tunjukHari(btn.dataset.day);
   });
+  const btnUlang = $('#map-ulang');
+  if(btnUlang) btnUlang.addEventListener('click', () => {
+    const kini = $('#map-ctl .on');
+    if(kini && kini.dataset.day !== 'all') mainAnimasi(+kini.dataset.day);
+  });
   MAP.pilihHari = tunjukHari;
-  function tunjukHari(sel){
+  function tunjukHari(sel, tanpaAnimasi){
     const btn = [...$('#map-ctl').children].find(x => x.dataset.day === sel) || $('#map-ctl').children[0];
     [...$('#map-ctl').children].forEach(x=>x.classList.toggle('on', x===btn));
     [1,2,3].forEach(d => { if(sel==='all' || String(d)===sel) MAP.layers[d].addTo(map); else map.removeLayer(MAP.layers[d]); });
+    habisAnimasi();
+    const btnUlang = $('#map-ulang');
+    if(sel === 'all'){
+      // Tiga hari serentak tidak dianimasikan — papar terus
+      [1,2,3].forEach(n => (MAP.pin[n]||[]).forEach(mk => tunjukPin(mk, false)));
+      if(btnUlang) btnUlang.hidden = true;
+    } else {
+      [1,2,3].forEach(n => { if(String(n) !== sel) (MAP.pin[n]||[]).forEach(mk => tunjukPin(mk, false)); });
+      if(tanpaAnimasi){
+        (MAP.pin[+sel]||[]).forEach(mk => tunjukPin(mk, false));
+      } else {
+        setTimeout(() => {
+          const kini = $('#map-ctl .on');
+          if(kini && kini.dataset.day === sel) mainAnimasi(+sel);
+        }, 260);   // biar fitBounds selesai dahulu
+      }
+    }
     if(sel==='all') map.fitBounds(b, { padding:[24,24] });
     else {
       // Sertakan larian sampingan supaya ia tidak terkeluar dari paparan
@@ -352,6 +379,121 @@ function initMap(){
     }
   }
 }
+/* ============================================================
+   ANIMASI LALUAN PETA — hiasan sahaja
+   ============================================================ */
+// Melukis laluan hari secara beransur dan menimbulkan marker mengikut
+// turutan. Tidak menyekat geseran atau zum: hanya stroke-dashoffset yang
+// berubah setiap bingkai. Kalau apa-apa gagal, laluan dipapar penuh.
+const TEMPOH_ANIM = 2500;
+
+function kurangGerak(){ return matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+// Cari elemen <path> SVG bagi satu lapisan Leaflet (polyline atau geoJSON)
+function pathLapisan(lyr){
+  if(!lyr) return null;
+  if(lyr.getElement){ const e = lyr.getElement(); if(e && e.tagName === 'path') return e; }
+  let hasil = null;
+  if(lyr.eachLayer) lyr.eachLayer(l => {
+    if(hasil || !l.getElement) return;
+    const e = l.getElement(); if(e && e.tagName === 'path') hasil = e;
+  });
+  return hasil;
+}
+
+// Pecahan 0–1 kedudukan setiap marker di sepanjang path, dicari dengan
+// membandingkan titik sampel path dengan kedudukan marker.
+function pecahanPin(path, pins){
+  const L = path.getTotalLength();
+  if(!L || !isFinite(L)) return pins.map(() => 0);
+  const N = 200, titik = [];
+  for(let i = 0; i <= N; i++) titik.push(path.getPointAtLength(L * i / N));
+  return pins.map(mk => {
+    const lp = MAP.map.latLngToLayerPoint(mk.getLatLng());
+    let best = 0, bd = Infinity;
+    for(let i = 0; i <= N; i++){
+      const dx = titik[i].x - lp.x, dy = titik[i].y - lp.y, dd = dx*dx + dy*dy;
+      if(dd < bd){ bd = dd; best = i; }
+    }
+    return best / N;
+  });
+}
+
+// Leaflet mengawal transform pada bekas marker, jadi animasikan div .pin
+// di dalamnya — kalau tidak, marker akan tersasar dari kedudukannya.
+function isiPin(mk){
+  const el = mk && mk.getElement && mk.getElement();
+  return el ? (el.querySelector('.pin') || el) : null;
+}
+function tunjukPin(mk, timbul){
+  const el = isiPin(mk); if(!el) return;
+  el.classList.remove('pin-sorok');
+  if(timbul){ el.classList.remove('pin-timbul'); void el.offsetWidth; el.classList.add('pin-timbul'); }
+}
+function sorokPin(mk){
+  const el = isiPin(mk);
+  if(el){ el.classList.remove('pin-timbul'); el.classList.add('pin-sorok'); }
+}
+
+// Hentikan animasi dan papar laluan penuh serta-merta
+function habisAnimasi(){
+  const A = MAP.anim; if(!A) return;
+  MAP.anim = null;
+  if(A.raf) cancelAnimationFrame(A.raf);
+  if(A.onZoom) MAP.map.off('zoomend', A.onZoom);
+  if(A.path){
+    A.path.style.strokeDasharray = A.dashAsal || '';
+    A.path.style.strokeDashoffset = '';
+  }
+  (A.pins || []).forEach(mk => tunjukPin(mk, false));
+}
+
+function mainAnimasi(d){
+  habisAnimasi();
+  const btnUlang = $('#map-ulang');
+  const pins = MAP.pin[d] || [];
+  if(kurangGerak()){ pins.forEach(mk => tunjukPin(mk, false)); if(btnUlang) btnUlang.hidden = false; return; }
+  const path = pathLapisan(MAP.garis[d]);
+  if(!path || !path.getTotalLength){ pins.forEach(mk => tunjukPin(mk, false)); return; }
+  let L;
+  try { L = path.getTotalLength(); } catch(e){ pins.forEach(mk => tunjukPin(mk, false)); return; }
+  if(!L || !isFinite(L)){ pins.forEach(mk => tunjukPin(mk, false)); return; }
+
+  let pecahan;
+  try { pecahan = pecahanPin(path, pins); }
+  catch(e){ pecahan = pins.map((_, i) => (i + 1) / (pins.length + 1)); }
+
+  const dashAsal = path.style.strokeDasharray || '';
+  const A = MAP.anim = { path, pins, pecahan, dashAsal, mula:performance.now(), L, raf:null, onZoom:null };
+  pins.forEach(sorokPin);
+  path.style.strokeDasharray = L + ' ' + L;
+  path.style.strokeDashoffset = L;
+  if(btnUlang) btnUlang.hidden = false;
+
+  // Zum menukar panjang path; kira semula supaya garisan tidak melompat
+  A.onZoom = () => {
+    if(MAP.anim !== A) return;
+    try {
+      const baru = path.getTotalLength();
+      if(baru && isFinite(baru)){ A.L = baru; path.style.strokeDasharray = baru + ' ' + baru; }
+    } catch(e){ habisAnimasi(); }
+  };
+  MAP.map.on('zoomend', A.onZoom);
+
+  const langkah = now => {
+    if(MAP.anim !== A) return;
+    const k = Math.min(1, (now - A.mula) / TEMPOH_ANIM);
+    A.path.style.strokeDashoffset = A.L * (1 - k);
+    for(let i = 0; i < pins.length; i++){
+      if(k >= A.pecahan[i] && pins[i]._muncul !== true){ pins[i]._muncul = true; tunjukPin(pins[i], true); }
+    }
+    if(k < 1) A.raf = requestAnimationFrame(langkah);
+    else habisAnimasi();
+  };
+  pins.forEach(mk => { mk._muncul = false; });
+  A.raf = requestAnimationFrame(langkah);
+}
+
 function popupHtml(p, d, item){
   const when = item ? (fmtT(item.t) + (item.e ? ' – ' + fmtT(item.e) : '')) : '';
   return `<div>${d?`<div class="pp-day" style="color:var(--d${d})">Hari ${d}${when?', '+esc(when):''}</div>`:''}
@@ -371,6 +513,10 @@ async function fetchRoute(d, pts, color, lg, fallback, gaya){
     const baru = L.geoJSON(route.geometry, { style:st }).addTo(lg);
     if(gaya && gaya.label) baru.bindTooltip(gaya.label, { sticky:true });
     if(d === null) return;
+    MAP.garis[d] = baru;
+    // Animasi hanya selepas laluan sebenar siap, dan hanya untuk hari yang sedang dilihat
+    const aktif = $('#map-ctl .on');
+    if(aktif && aktif.dataset.day === String(d)) mainAnimasi(d);
     const min = Math.round(route.duration/60);
     const el = $(`#rs-time-${d}`); if(el) el.textContent = durShort(min);
   }catch(err){
@@ -568,10 +714,16 @@ function planbHtml(list){
       const d = b.dataset.mday, id = b.dataset.mplace, mk = MAP.marks[d + ':' + id];
       if(!mk || !MAP.map) return;
       const aktif = $('#map-ctl .on');
-      if(!aktif || (aktif.dataset.day !== d && aktif.dataset.day !== 'all')) MAP.pilihHari(d);
-      else if(aktif.dataset.day === 'all') MAP.pilihHari(d);
+      if(!aktif || aktif.dataset.day !== d) MAP.pilihHari(d, true);   // tanpa animasi
+      else habisAnimasi();
       $('#peta').scrollIntoView({ behavior:'smooth', block:'start' });
-      setTimeout(() => { MAP.map.invalidateSize(); MAP.map.setView(mk.getLatLng(), Math.max(MAP.map.getZoom(), 14), { animate:true }); mk.openPopup(); }, 450);
+      habisAnimasi();   // jangan buat orang tunggu animasi
+      setTimeout(() => {
+        habisAnimasi();
+        MAP.map.invalidateSize();
+        MAP.map.setView(mk.getLatLng(), Math.max(MAP.map.getZoom(), 14), { animate:true });
+        mk.openPopup();
+      }, 450);
     }));
   }
 })();

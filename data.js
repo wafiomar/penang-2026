@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '5 September 2026, 11.22 pagi',
+    updated: '5 September 2026, 11.49 pagi',
     toddler: 2,
-    version: 'v4.7'
+    version: 'v4.8'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -205,7 +205,7 @@ const DATA = {
         { t:'16:10', e:'17:15', type:'stop', title:'Upside Down Museum', place:'udm', meta:'Berhawa dingin, tak terjejas kalau hujan atau panas.', planB:[{ place:"trick3d", why:"Muzium gambar 3D berdekatan.", kei:"Muzium gambar 3D, berhawa dingin" }, { place:"kamera", why:"Atas Armenian Street sendiri, tak perlu alih kereta.", kei:"Tour interaktif kamera lama" }, { place:"peranakan", why:"Rumah agam Baba-Nyonya, 5 minit dari sini.", kei:"Rumah agam Baba-Nyonya, RM30 seorang" }, { place:"gurneybay", why:"Kalau nak lapang dan percuma, paling elok menjelang senja.", kei:"Taman tepi laut, taman permainan dan skate park" }, { place:"gurney", why:"Kalau hujan petang.", kei:"Mall di Persiaran Gurney" }] },
         { move:{ km:4, min:12 } },
         { t:'17:30', e:'18:50', type:'homestay', title:'Balik homestay — rehat, mandi', place:'homestay' },
-        { t:'17:45', e:'18:30', type:'stop', pilihan:true, title:'Jalan-jalan di Karpal Singh Drive', place:'ksd', flags:[{k:'opt',v:'Pilihan'}], meta:'Sesiapa yang penat boleh terus rehat di homestay. Tak perlu memandu — ia betul-betul di luar homestay.' },
+        { t:'17:45', e:'18:30', type:'stop', pilihan:true, title:'Jalan-jalan di Karpal Singh Drive', place:'ksd', flags:[{k:'pilih',v:'Pilihan'}], meta:'Sesiapa yang penat boleh terus rehat di homestay. Tak perlu memandu — ia betul-betul di luar homestay.' },
         { t:'19:00', e:'19:45', type:'solat', title:'Solat Maghrib (jamak Isyak)', place:'homestay', meta:'Maghrib 7.21 mlm.' },
         { t:'20:00', e:'22:00', type:'meal', title:'Makan malam bersama Umi Wan', meta:'Lokasi setakat ini di tanah besar. Akan dikemas kini.', planB:[{ name:"Premium Chinese Muslim Cuisine", rating:4.3, reviews:297, kei:"Masakan Cina Muslim" }, { name:"Tok Ma Malay Kitchen", addr:"George Town", kei:"Masakan Melayu" }, { name:"The Table Penang", rating:4.4, reviews:1025, kei:"Restoran makan malam" }, { name:"Rumah Kacha", rating:4.3, reviews:710, kei:"Restoran makan malam" }, { name:"Jawi House Cafe Gallery", rating:4.5, reviews:1573, kei:"Kafe dan galeri" }] },
         { t:'22:30', type:'homestay', title:'Balik homestay', place:'homestay', planB:[{ name:"Avatar Secret Garden", addr:"Tanjung Tokong", why:"Masih bertenaga: lampu malam.", kei:"Taman lampu malam" }, { name:"Gurney Bay Park", rating:4.5, reviews:893, why:"Basikal pantai.", kei:"Taman tepi laut, sesuai berbasikal" }, { name:"Feringghi Walk", why:"Basikal pantai.", kei:"Laluan tepi pantai, sesuai berbasikal" }] }
