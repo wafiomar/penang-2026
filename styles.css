@@ -231,6 +231,7 @@ section+section{border-top:1px solid var(--line)}
 .ti-pils .pil.mkn{background:var(--d1-soft,#F6EADB);color:var(--d1)}
 .ti-pils .pil.slt{background:var(--d3-soft);color:var(--d3)}
 .ti-pils .pil.lain{background:var(--line-2);color:var(--ink-2)}
+.ti-pils .pil.sapa{background:#EAF0F8;color:#2F5AA8}
 /* Teks kecil butiran ringkas */
 .ti-kecil{margin-top:4px;font-size:.8rem;line-height:1.4;color:var(--ink-2)}
 
@@ -682,11 +683,6 @@ footer a{color:var(--ink-2)}
 .cut-i svg{width:17px;height:17px;fill:none;stroke:var(--d3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .cut-l{font-size:.8rem;line-height:1.35;color:var(--ink-2)}
 .cut-pil{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--d3-soft);color:var(--d3);font-size:.7rem;font-weight:700;white-space:nowrap}
-.cut-tips{margin-top:2px}
-.cut-tips>summary{cursor:pointer;list-style:none;font-size:.74rem;font-weight:600;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:2px}
-.cut-tips>summary::-webkit-details-marker{display:none}
-.cut-tips>summary:hover{color:var(--ink)}
-.cut-tips em{display:block;margin-top:5px;font-style:normal;font-size:.76rem;line-height:1.45;color:var(--ink-3)}
 @media (max-width:380px){#cutoff{grid-template-columns:1fr}}
 /* D) Kad tips seat pesawat */
 .kad-tips{margin-top:14px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel)}
@@ -707,3 +703,26 @@ footer a{color:var(--ink-2)}
 .kos-grp[open]>summary::after{transform:rotate(-135deg)}
 .kos-tbl{border:0;border-radius:0;margin:0}
 .kos-tbl th{background:var(--paper)}
+/* Satu butang Tips untuk kedua-dua kad waktu sampai */
+.cut-tipsbtn{margin-top:10px;padding:11px 13px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel)}
+.cut-tipsbtn>summary{display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;font-size:.9rem}
+.cut-tipsbtn>summary::-webkit-details-marker{display:none}
+.cut-tipsbtn>summary::after{content:"";margin-left:auto;width:7px;height:7px;border-right:1.7px solid var(--ink-3);border-bottom:1.7px solid var(--ink-3);transform:rotate(45deg)}
+.cut-tipsbtn[open]>summary::after{transform:rotate(-135deg)}
+.cut-nota{margin-top:8px;font-size:.78rem;line-height:1.5;color:var(--ink-3)}
+/* Rajah seat pesawat A320 */
+.planebox{display:block;width:100%;margin:10px 0 0;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--paper);cursor:zoom-in}
+.planebox:hover,.planebox:focus-visible{border-color:var(--ink-3);outline:none}
+.planemap{display:block;width:100%;max-width:230px;height:auto;margin:0 auto}
+.planekey{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:9px;font-size:.72rem;color:var(--ink-2)}
+.planekey span{display:inline-flex;align-items:center;gap:5px}
+.planekey .pk{width:11px;height:11px;border-radius:3px;flex:none}
+.planekey .pk.hot{background:var(--warn-soft);border:1px solid var(--warn)}
+.planekey .pk.biasa{background:var(--line-2)}
+.planekey .pk.wc{background:var(--d3);opacity:.3}
+.planekey .pk.exit{background:transparent;border-left:2.5px solid var(--d3);border-radius:0;width:7px}
+.planekecil{margin-top:7px;font-size:.74rem;color:var(--ink-3)}
+/* Modal rajah: penuh dan boleh diskrol mendatar pada telefon */
+.pm-isi{flex:1 1 auto;min-height:0;overflow:auto;margin-top:6px;-webkit-overflow-scrolling:touch}
+.pm-isi .planemap{max-width:none;width:auto;height:auto;min-width:260px;max-height:none}
+@media (max-width:560px){.pm-isi .planemap{height:70vh;width:auto}}

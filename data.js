@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '5 September 2026, 2.36 petang',
+    updated: '5 September 2026, 3.01 petang',
     toddler: 2,
-    version: 'v4.9'
+    version: 'v5.0'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -155,14 +155,14 @@ const DATA = {
   days: [
     { n:1, date:"2026-09-12", label:"Sabtu, 12 Sept", short:"Sabtu", intro:["Kampung Agong di Penaga tutup 6.00 ptg — tiada peluang kedua.", "Satu-satunya hari kita keluar pulau, dan hari paling banyak memandu.", "Kira masa ikut keadaan trafik semasa."], ringkas:["kgagong", "laluna", "padang"], km:126, toll:"RM14", tollNote:"2 kereta masuk pulau", fuel:"±RM53", azanFrom:"10:20", items:[
         { t:"04:30", type:"note", title:"Bertolak dari rumah", kecil:"Waktu bertolak berbeza ikut kumpulan", metaLink:{ text:"Pagi Sabtu: cara ke KLIA2", href:"#pagi-sabtu" } },
-        { t:"05:45", e:"08:45", type:"flight", title:"KLIA2", place:"klia2", pills:["Check-in", "Breakfast"], kecil:"check-in bagasi, Subuh, sarapan", meta:"Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan." },
+        { t:"05:45", e:"08:45", type:"flight", title:"KLIA2", place:"klia2", pills:["Check-in bagasi", "Breakfast"], kecil:"check-in bagasi, Subuh, sarapan", meta:"Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan." },
         { t:"09:25", type:"flight", title:"Berlepas", flightRef:"AK6154", kecil:"Tempoh 55 minit" },
         { t:"10:20", type:"flight", title:"Tiba Pulau Pinang", place:"lta", kecil:"ambil bagasi" },
         { t:"11:30", type:"move2", title:"Ambil kereta sewa", kecil:"Kereta 1 Wafi, Kereta 2 Syafi", meta:"Kereta 1 starting driver Wafi, Kereta 2 starting driver Syafi. Semak kereta, ambil gambar sekeliling badan kereta sebelum bergerak." },
         { move:{ km:9.9, min:6 } },
         { t:"11:45", e:"12:45", type:"meal", title:"Nasi Kandar Beratur 786", place:"beratur", pills:["Lunch"], planB:[{ name:"Arab Street", addr:"31-1-15, The CEO, Lebuh Nipah 5, Bayan Lepas", rating:4.9, reviews:193, hours:"11.00 pg – 11.00 mlm, Jumaat buka 2.00 ptg", why:"Masakan Arab halal, shawarma dan nasi mandi, porsi besar.", kei:"Masakan Arab, shawarma dan nasi mandi" }, { name:"Minah Restaurant", addr:"Jalan Sultan Azlan Shah, Taman Tun Sardon, Gelugor", rating:4.3, reviews:1300, hours:"9.00 pg – 4.00 ptg, tutup Isnin", why:"Masakan Melayu, banyak pilihan lauk dan ulam.", kei:"Masakan Melayu, banyak pilihan lauk dan ulam" }, { name:"Cargas Café", addr:"Main Road Bayan Lepas", rating:4.3, reviews:3208, why:"Nasi campur murah, 2 minit dari LTAPP, tapi panas dan self-service.", kei:"Nasi campur murah, self-service" }, { name:"Bayan Baru Market Food Court", why:"Medan selera MBPP, banyak gerai Muslim, semua orang boleh pilih sendiri. 12 minit.", rating:4, reviews:1812, kei:"Medan selera MBPP, banyak gerai Muslim" }, { name:"Alunan Rasa by Irama Dining", addr:"Setia Triangle", rating:4.6, reviews:321, why:"Ada surau, tapi buka 12.00 tgh sahaja.", kei:"Restoran, ada surau" }] },
         { move:{ km:15.1, min:20, via:"Lebuhraya Tun Dr Lim Chong Eu" } },
-        { t:"13:05", e:"14:15", type:"homestay", title:"Check-in homestay", place:"homestay", pills:["Check-in", "Solat jamak"], flags:[{ k:"warn", v:"Check-in awal belum disahkan" }], meta:"Check-in rasmi 3.00 ptg. Wafi minta awal, tetapi belum disahkan — anggap ia belum pasti sampai homestay jawab.", planB:[{ text:"Kalau tak boleh masuk: letak beg di lobi atau dalam kereta, solat Zuhur jamak Asar di Masjid Jamek Jelutong (5 minit) atau surau berdekatan, kemudian gerak terus ke Kampung Agong. Beg masuk bilik lepas balik malam." }, { text:"Jangan pusing-pusing menunggu — Kampung Agong tutup 6.00 ptg, jadi masa lebih baik dihabiskan di sana." }, { text:"Sahkan dengan tuan homestay seminggu sebelum trip supaya tak jadi teka-teki pada hari itu." }] },
+        { t:"13:05", e:"14:15", type:"homestay", title:"Check-in homestay", place:"homestay", pills:["Check-in homestay", "Solat jamak"], flags:[{ k:"warn", v:"Check-in awal belum disahkan" }], meta:"Check-in rasmi 3.00 ptg. Wafi minta awal, tetapi belum disahkan — anggap ia belum pasti sampai homestay jawab.", planB:[{ text:"Kalau tak boleh masuk: letak beg di lobi atau dalam kereta, solat Zuhur jamak Asar di Masjid Jamek Jelutong (5 minit) atau surau berdekatan, kemudian gerak terus ke Kampung Agong. Beg masuk bilik lepas balik malam." }, { text:"Jangan pusing-pusing menunggu — Kampung Agong tutup 6.00 ptg, jadi masa lebih baik dihabiskan di sana." }, { text:"Sahkan dengan tuan homestay seminggu sebelum trip supaya tak jadi teka-teki pada hari itu." }] },
         { move:{ km:37.4, min:65, via:"Jambatan Pulau Pinang → Butterworth → Kepala Batas → Penaga. Kira masa ikut keadaan trafik semasa." } },
         { t:"15:20", e:"17:30", type:"stop", title:"Kampung Agong", place:"kgagong", flags:[{ k:"warn", v:"Tutup 6.00 ptg" }], planB:[{ place:"pakteh", why:"Kedai buah viral di Bukit Mertajam. Jalan pusing 30 km dari sini, jadi ia ganti La Luna, bukan tambahan." }, { text:"Nak makan di Hameed Pata Mee Sotong (tutup 8 mlm): keluar Kg Agong 5.00 ptg, terus ke Esplanade, makan 6.15–7.15 mlm, kemudian solat Maghrib di Masjid Kapitan Keling berdekatan." }, { place:"olo", why:"Hujan lebat: berbumbung. Gerak ke Esplanade lebih awal." }] },
         { move:{ km:40.2, min:70, via:"Melalui Jambatan Pulau Pinang terus ke Bayan Lepas." } },
@@ -207,8 +207,8 @@ const DATA = {
         { t:"12:20", e:"14:00", type:"rehat", title:"Queensbay Mall", place:"queensbay", pills:["Solat jamak"], kecil:"rehat, solat Zuhur, beli barang akhir", flags:[{ k:"info", v:"Zohor 1.16 ptg" }], meta:"Berhawa dingin, ada surau untuk solat Zuhur, dan medan selera kalau sesiapa nak makan ringan. 14 minit dari sini ke LTAPP.", planB:[{ text:"Terus ke LTAPP dari Lebuh Keng Kwee (25 minit) kalau semua dah penat — tiba 12.30 tgh, buffer sangat besar." }, { name:"Snake Temple", why:"5 minit dari LTAPP, kalau nak singgah pendek yang lain.", rating:3.9, reviews:1847, kei:"Tokong ular" }] },
         { move:{ km:8, min:14 } },
         { t:"14:15", type:"flight", title:"Tiba LTAPP", place:"lta", kecil:"turunkan Fitri & Fatimah, pulangkan kereta", meta:"Fitri & Fatimah check-in terus untuk flight 4.00 ptg (buffer 1 jam 45 minit). Yang lain pulangkan 2 kereta, kemudian check-in untuk 5.15 ptg." },
-        { t:"16:00", type:"flight", title:"Berlepas", kecil:"Fitri & Fatimah, AirAsia ke KLIA2" },
-        { t:"17:15", type:"flight", title:"Berlepas", kecil:"semua yang lain, AirAsia ke KLIA2" },
+        { t:"16:00", type:"flight", title:"Berlepas", pills:["Fitri & Fatimah"], kecil:"AirAsia ke KLIA2" },
+        { t:"17:15", type:"flight", title:"Berlepas", pills:["Semua yang lain"], kecil:"AirAsia ke KLIA2" },
         { t:"18:15", type:"flight", title:"Tiba KLIA2", place:"klia2", kecil:"Ambil bagasi, ERL atau kereta balik", meta:"Ambil bagasi, ERL/kereta balik. Tren KLIA Transit ke Salak Tinggi 11 minit, ke Putrajaya 20 minit." }
     ]}
   ],

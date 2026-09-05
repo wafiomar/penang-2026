@@ -676,7 +676,9 @@ function planbHtml(list){
       const flags = (it.flags||[]).map(f => `<span class="flag ${f.k}">${esc(f.v)}</span>`).join('');
       // Pil piawai di bawah tajuk
       const KELAS_PIL = { 'Breakfast':'mkn', 'Lunch':'mkn', 'Dinner':'mkn', 'Snacking':'mkn',
-        'Solat jamak':'slt', 'Take away':'lain', 'Pilihan':'lain', 'Check-in':'lain', 'Check-out':'lain' };
+        'Solat jamak':'slt', 'Take away':'lain', 'Pilihan':'lain',
+        'Check-in bagasi':'lain', 'Check-in homestay':'lain', 'Check-out':'lain',
+        'Fitri & Fatimah':'sapa', 'Semua yang lain':'sapa' };
       const pils = (it.pills||[]).map(v => `<span class="pil ${KELAS_PIL[v]||'lain'}">${esc(v)}</span>`).join('');
       const pilBaris = (pils || fr) ? `<div class="ti-pils">${fr}${pils}</div>` : '';
       const kecil = it.kecil ? `<div class="ti-kecil">${esc(it.kecil)}</div>` : '';
@@ -788,6 +790,52 @@ function planbHtml(list){
 })();
 
 /* ============================================================
+   SEAT MAP PESAWAT A320 — dijana sebagai SVG, bukan grafik AirAsia
+   ============================================================ */
+// Susun atur A320 AirAsia: baris 1–12 dan 14–32 (tiada baris 13),
+// enam seat sebaris (A B C | lorong | D E F).
+const PLANE = {
+  barisan: [...Array(12).keys()].map(i => i + 1).concat([...Array(19).keys()].map(i => i + 14)),
+  hot: [1, 2, 3, 4, 5, 12, 14],       // Hot Seat, bayaran tambahan
+  keluar: [12, 14],                    // baris pintu kecemasan
+  huruf: ['A','B','C','D','E','F'],
+  sw: 20, sh: 18, gap: 3, lorong: 16, x0: 30, y0: 40, rowGap: 5
+};
+function planeSvg(){
+  const P = PLANE;
+  const lebarKabin = P.huruf.length * P.sw + 5 * P.gap + P.lorong;
+  const W = P.x0 + lebarKabin + 30;
+  const H = P.y0 + P.barisan.length * (P.sh + P.rowGap) + 46;
+  const xSeat = k => P.x0 + k * (P.sw + P.gap) + (k >= 3 ? P.lorong : 0);
+  let s = `<rect x="${P.x0 - 12}" y="${P.y0 - 22}" width="${lebarKabin + 24}" height="${H - P.y0 + 8}" rx="26" fill="var(--panel)" stroke="var(--line)"/>`;
+  // Tandas: satu di hadapan sebelah kiri, dua di belakang
+  const wc = (x, y, lbl) => `<g><rect x="${x}" y="${y}" width="${P.sw + 6}" height="${P.sh}" rx="4" fill="var(--d3)" opacity=".18"/>`
+    + `<text x="${x + (P.sw + 6) / 2}" y="${y + P.sh / 2 + 3.5}" text-anchor="middle" font-size="8" font-weight="700" fill="var(--d3)">${lbl}</text></g>`;
+  s += wc(P.x0 - 4, P.y0 - 18, 'WC');
+  const yAkhir = P.y0 + P.barisan.length * (P.sh + P.rowGap) + 4;
+  s += wc(P.x0 - 4, yAkhir, 'WC') + wc(xSeat(4) - 2, yAkhir, 'WC');
+  P.barisan.forEach((no, ri) => {
+    const y = P.y0 + ri * (P.sh + P.rowGap);
+    const panas = P.hot.includes(no);
+    s += `<text x="${P.x0 - 16}" y="${y + P.sh / 2 + 3.5}" text-anchor="end" font-size="8" fill="var(--ink-3)">${no}</text>`;
+    P.huruf.forEach((h, k) => {
+      const x = xSeat(k);
+      s += `<rect x="${x}" y="${y}" width="${P.sw}" height="${P.sh}" rx="4"`
+        + ` fill="${panas ? 'var(--warn-soft)' : 'var(--line-2)'}"`
+        + ` stroke="${panas ? 'var(--warn)' : 'none'}" stroke-width="${panas ? .8 : 0}" stroke-opacity=".45"/>`;
+      s += `<text x="${x + P.sw / 2}" y="${y + P.sh / 2 + 3.5}" text-anchor="middle" font-size="8"`
+        + ` fill="${panas ? 'var(--warn)' : 'var(--ink-3)'}">${h}</text>`;
+    });
+    if(P.keluar.includes(no)){
+      const yy = y + P.sh / 2;
+      s += `<g stroke="var(--d3)" stroke-width="2" stroke-linecap="round">`
+        + `<path d="M${P.x0 - 11} ${yy - 6}v12"/><path d="M${P.x0 + lebarKabin + 11} ${yy - 6}v12"/></g>`;
+    }
+  });
+  return `<svg class="planemap" viewBox="0 0 ${W} ${H}" role="img" aria-label="Susun atur seat pesawat A320 AirAsia">${s}</svg>`;
+}
+
+/* ============================================================
    FLIGHTS
    ============================================================ */
 (function flights(){
@@ -810,8 +858,12 @@ function planbHtml(list){
     + `<span class="cut-i"><svg viewBox="0 0 24 24" aria-hidden="true">${IKON_CUT[c.t]||''}</svg></span>`
     + `<b>${fmtT(c.t)}</b><span class="cut-l">${esc(c.l)}</span>`
     + `${JAM_CUT[c.t] ? `<span class="cut-pil">${esc(JAM_CUT[c.t])}</span>` : ''}`
-    + `<details class="cut-tips"><summary>Tips</summary><em>${esc(c.d)}</em></details></div>`).join('');
-  $('#cut-foot').textContent = DATA.cutoff.foot;
+    + `</div>`).join('');
+  // Satu butang Tips untuk kedua-dua kad, termasuk butiran setiap waktu
+  $('#cut-foot').outerHTML = `<details class="cut-tipsbtn" id="cut-foot">`
+    + `<summary><span class="kt-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 17.5h5.6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 1 3.4 9.8c-.6.5-.9 1.1-.9 1.8H9.5c0-.7-.3-1.3-.9-1.8A5.5 5.5 0 0 1 12 3.5Z"/></svg></span><b>Tips</b></summary>`
+    + `<ul class="kt-list">${DATA.cutoff.rows.map(c => `<li><b>${fmtT(c.t)}</b> — ${esc(c.d)}</li>`).join('')}</ul>`
+    + `<p class="cut-nota">${esc(DATA.cutoff.foot)}</p></details>`;
   $('#kl-rule').textContent = DATA.klRule;
   $('#kl-list').innerHTML = DATA.klSide.map(k => { const g = G(k.g);
     const satu = k.opts.length === 1;
@@ -830,8 +882,39 @@ function planbHtml(list){
     + `<li>AirAsia jual pilihan seat sebagai tambahan</li>`
     + `<li>Kalau tak beli, sistem beri rawak dan keluarga boleh terpisah</li>`
     + `<li>Beritahu kaunter check-in ada anak kecil — biasanya boleh susun bersebelahan tanpa caj</li>`
-    + `</ul></details>`;
+    + `<li>Baris 12 dan 14 pintu kecemasan — ruang kaki lebih luas, tetapi kanak-kanak tidak dibenarkan duduk di situ</li>`
+    + `</ul>`
+    + `<button type="button" class="planebox" id="planebox" aria-label="Besarkan rajah seat pesawat">${planeSvg()}</button>`
+    + `<div class="planekey">`
+    + `<span><i class="pk hot"></i>Hot Seat, bayaran tambahan</span>`
+    + `<span><i class="pk biasa"></i>Seat biasa</span>`
+    + `<span><i class="pk wc"></i>Tandas</span>`
+    + `<span><i class="pk exit"></i>Pintu kecemasan</span>`
+    + `</div>`
+    + `<p class="planekecil">Tekan rajah untuk besarkan. Baris 13 tiada pada A320 AirAsia.</p>`
+    + `</details>`;
+  // Modal rajah, mekanisme sama seperti galeri gambar
+  (function rajahSeat(){
+    const btn = $('#planebox'), box = $('#planemodal');
+    if(!btn || !box) return;
+    box.querySelector('.pm-isi').innerHTML = planeSvg();
+    let skrolHalaman = 0;
+    const tutup = () => {
+      box.hidden = true; document.body.style.overflow = '';
+      window.scrollTo({ top:skrolHalaman, behavior:'instant' });
+      btn.focus({ preventScroll:true });
+    };
+    btn.addEventListener('click', () => {
+      skrolHalaman = window.scrollY;
+      box.hidden = false; document.body.style.overflow = 'hidden';
+      box.querySelector('.rk-x').focus({ preventScroll:true });
+    });
+    box.querySelector('.rk-x').addEventListener('click', tutup);
+    box.addEventListener('click', e => { if(e.target === box) tutup(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && !box.hidden) tutup(); });
+  })();
 })();
+
 
 /* ============================================================
    SEAT MAP — ilustrasi kereta pandangan atas (SVG tunggal)
