@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '5 September 2026, 11.01 pagi',
+    updated: '5 September 2026, 11.22 pagi',
     toddler: 2,
-    version: 'v4.6'
+    version: 'v4.7'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -41,7 +41,7 @@ const DATA = {
 
   // Cara ke KLIA2 pagi Sabtu, ikut kumpulan
   // Cara ke KLIA2 pagi Sabtu. Setiap kumpulan pilih SATU pilihan.
-  klRule:'Setiap keluarga pilih satu pilihan sahaja. Dua pilihan bertanda "berkait" mengubah pilihan kumpulan lain — baca notanya sebelum pilih.',
+  klRule:'Setiap keluarga ada caranya sendiri. Kumpulan yang ada dua pilihan (A dan B) pilih satu sahaja.',
 // Peraturan lajur: Langkah = tindakan sahaja; Masa = satu tempoh atau waktu jam;
 // Kos = wang sahaja. Apa-apa nasihat atau syarat masuk medan 'nota' di bawah jadual.
   klSide: [
@@ -52,10 +52,6 @@ const DATA = {
         ["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak 6\u201315"],
         ["Naik tren","5.00 pg","\u2014"]
       ], nota:'Hujung minggu tren setiap 30 minit. Naik tren 5.00 pg atau 5.30 pg supaya sampai KLIA2 sebelum 6.00 pg. Bayar parking dengan Touch \u2019n Go atau kad. Kanak-kanak bawah 6 tahun percuma.' },
-      { k:'B', name:'Ikut kereta Keluarga Wafi terus ke KLIA2', steps:[
-        ["Ikut kereta Keluarga Wafi dari Cyberjaya","\u2014","Tiada tambang ERL"]
-      ], nota:'Perlu kereta 7 tempat dan ruang beg. Sahkan dengan Wafi dahulu.',
-        link:'Kalau Keluarga Hadi pilih B, kereta Wafi jadi 6 orang. Kalau Syafi juga ikut, jadi 7 orang.' }
     ]},
     { g:'F3', title:'Keluarga Obi', sub:'5 orang, dari Seremban', opts:[
       { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[
@@ -64,12 +60,6 @@ const DATA = {
         ["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak"],
         ["Sasar tren","6.00 pg","\u2014"]
       ], nota:'Beli tiket tiga anak di kaunter atau mesin sebelum masuk gate.' },
-      { k:'B', name:'Pandu sendiri terus ke KLIA2', steps:[
-        ["Pandu sendiri dari Seremban terus ke KLIA2","\u2014","\u2014"],
-        ["Bertolak dari rumah","\u00b14.30 pg","\u2014"],
-        ["Parking Gateway@klia2","\u2014","RM55 sehari, 3 hari \u00b1RM165"],
-        ["Atau KLIA Long Term Car Park","\u2014","RM27\u201332 sehari"]
-      ], nota:'5 orang dan beg dalam satu kereta, tiada pindah-pindah beg di stesen. Shuttle Long Term Car Park percuma setiap 10\u201315 minit.' }
     ]},
     { g:'F4', title:'Keluarga Wafi', sub:'2 orang, dari Cyberjaya', opts:[
       { k:'A', name:'Pandu terus ke KLIA2', main:true, steps:[
@@ -82,8 +72,7 @@ const DATA = {
     { g:'S1', title:'Syafi', sub:'1 orang, dari Cyberjaya', opts:[
       { k:'A', name:'Ikut kereta Keluarga Wafi', steps:[
         ["Ikut kereta Keluarga Wafi dari Cyberjaya terus ke KLIA2","\u2014","Tiada tambang ERL"]
-      ], nota:'Kereta Wafi jadi 3 orang. Kalau Keluarga Hadi juga ikut, jadi 7 orang \u2014 sahkan dengan Wafi dahulu.',
-        link:'Berkait dengan pilihan Keluarga Hadi.' },
+      ], nota:'Kereta Wafi jadi 3 orang. Sahkan ruang beg dengan Wafi dahulu.' },
       { k:'B', name:'ERL dari Putrajaya Sentral', steps:[
         ["Pandu ke Putrajaya Sentral","\u2014","Parking \u00b1RM12 sehari"],
         ["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40"],
@@ -140,11 +129,11 @@ const DATA = {
     habib:     { name:"Masjid Habib (Masjid Daerah Timur Laut)", lat:5.4495, lng:100.3082, addr:"5, Jalan Seri Tanjung Pinang, Tanjung Tokong", tagline:"Masjid baru 2026, kubah bentuk intan", special:"Masjid baru, dibuka Januari 2026. Kubah bentuk intan.", tips:"Parking luas.", rating:5, reviews:195 },
     kapitan:   { name:"Masjid Kapitan Keling", lat:5.417, lng:100.3371, addr:"14, Lebuh Buckingham, George Town", tagline:"Masjid warisan 1801 di tengah George Town", special:"Masjid warisan 1801.", tips:"4 minit jalan kaki dari Hameediyah, di laluan ke Armenian Street.", rating:4.6, reviews:3413 },
     armenian:  { name:"Armenian Street", lat:5.4154, lng:100.3371, addr:"Lebuh Armenian, George Town", tagline:"Mural dan kedai warisan George Town", special:"Mural, kedai warisan.", tips:"Parking tepi jalan MBPP 60 sen setiap 30 minit, bayar melalui app Penang Smart Parking.", short:"Armenian St" },
-    udm:       { name:"Upside Down Museum", lat:5.4158046, lng:100.3335296, addr:"45, Lebuh Kimberley, George Town", hours:"9.30 pg – 6.30 ptg setiap hari", rating:4.2, reviews:5834, phone:"+60 4-264 2660", tagline:"Bilik terbalik untuk gambar, berhawa dingin penuh", cost:"Harga tiket belum disahkan — semak di premis.", tips:"Staf di setiap bilik tolong pose dan ambil gambar, jadi kumpulan besar tak kelam-kabut. Lawatan 15–25 minit ikut kesesakan.", short:"Upside Down" },
+    udm:       { name:"Upside Down Museum", lat:5.4158046, lng:100.3335296, addr:"45, Lebuh Kimberley, George Town", hours:"9.30 pg – 6.30 ptg setiap hari", rating:4.2, reviews:5834, phone:"+60 4-264 2660", tagline:"Bilik terbalik untuk gambar, berhawa dingin penuh", cost:"MyKad ±RM26 dewasa, RM14 kanak-kanak. Bukan MyKad RM36 / RM26. Masuk terakhir 5.45 ptg.", note:"Harga dari panduan pelancongan, bukan laman rasmi. Sumber berbeza beri angka berbeza — sahkan di kaunter.", tips:"Staf di setiap bilik tolong pose dan ambil gambar, jadi kumpulan besar tak kelam-kabut. Lawatan 15–25 minit ikut kesesakan.", short:"Upside Down" },
     ksd:       { name:"Karpal Singh Drive", lat:5.3974713, lng:100.3294059, addr:"Persiaran Karpal Singh, Jelutong, George Town", rating:4.6, reviews:198, tagline:"Tepi laut betul-betul di luar homestay, angin laut, sesuai untuk senja", tips:"Tak perlu memandu langsung. Berbasikal dan berjoging popular di sini. Hati-hati dengan penunggang basikal laju.", short:"Karpal Singh Drive" },
-    trick3d:   { name:"Penang 3D Trick Art Museum", lat:5.4198087, lng:100.3417021, addr:"10, Lebuh Penang, George Town", hours:"9.00 pg – 6.00 ptg", rating:4.3, reviews:4427, phone:"+60 4-263 1628", tagline:"Muzium gambar 3D, berhawa dingin" },
-    kamera:    { name:"Asia Camera Museum", lat:5.4154278, lng:100.3368096, addr:"71, Lebuh Armenian, George Town", hours:"10.00 pg – 6.00 ptg", rating:4.7, reviews:921, phone:"+60 11-1859 9878", tagline:"Atas Armenian Street sendiri, ada tour interaktif" },
-    peranakan: { name:"Pinang Peranakan Mansion", lat:5.4178275, lng:100.3412046, addr:"29, Church Street, George Town", hours:"9.30 pg – 5.30 ptg", rating:4.5, reviews:6473, phone:"+60 4-264 2929", cost:"RM30 seorang.", tagline:"Rumah agam Baba-Nyonya" },
+    trick3d:   { name:"Penang 3D Trick Art Museum", lat:5.4198087, lng:100.3417021, addr:"10, Lebuh Penang, George Town", hours:"9.00 pg – 6.00 ptg", rating:4.3, reviews:4427, phone:"+60 4-263 1628", cost:"MyKad RM18 dewasa, RM12 kanak-kanak 4–12 tahun. Bukan MyKad RM28 / RM18.", note:"Sumber: laman rasmi penangtrickart.com.", tagline:"Muzium gambar 3D, berhawa dingin" },
+    kamera:    { name:"Asia Camera Museum", lat:5.4154278, lng:100.3368096, addr:"71, Lebuh Armenian, George Town", hours:"10.00 pg – 6.00 ptg", rating:4.7, reviews:921, phone:"+60 11-1859 9878", cost:"Semak di premis.", note:"Harga tiket tidak dijumpai dari sumber yang boleh disahkan.", tagline:"Atas Armenian Street sendiri, ada tour interaktif" },
+    peranakan: { name:"Pinang Peranakan Mansion", lat:5.4178275, lng:100.3412046, addr:"29, Church Street, George Town", hours:"9.30 pg – 5.30 ptg", rating:4.5, reviews:6473, phone:"+60 4-264 2929", cost:"RM20 dewasa, bawah 6 tahun percuma.", note:"Sumber: Tourism Malaysia. Sesetengah ulasan terbaru sebut RM30 — sahkan di kaunter.", tagline:"Rumah agam Baba-Nyonya" },
     gurneybay: { name:"Gurney Bay Park", lat:5.4326214, lng:100.3188222, addr:"Persiaran Gurney, George Town", hours:"Buka 24 jam", rating:4.5, reviews:896, cost:"Percuma.", tagline:"Taman tepi laut baru dengan taman permainan dan skate park", note:"Pokok masih muda, tiada teduh — paling elok menjelang senja, bukan tengah hari." },
     fizzy:     { name:"Makan Pagi by Fizzy", lat:5.4167, lng:100.3306, addr:"266, Jalan Dr Lim Chwee Leong, George Town", hours:"7.00 pg – 2.00 ptg", halal:"muslim", rating:4.2, reviews:2019, phone:"+60 13-984 2274", tagline:"Nasi lemak, roti goyang, satay dan lontong", special:"Nasi lemak, roti goyang, satay, lontong.", tips:"Hujung minggu giliran boleh sejam; Isnin lebih lengang. Parking persendirian sebelah kafe mahal — guna parking Chowrasta." },
     chowrasta: { name:"Pasar Chowrasta", lat:5.4182, lng:100.3313, addr:"Lot 124, Jalan Penang, George Town", hours:"6.30 pg – 7.00 mlm", rating:4.2, reviews:9961, cost:"Parking bertingkat atas pasar, kira-kira RM1 sejam (buka 5 pg – 10 mlm).", tagline:"Buah tangan: tau sar pneah, buah pala, dodol", special:"Buah tangan: tau sar pneah, buah pala, dodol, kerepek.", tips:"Jeruk Madu Pak Ali (423 Jalan Penang) 2 minit jalan kaki.", short:"Chowrasta" },
@@ -370,6 +359,10 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'4.7', tarikh:'5 September 2026', baru:[
+      'Keluarga Hadi dan Keluarga Obi kini satu cara sahaja — ERL dari Salak Tinggi. Tiada lagi pilihan lain untuk dipilih.',
+      'Harga tiket Upside Down Museum dan muzium Plan B lain sudah ada dalam seksyen Kos.'
+    ]},
     { v:'4.6', tarikh:'5 September 2026', baru:[
       'Titik mula setiap keluarga dikemas kini: Keluarga Hadi dari Cyberjaya, Keluarga Obi dari Seremban.',
       'Keluarga Wafi kini pandu terus ke KLIA2, tidak lagi guna ERL.',
@@ -424,7 +417,10 @@ const DATA = {
     { grp:'pinang', item:'Kampung Agong', dewasa:'RM10', kanak:'RM5', note:'Bawah 4 tahun percuma. Kostum tradisional RM30.' },
     { grp:'pinang', item:'Queensbay Mall', dewasa:'Percuma', kanak:'Percuma', note:'Parking bertingkat, kadar mall biasa. Ada surau dan medan selera.' },
     { grp:'pinang', item:'Armenian Street, Chowrasta', dewasa:'Percuma', kanak:'Percuma', note:'Parking tepi jalan MBPP 60 sen / 30 minit (app Penang Smart Parking). Parking Chowrasta kira-kira RM1 sejam.' },
-    { grp:'pinang', item:'Upside Down Museum', dewasa:'Semak sendiri', kanak:'Semak sendiri', note:'Harga tiket belum disahkan — semak di premis atau laman rasmi muzium.' },
+    { grp:'pinang', item:'Upside Down Museum', dewasa:'±RM26', kanak:'±RM14', note:'Kadar MyKad. Bukan MyKad RM36 dewasa / RM26 kanak-kanak. Masuk terakhir 5.45 ptg. Harga dari panduan pelancongan, bukan laman rasmi — sahkan di kaunter.' },
+    { grp:'pinang', item:'Penang 3D Trick Art Museum', dewasa:'RM18', kanak:'RM12', note:'Kadar MyKad, kanak-kanak 4–12 tahun. Bukan MyKad RM28 dewasa / RM18 kanak-kanak. Sumber: laman rasmi penangtrickart.com. Plan B Hari 2.' },
+    { grp:'pinang', item:'Pinang Peranakan Mansion', dewasa:'RM20', kanak:'Percuma', note:'Bawah 6 tahun percuma. Sumber: Tourism Malaysia. Sesetengah ulasan terbaru sebut RM30 — sahkan di kaunter. Plan B Hari 2.' },
+    { grp:'pinang', item:'Asia Camera Museum', dewasa:'Semak sendiri', kanak:'Semak sendiri', note:'Harga tiket tidak dijumpai dari sumber yang boleh disahkan — semak di premis. Plan B Hari 2.' },
     { grp:'pergi', item:'KLIA Transit Salak Tinggi → KLIA2', dewasa:'RM4.90', kanak:'RM2.20', note:'Kanak-kanak 6–15 tahun. Bawah 6 percuma. 11 minit.' },
     { grp:'pergi', item:'KLIA Transit Putrajaya → KLIA2', dewasa:'RM9.40', kanak:'RM4.20', note:'20 minit.' },
     { grp:'pergi', item:'KLIA Ekspres / Transit KL Sentral → KLIA2', dewasa:'RM55', kanak:'RM25', note:'33–39 minit. Online 10% lebih murah.' },

@@ -642,3 +642,6 @@ footer a{color:var(--ink-2)}
   .halal-tbl{margin:0 6px;width:calc(100% - 12px);font-size:.72rem}
   .halal-tbl td,.halal-tbl th{padding-left:3px;padding-right:3px}
 }
+/* Harga tiket dalam kad Plan B */
+.pb-kos{margin-top:3px;font-size:.82rem;line-height:1.4;color:var(--ink-2)}
+.pb-kos b{color:var(--ink)}

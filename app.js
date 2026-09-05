@@ -451,10 +451,11 @@ function planbHtml(list){
     const kei = x.kei || (p && (p.tagline || p.special));
     return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
          + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
-         + `${alamat?'':''}${x.hours?`<span class="pb-hours">${esc(x.hours)}</span>`:''}`
+         + `${(x.hours || (p && p.hours))?`<span class="pb-hours">${esc(x.hours || p.hours)}</span>`:''}`
          + `${kei?`<p class="pb-kei"><b>Keistimewaan:</b> ${esc(kei)}</p>`:''}`
+         + `${(x.cost || (p && p.cost))?`<p class="pb-kos"><b>Tiket:</b> ${esc(x.cost || p.cost)}</p>`:''}`
          + `${x.why?`<p>${esc(x.why)}</p>`:''}`
-         + `${x.note?`<p class="pb-note-kecil">${esc(x.note)}</p>`:''}</li>`;
+         + `${(x.note || (p && p.note))?`<p class="pb-note-kecil">${esc(x.note || p.note)}</p>`:''}</li>`;
   }).join('') + `</ul>`;
 }
 
@@ -640,8 +641,9 @@ function planbHtml(list){
   $('#cut-foot').textContent = DATA.cutoff.foot;
   $('#kl-rule').textContent = DATA.klRule;
   $('#kl-list').innerHTML = DATA.klSide.map(k => { const g = G(k.g);
-    const opts = k.opts.map(o => `<div class="opt${o.main?' main':''}">
-        <div class="opt-h"><span class="opt-k">${esc(o.k)}</span><b>${esc(o.name)}</b>${o.main?'<em>Pilihan utama</em>':''}${o.link?'<i class="lk">berkait</i>':''}</div>
+    const satu = k.opts.length === 1;
+    const opts = k.opts.map(o => `<div class="opt${!satu && o.main ? ' main' : ''}">
+        <div class="opt-h">${satu ? '' : `<span class="opt-k">${esc(o.k)}</span>`}<b>${esc(o.name)}</b>${!satu && o.main ? '<em>Pilihan utama</em>' : ''}${o.link ? '<i class="lk">berkait</i>' : ''}</div>
         <table class="opt-tbl"><thead><tr><th>Langkah</th><th class="num">Masa</th><th class="num">Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join('')}</tbody></table>
         ${o.nota?`<div class="opt-nota">${esc(o.nota)}</div>`:''}
         ${o.link?`<div class="opt-link">${esc(o.link)}</div>`:''}
