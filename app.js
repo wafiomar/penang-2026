@@ -680,7 +680,7 @@ function planbHtml(list){
       const KELAS_PIL = { 'Breakfast':'mkn', 'Lunch':'mkn', 'Dinner':'mkn', 'Snacking':'mkn',
         'Solat jamak':'slt', 'Take away':'lain', 'Pilihan':'lain',
         'Check-in bagasi':'lain', 'Check-in homestay':'lain', 'Check-out':'lain',
-        'Fitri & Fatimah':'sapa', 'Semua yang lain':'sapa' };
+        'Fitri & Fatimah':'sapa', 'Hadi, Obi, Wafi, Madno, Syafi':'sapa' };
       const pils = (it.pills||[]).map(v => `<span class="pil ${KELAS_PIL[v]||'lain'}">${esc(v)}</span>`).join('');
       const pilBaris = (pils || fr) ? `<div class="ti-pils">${fr}${pils}</div>` : '';
       const kecil = it.kecil ? `<div class="ti-kecil">${esc(it.kecil)}</div>` : '';
@@ -759,7 +759,7 @@ function planbHtml(list){
     { g:'S1', segs:[...segSat,[2,0,17.25,'here'],[2,17.25,18.25,'transit']], note:'Balik 5.15 ptg' },
     { g:'G2', label:'Madno', segs:[...segSat,[2,0,17.25,'here'],[2,17.25,18.25,'transit']], note:'Balik 5.15 ptg' },
     { g:'G2', label:'Fitri & Fatimah', segs:[...segSat,[2,0,16,'here'],[2,16,17,'transit']], note:'Balik 4.00 ptg' },
-    { g:'G1', segs:[[1,5.5,8,'transit'],[1,8,24,'here'],[2,0,17.25,'here'],[2,17.25,18.25,'transit']], note:'Tiba Ahad 8.00 pg' }
+    { g:'G1', segs:[[1,5.5,7.667,'transit'],[1,7.667,24,'here'],[2,0,17.25,'here'],[2,17.25,18.25,'transit']], note:'Tiba Ahad 7.40 pg' }
   ];
   const pct = h => Math.max(0, Math.min(100, (h - H0) / (H1 - H0) * 100));
   let html = `<div class="lane-head"><span></span><span>Sabtu 12 Sept</span><span>Ahad 13 Sept</span><span>Isnin 14 Sept</span></div>`;
@@ -787,7 +787,7 @@ function planbHtml(list){
   $('#codekey').innerHTML = DATA.groups.map(g => `<span><b style="--g:${g.color}">${esc(g.id)}</b>${esc(g.label)}<em>${g.pax} org</em></span>`).join('');
   const total = DATA.groups.reduce((a,g)=>a+g.pax,0);
   const g1 = G('G1').pax;
-  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 8.00 pg'],[total,'Isnin, semua balik petang']];
+  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 7.40 pg'],[total,'Isnin, semua balik petang']];
   $('#headcount').innerHTML = kira.map(([v,l],i) => `<div><b>Day ${i+1} — ${v} pax</b><span>${esc(l)}</span></div>`).join('');
 })();
 

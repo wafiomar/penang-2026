@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '6 September 2026, 7.03 malam',
+    updated: '6 September 2026, 7.12 malam',
     toddler: 2,
-    version: 'v5.1'
+    version: 'v5.2'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -96,11 +96,11 @@ const DATA = {
         ["Pandu ke Putrajaya Sentral","\u2014","Parking \u00b1RM12 sehari"],
         ["ERL Putrajaya Sentral ke KLIA2","20 minit","RM9.40 dewasa"],
         ["Tren pertama Ahad","5.22 pg","\u2014"]
-      ], nota:'Tiba KLIA2 5.42 pg \u2014 lebih kurang 1 jam 20 minit sebelum berlepas, memadai untuk cabin sahaja.' },
+      ], nota:'Tiba KLIA2 5.42 pg — lebih kurang 58 minit sebelum berlepas. Ketat untuk cabin sahaja, tidak memadai kalau ada bagasi.' },
       { k:'B', name:'Dihantar atau Grab terus ke KLIA2', steps:[
         ["Dihantar atau Grab terus ke KLIA2","\u2014","Tiada parking untuk dibayar"]
-      ], nota:'Boleh sampai lebih awal. Pilih ini kalau ada bagasi check-in, sebab ERL pertama terlalu lewat untuk saranan 3 jam.' }
-    ], foot:'Waktu berlepas 7.05 pg ialah anggaran \u2014 sahkan pada tiket sebenar. Kereta 2 (Syafi) tunggu di pintu ketibaan LTAPP pada 8.00 pg Ahad.' }
+      ], nota:'Boleh sampai lebih awal. Pilih ini kalau ada bagasi check-in, sebab ERL pertama tiba 5.42 pg — terlalu lewat untuk berlepas 6.40 pg.' }
+    ], foot:'Berlepas 6.40 pg, tiba 7.40 pg. Kereta 2 (Syafi) ambil mereka di pintu ketibaan LTAPP.' }
   ],
 
   // Lokasi. Koordinat dari Google Places.
@@ -210,7 +210,7 @@ const DATA = {
         { move:{ km:8, min:14 } },
         { t:"14:15", type:"flight", title:"Tiba LTAPP", place:"lta", kecil:"turunkan Fitri & Fatimah, pulangkan kereta", meta:"Fitri & Fatimah check-in terus untuk flight 4.00 ptg (buffer 1 jam 45 minit). Yang lain pulangkan 2 kereta, kemudian check-in untuk 5.15 ptg." },
         { t:"16:00", type:"flight", title:"Berlepas", pills:["Fitri & Fatimah"], kecil:"AirAsia ke KLIA2" },
-        { t:"17:15", type:"flight", title:"Berlepas", pills:["Semua yang lain"], kecil:"AirAsia ke KLIA2" },
+        { t:"17:15", type:"flight", title:"Berlepas", pills:["Hadi, Obi, Wafi, Madno, Syafi"], kecil:"AirAsia ke KLIA2" },
         { t:"18:15", type:"flight", title:"Tiba KLIA2", place:"klia2", kecil:"Ambil bagasi, ERL atau kereta balik", meta:"Ambil bagasi, ERL/kereta balik. Tren KLIA Transit ke Salak Tinggi 11 minit, ke Putrajaya 20 minit." }
     ]}
   ],
