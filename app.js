@@ -50,17 +50,19 @@ const waze  = p => `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
 // Profil Google bagi tempat itu — cari ikut nama dan alamat, bukan koordinat.
 // q: nama berdaftar untuk carian Google bila ia berbeza daripada nama paparan
 const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.q || p.name, p.addr].filter(Boolean).join(', '))}`;
-// Tetingkap LIVE satu penerbangan: 45 minit sebelum berlepas sehingga 15 minit
-// selepas tiba. Sentiasa dikira pada offset +08:00 yang ditulis dalam data, bukan
-// zon waktu peranti — telefon yang set zon lain tetap nampak keadaan yang sama.
-const LIVE_AWAL = 45 * 60000, LIVE_LEWAT = 15 * 60000;
+// Tetingkap LIVE satu penerbangan: bermula TEPAT pada waktu berlepas sehingga
+// 15 minit selepas tiba. Sengaja tidak bermula lebih awal — pil hijau semasa
+// pesawat masih di tanah boleh disalah faham yang flight sudah gerak.
+// Sentiasa dikira pada offset +08:00 yang ditulis dalam data, bukan zon waktu
+// peranti — telefon yang set zon lain tetap nampak keadaan yang sama.
+const LIVE_LEWAT = 15 * 60000;
 function tetingkapLangsung(f){
   if(!f || !f.iso || !f.dep || !f.arr) return null;
   const ms = t => Date.parse(f.iso + 'T' + t + ':00+08:00');
   const mula = ms(f.dep); let tamat = ms(f.arr);
   if(!isFinite(mula) || !isFinite(tamat)) return null;
   if(tamat < mula) tamat += 864e5;               // merentas tengah malam
-  return [mula - LIVE_AWAL, tamat + LIVE_LEWAT];
+  return [mula, tamat + LIVE_LEWAT];
 }
 function diUdara(f, kini){
   const w = tetingkapLangsung(f);
@@ -68,16 +70,19 @@ function diUdara(f, kini){
   const t = kini == null ? Date.now() : kini;
   return t >= w[0] && t <= w[1];
 }
-// Nombor penerbangan sebagai pautan penjejakan langsung: ikon radar + pil.
-// Tetingkap disimpan pada elemen supaya setiap penerbangan berdiri sendiri —
-// nombor yang sama boleh terbang dua hari berbeza.
+// Nombor penerbangan sebagai butang pautan: ikon radar di kiri, label di
+// tengah, ikon pautan luar di kanan. Tetingkap disimpan pada elemen supaya
+// setiap penerbangan berdiri sendiri — nombor yang sama boleh terbang dua
+// hari berbeza.
 function pautanFr24(f){
   if(!f || !f.flightNo) return '';
   const w = tetingkapLangsung(f);
   return `<a class="fr24" data-flight="${esc(f.flightNo)}"${w ? ` data-mula="${w[0]}" data-tamat="${w[1]}"` : ''}`
     + ` href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
     + ` target="_blank" rel="noopener" title="Jejak penerbangan langsung" aria-label="Jejak penerbangan langsung ${esc(f.flightNo)}">`
-    + `${ICON.radar}<span>${esc(f.flightNo)}</span><i>live tracking</i></a>`;
+    + `${ICON.radar}<span class="fr-no">${esc(f.flightNo)}</span>`
+    + `<span class="fr-lbl"><i class="fr-dot" aria-hidden="true"></i><b class="fr-t">track live</b></span>`
+    + `${ICON.keluar}</a>`;
 }
 // Pil disegarkan berkala supaya ia hidup dan padam sendiri walaupun halaman
 // dibiarkan terbuka merentas waktu berlepas dan mendarat.
@@ -86,14 +91,43 @@ function segarLangsung(){
   document.querySelectorAll('a.fr24[data-mula]').forEach(el => {
     const hidup = kini >= +el.dataset.mula && kini <= +el.dataset.tamat;
     el.classList.toggle('live', hidup);
-    const pil = el.querySelector('i');
-    if(pil) pil.textContent = hidup ? 'LIVE' : 'live tracking';
+    const t = el.querySelector('.fr-t');
+    if(t) t.textContent = hidup ? 'LIVE' : 'track live';
   });
+  segarHeroLive(kini);
+}
+// Penunjuk LIVE pada hero. Ia wujud dalam DOM HANYA semasa ada penerbangan
+// dalam tetingkap aktifnya — kalau tiada, elemen dibuang terus supaya tiada
+// ruang kosong tertinggal di bawah tajuk. Dua penerbangan serentak = dua bar
+// bertindan menegak, bukan satu bar bergabung.
+function segarHeroLive(kini){
+  const induk = document.querySelector('.hero .hero-atas');
+  if(!induk || typeof DATA === 'undefined') return;
+  const t = kini == null ? Date.now() : kini;
+  const aktif = (DATA.flights || []).filter(f => diUdara(f, t));
+  let bekas = document.getElementById('hero-live');
+  if(!aktif.length){ if(bekas) bekas.remove(); return; }
+  if(!bekas){
+    bekas = document.createElement('div');
+    bekas.id = 'hero-live'; bekas.className = 'hero-live';
+    induk.after(bekas);
+  }
+  const html = aktif.map(f => `<a class="hl-bar" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
+    + ` target="_blank" rel="noopener" aria-label="Jejak ${esc(f.flightNo)} secara langsung di Flightradar24">`
+    + `<i class="hl-dot" aria-hidden="true"></i>`
+    + `<span class="hl-teks"><b>${esc(f.flightNo)} dalam perjalanan</b>`
+    + `<small>Tiba ${esc(f.toName)} ${esc(fmtT(f.arr))}</small></span>`
+    + ICON.chevron + `</a>`).join('');
+  // Bina semula hanya bila kandungan berubah, supaya denyut titik tidak
+  // bermula semula setiap 30 saat.
+  if(bekas.dataset.isi !== html){ bekas.innerHTML = html; bekas.dataset.isi = html; }
 }
 setInterval(segarLangsung, 30000);
 document.addEventListener('visibilitychange', () => { if(!document.hidden) segarLangsung(); });
 const ICON = {
   radar:'<svg class="fr-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a6 6 0 0 1 6-6M12 12a10 10 0 0 1 10-10M12 12a2 2 0 0 1 2-2"/><circle cx="7" cy="17" r="2.2"/><path d="M2 22l3.4-3.4"/></svg>',
+  keluar:'<svg class="fr-out" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4.5H20v5.5M20 4.5l-7.6 7.6"/><path d="M18 14v4.6a1.4 1.4 0 0 1-1.4 1.4H5.4A1.4 1.4 0 0 1 4 18.6V7.4A1.4 1.4 0 0 1 5.4 6H10"/></svg>',
+  chevron:'<svg class="hl-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   car:'<svg viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-6h9L18 17M4 17v2M20 17v2M7 11l1-3h8l1 3"/><circle cx="8" cy="17" r="1.2"/><circle cx="16" cy="17" r="1.2"/></svg>',
   walk:'<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="M10 21l2-6 3 3v3M8 13l2-4 3-1 3 3 2 1M12 15l-3 6"/></svg>',
   home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
@@ -300,8 +334,9 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
    MAP
    ============================================================ */
 const MAP = { map:null, layers:{}, all:null, marks:{}, pilihHari:null,
-  garis:{},   // lapisan laluan utama setiap hari (fallback atau geometri OSRM)
-  pin:{},     // marker bernombor mengikut turutan
+  garis:{},       // lapisan laluan utama setiap hari (fallback atau geometri OSRM)
+  larianGaris:{}, // lapisan larian sampingan (putus-putus)
+  pin:{},         // marker bernombor mengikut turutan
   anim:null };
 function initMap(){
   if(typeof L === 'undefined'){ $('#map').style.display='none'; $('#map-fallback').style.display='block'; $('#map-ctl').style.display='none'; $('#map-note').style.display='none'; return; }
@@ -331,21 +366,26 @@ function initMap(){
     });
     // Route: straight fallback first, replaced by OSRM geometry if available
     const pts = DATA.routes[d].map(id => [P[id].lat, P[id].lng]);
-    const fallback = L.polyline(pts, { color:colors[d], weight:3, opacity:.7, dashArray:'6 8' }).addTo(lg);
+    const fallback = sediaGaris(L.polyline(pts, { color:colors[d], weight:3, opacity:.7, dashArray:'6 8' }).addTo(lg), pts);
     MAP.garis[d] = fallback;
-    // Larian sampingan: putus-putus dan lebih pudar supaya jelas ia bukan laluan semua orang
+    // Larian sampingan: putus-putus supaya jelas ia bukan laluan semua orang.
+    // Opasiti dan ketebalan setara laluan utama — corak dash yang membezakannya.
     const lr = DATA.larian && DATA.larian[d];
     if(lr){
       const lpts = lr.titik.map(id => [P[id].lat, P[id].lng]);
-      const lgaris = L.polyline(lpts, { color:colors[d], weight:3.5, opacity:.6, dashArray:'7 7' })
-        .bindTooltip(lr.label, { sticky:true }).addTo(lg);
-      fetchRoute(null, lpts, colors[d], lg, lgaris, { opacity:.6, dashArray:'7 7', weight:3.5, label:lr.label });
+      const lgaris = sediaGaris(L.polyline(lpts, { color:colors[d], weight:GAYA_LARIAN.weight, opacity:GAYA_LARIAN.opacity, dashArray:GAYA_LARIAN.dashArray })
+        .bindTooltip(lr.label, { sticky:true }).addTo(lg), lpts);
+      MAP.larianGaris[d] = lgaris;
+      fetchRoute(null, lpts, colors[d], lg, lgaris, Object.assign({ label:lr.label, larianHari:d }, GAYA_LARIAN));
     }
     MAP.layers[d] = lg; lg.addTo(map);
     fetchRoute(d, pts, colors[d], lg, fallback);
   });
   const b = L.latLngBounds(Object.values(P).filter(p=>p.lat>4).map(p=>[p.lat,p.lng]));
   map.fitBounds(b, { padding:[24,24] });
+  // Sebaik peta dibuka, semua laluan tiga hari dilukis serentak. Geometri OSRM
+  // yang tiba di tengah animasi akan menyambung sendiri pada pecahan semasa.
+  setTimeout(() => mainAnimasi([1,2,3]), 120);
 
   $('#map-ctl').addEventListener('click', e => {
     const btn = e.target.closest('button'); if(!btn) return;
@@ -354,7 +394,7 @@ function initMap(){
   const btnUlang = $('#map-ulang');
   if(btnUlang) btnUlang.addEventListener('click', () => {
     const kini = $('#map-ctl .on');
-    if(kini && kini.dataset.day !== 'all') mainAnimasi(+kini.dataset.day);
+    mainAnimasi(hariDipilih(kini ? kini.dataset.day : 'all'));
   });
   MAP.pilihHari = tunjukHari;
   function tunjukHari(sel, tanpaAnimasi){
@@ -363,20 +403,17 @@ function initMap(){
     [1,2,3].forEach(d => { if(sel==='all' || String(d)===sel) MAP.layers[d].addTo(map); else map.removeLayer(MAP.layers[d]); });
     habisAnimasi();
     const btnUlang = $('#map-ulang');
-    if(sel === 'all'){
-      // Tiga hari serentak tidak dianimasikan — papar terus
-      [1,2,3].forEach(n => (MAP.pin[n]||[]).forEach(mk => tunjukPin(mk, false)));
-      if(btnUlang) btnUlang.hidden = true;
+    if(btnUlang) btnUlang.hidden = false;
+    const hari = hariDipilih(sel);
+    // Hari yang tersembunyi dipapar penuh supaya ia tidak tinggal separuh terlukis
+    [1,2,3].forEach(n => { if(!hari.includes(n)) (MAP.pin[n]||[]).forEach(mk => tunjukPin(mk, false)); });
+    if(tanpaAnimasi){
+      hari.forEach(n => (MAP.pin[n]||[]).forEach(mk => tunjukPin(mk, false)));
     } else {
-      [1,2,3].forEach(n => { if(String(n) !== sel) (MAP.pin[n]||[]).forEach(mk => tunjukPin(mk, false)); });
-      if(tanpaAnimasi){
-        (MAP.pin[+sel]||[]).forEach(mk => tunjukPin(mk, false));
-      } else {
-        setTimeout(() => {
-          const kini = $('#map-ctl .on');
-          if(kini && kini.dataset.day === sel) mainAnimasi(+sel);
-        }, 260);   // biar fitBounds selesai dahulu
-      }
+      setTimeout(() => {
+        const kini = $('#map-ctl .on');
+        if(kini && kini.dataset.day === sel) mainAnimasi(hari);
+      }, 260);   // biar fitBounds selesai dahulu
     }
     if(sel==='all') map.fitBounds(b, { padding:[24,24] });
     else {
@@ -392,40 +429,69 @@ function initMap(){
 /* ============================================================
    ANIMASI LALUAN PETA — hiasan sahaja
    ============================================================ */
-// Melukis laluan hari secara beransur dan menimbulkan marker mengikut
-// turutan. Tidak menyekat geseran atau zum: hanya stroke-dashoffset yang
-// berubah setiap bingkai. Kalau apa-apa gagal, laluan dipapar penuh.
-const TEMPOH_ANIM = 2500;
+// Semua laluan dilukis serentak dengan menambah koordinat pada polyline
+// (setLatLngs) mengikut masa. Kami sengaja TIDAK menyentuh stroke-dasharray
+// atau stroke-dashoffset: itu akan berlanggar dengan corak putus-putus
+// larian Kereta 2 dan garisan itu akan nampak rosak. Dengan memendekkan
+// senarai koordinat, corak dash kekal seperti biasa sepanjang animasi.
+// Kalau apa-apa gagal, laluan dipapar penuh.
+const TEMPOH_ANIM = 1200;
+const GAYA_LARIAN = { weight:4.5, opacity:.85, dashArray:'7 7' };
 
 function kurangGerak(){ return matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-// Cari elemen <path> SVG bagi satu lapisan Leaflet (polyline atau geoJSON)
-function pathLapisan(lyr){
-  if(!lyr) return null;
-  if(lyr.getElement){ const e = lyr.getElement(); if(e && e.tagName === 'path') return e; }
-  let hasil = null;
-  if(lyr.eachLayer) lyr.eachLayer(l => {
-    if(hasil || !l.getElement) return;
-    const e = l.getElement(); if(e && e.tagName === 'path') hasil = e;
-  });
+// Simpan koordinat penuh + jarak terkumpul pada lapisan itu sendiri, supaya
+// animasi boleh memotongnya pada mana-mana pecahan tanpa mengira semula.
+function sediaGaris(lyr, pts){
+  if(!lyr || !pts || pts.length < 2) return lyr;
+  const kum = [0];
+  for(let i = 1; i < pts.length; i++){
+    const a = pts[i-1], b = pts[i];
+    const dx = (b[1] - a[1]) * Math.cos((a[0] + b[0]) * Math.PI / 360), dy = b[0] - a[0];
+    kum.push(kum[i-1] + Math.sqrt(dx*dx + dy*dy));
+  }
+  const jum = kum[kum.length - 1];
+  if(!jum || !isFinite(jum)) return lyr;
+  lyr._anim = { pts, kum, jum };
+  return lyr;
+}
+
+// Laluan dipotong pada pecahan k, dengan titik hujung diinterpolasi supaya
+// hujungnya bergerak lancar dan bukan melompat dari verteks ke verteks.
+function potongGaris(a, k){
+  if(k <= 0) return [a.pts[0]];
+  if(k >= 1) return a.pts;
+  const sasar = a.jum * k;
+  let i = 1;
+  while(i < a.kum.length - 1 && a.kum[i] < sasar) i++;
+  const hasil = a.pts.slice(0, i);
+  const d0 = a.kum[i-1], d1 = a.kum[i];
+  const t = d1 > d0 ? Math.max(0, Math.min(1, (sasar - d0) / (d1 - d0))) : 0;
+  const p0 = a.pts[i-1], p1 = a.pts[i];
+  hasil.push([p0[0] + (p1[0] - p0[0]) * t, p0[1] + (p1[1] - p0[1]) * t]);
   return hasil;
 }
 
-// Pecahan 0–1 kedudukan setiap marker di sepanjang path, dicari dengan
-// membandingkan titik sampel path dengan kedudukan marker.
-function pecahanPin(path, pins){
-  const L = path.getTotalLength();
-  if(!L || !isFinite(L)) return pins.map(() => 0);
-  const N = 200, titik = [];
-  for(let i = 0; i <= N; i++) titik.push(path.getPointAtLength(L * i / N));
+// Semua garisan (utama + larian) bagi hari-hari yang diberi
+function garisHari(hari){
+  const out = [];
+  hari.forEach(d => [MAP.garis[d], MAP.larianGaris[d]].forEach(g => { if(g && g._anim) out.push(g); }));
+  return out;
+}
+function hariDipilih(sel){ return sel === 'all' || sel == null ? [1,2,3] : [+sel]; }
+
+// Pecahan 0–1 kedudukan setiap marker di sepanjang laluan, dikira daripada
+// jarak terkumpul — jadi ia tidak berubah bila peta dizum.
+function pecahanPin(a, pins){
   return pins.map(mk => {
-    const lp = MAP.map.latLngToLayerPoint(mk.getLatLng());
+    const ll = mk.getLatLng();
     let best = 0, bd = Infinity;
-    for(let i = 0; i <= N; i++){
-      const dx = titik[i].x - lp.x, dy = titik[i].y - lp.y, dd = dx*dx + dy*dy;
+    for(let i = 0; i < a.pts.length; i++){
+      const dx = (a.pts[i][1] - ll.lng) * Math.cos(ll.lat * Math.PI / 180), dy = a.pts[i][0] - ll.lat;
+      const dd = dx*dx + dy*dy;
       if(dd < bd){ bd = dd; best = i; }
     }
-    return best / N;
+    return a.kum[best] / a.jum;
   });
 }
 
@@ -445,63 +511,54 @@ function sorokPin(mk){
   if(el){ el.classList.remove('pin-timbul'); el.classList.add('pin-sorok'); }
 }
 
-// Hentikan animasi dan papar laluan penuh serta-merta
+// Hentikan animasi dan papar semua laluan penuh serta-merta
 function habisAnimasi(){
-  const A = MAP.anim; if(!A) return;
-  MAP.anim = null;
-  if(A.raf) cancelAnimationFrame(A.raf);
-  if(A.onZoom) MAP.map.off('zoomend', A.onZoom);
-  if(A.path){
-    A.path.style.strokeDasharray = A.dashAsal || '';
-    A.path.style.strokeDashoffset = '';
-  }
-  (A.pins || []).forEach(mk => tunjukPin(mk, false));
+  const A = MAP.anim;
+  if(A){ MAP.anim = null; if(A.raf) cancelAnimationFrame(A.raf); if(A.jaga) clearTimeout(A.jaga); }
+  garisHari([1,2,3]).forEach(g => { try { g.setLatLngs(g._anim.pts); } catch(e){} });
+  if(A) (A.pins || []).forEach(mk => tunjukPin(mk, false));
 }
 
-function mainAnimasi(d){
+// hari: array nombor hari yang sedang dipapar. Semua laluan bermula serentak.
+function mainAnimasi(hari){
   habisAnimasi();
+  if(!Array.isArray(hari)) hari = hariDipilih(hari);
   const btnUlang = $('#map-ulang');
-  const pins = MAP.pin[d] || [];
-  if(kurangGerak()){ pins.forEach(mk => tunjukPin(mk, false)); if(btnUlang) btnUlang.hidden = false; return; }
-  const path = pathLapisan(MAP.garis[d]);
-  if(!path || !path.getTotalLength){ pins.forEach(mk => tunjukPin(mk, false)); return; }
-  let L;
-  try { L = path.getTotalLength(); } catch(e){ pins.forEach(mk => tunjukPin(mk, false)); return; }
-  if(!L || !isFinite(L)){ pins.forEach(mk => tunjukPin(mk, false)); return; }
-
-  let pecahan;
-  try { pecahan = pecahanPin(path, pins); }
-  catch(e){ pecahan = pins.map((_, i) => (i + 1) / (pins.length + 1)); }
-
-  const dashAsal = path.style.strokeDasharray || '';
-  const A = MAP.anim = { path, pins, pecahan, dashAsal, mula:performance.now(), L, raf:null, onZoom:null };
-  pins.forEach(sorokPin);
-  path.style.strokeDasharray = L + ' ' + L;
-  path.style.strokeDashoffset = L;
   if(btnUlang) btnUlang.hidden = false;
-
-  // Zum menukar panjang path; kira semula supaya garisan tidak melompat
-  A.onZoom = () => {
-    if(MAP.anim !== A) return;
-    try {
-      const baru = path.getTotalLength();
-      if(baru && isFinite(baru)){ A.L = baru; path.style.strokeDasharray = baru + ' ' + baru; }
-    } catch(e){ habisAnimasi(); }
-  };
-  MAP.map.on('zoomend', A.onZoom);
+  const pins = [];
+  hari.forEach(d => (MAP.pin[d] || []).forEach(mk => pins.push(mk)));
+  if(kurangGerak() || !garisHari(hari).length){
+    pins.forEach(mk => tunjukPin(mk, false));
+    return;
+  }
+  const A = MAP.anim = { hari, pins, pecahan:new Map(), mula:performance.now(), raf:null };
+  hari.forEach(d => {
+    const senarai = MAP.pin[d] || [], utama = MAP.garis[d];
+    let pec;
+    try { pec = utama && utama._anim ? pecahanPin(utama._anim, senarai) : senarai.map((_, i) => (i + 1) / (senarai.length + 1)); }
+    catch(e){ pec = senarai.map((_, i) => (i + 1) / (senarai.length + 1)); }
+    senarai.forEach((mk, i) => A.pecahan.set(mk, pec[i]));
+  });
+  pins.forEach(mk => { sorokPin(mk); mk._muncul = false; });
+  garisHari(hari).forEach(g => g.setLatLngs([g._anim.pts[0]]));
 
   const langkah = now => {
     if(MAP.anim !== A) return;
     const k = Math.min(1, (now - A.mula) / TEMPOH_ANIM);
-    A.path.style.strokeDashoffset = A.L * (1 - k);
+    // Dibaca semula setiap bingkai: kalau geometri OSRM tiba di tengah
+    // animasi, lapisan baharu terus menyambung pada pecahan yang sama.
+    garisHari(A.hari).forEach(g => { try { g.setLatLngs(potongGaris(g._anim, k)); } catch(e){} });
     for(let i = 0; i < pins.length; i++){
-      if(k >= A.pecahan[i] && pins[i]._muncul !== true){ pins[i]._muncul = true; tunjukPin(pins[i], true); }
+      if(!pins[i]._muncul && k >= (A.pecahan.get(pins[i]) || 0)){ pins[i]._muncul = true; tunjukPin(pins[i], true); }
     }
     if(k < 1) A.raf = requestAnimationFrame(langkah);
     else habisAnimasi();
   };
-  pins.forEach(mk => { mk._muncul = false; });
   A.raf = requestAnimationFrame(langkah);
+  // Jaring keselamatan: kalau bingkai tidak pernah tiba — tab di belakang,
+  // atau pelayar yang menahan requestAnimationFrame — laluan dipaksa penuh
+  // supaya peta tidak kekal kosong.
+  A.jaga = setTimeout(() => { if(MAP.anim === A) habisAnimasi(); }, TEMPOH_ANIM + 600);
 }
 
 function popupHtml(p, d, item){
@@ -520,13 +577,20 @@ async function fetchRoute(d, pts, color, lg, fallback, gaya){
     const route = j.routes && j.routes[0]; if(!route) throw new Error('no route');
     lg.removeLayer(fallback);
     const st = gaya ? { color, weight:gaya.weight, opacity:gaya.opacity, dashArray:gaya.dashArray } : { color, weight:4, opacity:.85 };
-    const baru = L.geoJSON(route.geometry, { style:st }).addTo(lg);
+    // Polyline, bukan geoJSON: animasi perlukan setLatLngs untuk melukis progresif
+    const koor = route.geometry.coordinates.map(c => [c[1], c[0]]);
+    const baru = sediaGaris(L.polyline(koor, st).addTo(lg), koor);
     if(gaya && gaya.label) baru.bindTooltip(gaya.label, { sticky:true });
+    // Kalau animasi sedang berjalan, sambung pada pecahan semasa supaya
+    // laluan baharu tidak berkelip penuh untuk satu bingkai.
+    const A = MAP.anim;
+    if(A && baru._anim){
+      const k = Math.min(1, (performance.now() - A.mula) / TEMPOH_ANIM);
+      if(k < 1) baru.setLatLngs(potongGaris(baru._anim, k));
+    }
+    if(gaya && gaya.larianHari){ MAP.larianGaris[gaya.larianHari] = baru; return; }
     if(d === null) return;
     MAP.garis[d] = baru;
-    // Animasi hanya selepas laluan sebenar siap, dan hanya untuk hari yang sedang dilihat
-    const aktif = $('#map-ctl .on');
-    if(aktif && aktif.dataset.day === String(d)) mainAnimasi(d);
     const min = Math.round(route.duration/60);
     const el = $(`#rs-time-${d}`); if(el) el.textContent = durShort(min);
   }catch(err){
@@ -795,7 +859,7 @@ function planbHtml(list){
   $('#codekey').innerHTML = DATA.groups.map(g => `<span><b style="--g:${g.color}">${esc(g.id)}</b>${esc(g.label)}<em>${g.pax} org</em></span>`).join('');
   const total = DATA.groups.reduce((a,g)=>a+g.pax,0);
   const g1 = G('G1').pax;
-  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 7.40 pg'],[total,'Isnin, semua balik petang']];
+  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 7.40 pg'],[total,'Isnin, semua berlepas dari LTAPP']];
   $('#headcount').innerHTML = kira.map(([v,l],i) => `<div><b>Day ${i+1} — ${v} pax</b><span>${esc(l)}</span></div>`).join('');
 })();
 
@@ -863,9 +927,13 @@ function planeSvg(){
     '06:00':'<rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M9 20v1M15 20v1"/>',
     '07:00':'<path d="M7 8h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9.5 13h5"/>'
   };
+  // Tag panduan: "lebih X jam awal", bukan "X jam sebelum" — flight 9.25 pg
+  // bermakna 6.00 pg sebenarnya 3 jam 25 minit, bukan tepat 3 jam.
+  const TAG_CUT = { '06:00':'lebih 3 jam awal', '07:00':'lebih 2 jam awal' };
   $('#cutoff').innerHTML = DATA.cutoff.rows.map(c => `<div class="cut-kad">`
-    + `<span class="cut-i"><svg viewBox="0 0 24 24" aria-hidden="true">${IKON_CUT[c.t]||''}</svg></span>`
-    + `<b>${fmtT(c.t)}</b><span class="cut-l">${esc(c.l)}</span>`
+    + `<b>${fmtT(c.t)}</b>`
+    + `<span class="cut-l"><svg class="cut-ic" viewBox="0 0 24 24" aria-hidden="true">${IKON_CUT[c.t]||''}</svg>${esc(c.l)}</span>`
+    + `${TAG_CUT[c.t] ? `<span class="cut-tag">${esc(TAG_CUT[c.t])}</span>` : ''}`
     + `</div>`).join('');
   // Satu butang Tips untuk kedua-dua kad, termasuk butiran setiap waktu
   $('#cut-foot').outerHTML = `<details class="cut-tipsbtn" id="cut-foot">`

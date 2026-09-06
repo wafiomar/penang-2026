@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '6 September 2026, 7.40 malam',
+    updated: '6 September 2026, 8.28 malam',
     toddler: 2,
-    version: 'v5.3'
+    version: 'v5.4'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -38,7 +38,7 @@ const DATA = {
       { t:'06:00', l:'Ada bagasi check-in', d:'Beri ruang untuk kaunter bagasi, tag beg dan barisan keselamatan.' },
       { t:'07:00', l:'Cabin sahaja', d:'Terus ke keselamatan, tiada kaunter bagasi.' }
     ],
-    foot:'Ini saranan, bukan syarat rasmi AirAsia — ia ruang selamat berdasarkan pengalaman orang lain dengan kumpulan besar dan anak kecil. Kedua-duanya untuk penerbangan 9.25 pg. Halima & Kak Ayman hari Ahad guna kiraan sama dari waktu berlepas mereka.'
+    foot:'Kedua-duanya untuk penerbangan 9.25 pg. Halima & Kak Ayman hari Ahad guna kiraan sama dari waktu berlepas mereka.'
   },
 
   // Cara ke KLIA2 pagi Sabtu, ikut kumpulan
@@ -338,6 +338,10 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'5.4', tarikh:'6 September 2026', baru:[
+      'Penunjuk langsung penerbangan: pil bertukar LIVE dan satu bar muncul di atas halaman semasa flight dalam perjalanan.',
+      'Kiraan pax Isnin tidak lagi berkata semua balik petang.'
+    ]},
     { v:'5.3', tarikh:'6 September 2026', baru:[
       'Halima & Kak Ayman tiba LTAPP 7.40 pg, pickup Kereta 2 pukul 8.00 pg.'
     ]},
