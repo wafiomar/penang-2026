@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '6 September 2026, 8.28 malam',
+    updated: '6 September 2026, 9.01 malam',
     toddler: 2,
-    version: 'v5.4'
+    version: 'v5.5'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -329,7 +329,7 @@ const DATA = {
   },
 
   // Kos jalan raya
-  ucapan:{ sebelum:'Selamat Bercuti', selepas:'Terima kasih semua atas pengalaman ini', tarikh:'2026-09-15' },
+  ucapan:{ sebelum:'Selamat Bercuti', selepas:'Selamat Pulang', tarikh:'2026-09-15' },
 
   routeNote:'Waktu puncak dan trafik jambatan boleh tambah 15-20 minit.',
 
@@ -338,6 +338,9 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'5.5', tarikh:'6 September 2026', baru:[
+      'Selepas 15 September, halaman bertukar keadaan selesai: bar Trip selesai di atas dengan ringkasan angka, dan ucapan penutup Selamat Pulang.'
+    ]},
     { v:'5.4', tarikh:'6 September 2026', baru:[
       'Penunjuk langsung penerbangan: pil bertukar LIVE dan satu bar muncul di atas halaman semasa flight dalam perjalanan.',
       'Kiraan pax Isnin tidak lagi berkata semua balik petang.'

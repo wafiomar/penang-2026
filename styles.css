@@ -84,6 +84,12 @@ section+section{border-top:1px solid var(--line)}
 .hl-teks small{display:block;font-size:.76rem;font-weight:500;color:#2C7A50;line-height:1.3}
 .hl-chev{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.65}
 .hl-bar:hover .hl-chev{opacity:1}
+/* Bar selesai: penutup yang tenang, bukan amaran. Kelabu, tiada denyut,
+   tiada animasi. Guna slot hero yang sama seperti bar LIVE. */
+.hl-siap{width:100%;font:inherit;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink-2)}
+.hl-siap:hover,.hl-siap:focus-visible{background:var(--paper);border-color:var(--ink-3);outline:none}
+.hl-siap .hl-teks b{font-size:.88rem;font-weight:600;color:var(--ink-2)}
+.hl-cek{flex:none;width:16px;height:16px;fill:none;stroke:var(--ink-3);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 @media (prefers-reduced-motion:reduce){.hl-dot{animation:none;opacity:1;transform:none}}
 .hero .dates{font-size:1.15rem;font-weight:500}
 .hero-grid{display:grid;grid-template-columns:1.45fr 1fr 1.1fr;gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
@@ -111,6 +117,11 @@ section+section{border-top:1px solid var(--line)}
 .rk-alur i{font-style:normal;color:var(--ink-3);padding:0 1px}
 .rk-kereta i{font-style:normal;color:var(--ink-3);font-size:.92em}
 .rk-kereta span{display:block;color:var(--ink-2)}
+/* Ringkasan selepas trip: angka sahaja, satu kad setiap angka */
+.sp-isi{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;align-content:start}
+.sp-kad{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 12px;text-align:center}
+.sp-kad b{display:block;font-size:clamp(1.5rem,7vw,2rem);font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+.sp-kad span{display:block;margin-top:3px;font-size:.78rem;color:var(--ink-3)}
 @media (min-width:560px){.rk{padding:24px}.rk-kotak{max-height:min(100%,720px)}}
 .hero-aksi{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
 .hero-aksi .countdown{margin-top:0}

@@ -95,38 +95,70 @@ function segarLangsung(){
     if(t) t.textContent = hidup ? 'LIVE' : 'track live';
   });
   segarHeroLive(kini);
+  segarUcapan(kini);
 }
-// Penunjuk LIVE pada hero. Ia wujud dalam DOM HANYA semasa ada penerbangan
-// dalam tetingkap aktifnya — kalau tiada, elemen dibuang terus supaya tiada
-// ruang kosong tertinggal di bawah tajuk. Dua penerbangan serentak = dua bar
-// bertindan menegak, bukan satu bar bergabung.
+// Trip sudah tamat? Waktu pencetus ditulis dalam DATA.ucapan.tarikh dan dikira
+// pada offset +08:00 yang sama seperti tetingkap LIVE — bukan zon waktu peranti,
+// supaya semua orang bertukar keadaan pada saat yang sama.
+function tripSelesai(kini){
+  const tarikh = DATA.ucapan && DATA.ucapan.tarikh;
+  if(!tarikh) return false;
+  const cetus = Date.parse(tarikh + 'T00:00:00+08:00');
+  if(!isFinite(cetus)) return false;
+  return (kini == null ? Date.now() : kini) >= cetus;
+}
+// Satu slot pada hero, tiga keadaan. Kerana slot ini ada satu pemilik sahaja,
+// bar LIVE dan bar selesai tidak boleh wujud serentak:
+//   selepas trip  → satu bar selesai yang tenang
+//   flight aktif  → satu bar LIVE bagi setiap penerbangan
+//   selain itu    → elemen dibuang terus, tiada ruang kosong tertinggal
 function segarHeroLive(kini){
   const induk = document.querySelector('.hero .hero-atas');
   if(!induk || typeof DATA === 'undefined') return;
   const t = kini == null ? Date.now() : kini;
-  const aktif = (DATA.flights || []).filter(f => diUdara(f, t));
+  const siap = tripSelesai(t);
+  const aktif = siap ? [] : (DATA.flights || []).filter(f => diUdara(f, t));
   let bekas = document.getElementById('hero-live');
-  if(!aktif.length){ if(bekas) bekas.remove(); return; }
+  if(!siap && !aktif.length){ if(bekas) bekas.remove(); return; }
   if(!bekas){
     bekas = document.createElement('div');
     bekas.id = 'hero-live'; bekas.className = 'hero-live';
     induk.after(bekas);
   }
-  const html = aktif.map(f => `<a class="hl-bar" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
-    + ` target="_blank" rel="noopener" aria-label="Jejak ${esc(f.flightNo)} secara langsung di Flightradar24">`
-    + `<i class="hl-dot" aria-hidden="true"></i>`
-    + `<span class="hl-teks"><b>${esc(f.flightNo)} dalam perjalanan</b>`
-    + `<small>Tiba ${esc(f.toName)} ${esc(fmtT(f.arr))}</small></span>`
-    + ICON.chevron + `</a>`).join('');
+  const julat = String(DATA.trip.dates || '').replace(/\s*[–—-]\s*/, '–');
+  const html = siap
+    ? `<button type="button" class="hl-bar hl-siap" id="btn-siap" aria-haspopup="dialog">`
+      + `${ICON.cek}<span class="hl-teks"><b>Trip selesai · ${esc(julat)}</b></span>`
+      + ICON.chevron + `</button>`
+    : aktif.map(f => `<a class="hl-bar" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
+      + ` target="_blank" rel="noopener" aria-label="Jejak ${esc(f.flightNo)} secara langsung di Flightradar24">`
+      + `<i class="hl-dot" aria-hidden="true"></i>`
+      + `<span class="hl-teks"><b>${esc(f.flightNo)} dalam perjalanan</b>`
+      + `<small>Tiba ${esc(f.toName)} ${esc(fmtT(f.arr))}</small></span>`
+      + ICON.chevron + `</a>`).join('');
   // Bina semula hanya bila kandungan berubah, supaya denyut titik tidak
   // bermula semula setiap 30 saat.
-  if(bekas.dataset.isi !== html){ bekas.innerHTML = html; bekas.dataset.isi = html; }
+  if(bekas.dataset.isi !== html){
+    bekas.innerHTML = html; bekas.dataset.isi = html;
+    const btn = bekas.querySelector('#btn-siap');
+    if(btn && MODAL_SIAP) btn.addEventListener('click', MODAL_SIAP);
+  }
 }
+// Ucapan penutup bertukar pada pencetus yang sama. Confetti tidak disentuh —
+// ia kekal sebagai ucapan penutup, bukan sorakan mula.
+function segarUcapan(kini){
+  const u = DATA.ucapan, el = $('#ucapan');
+  if(!u || !el) return;
+  const teks = tripSelesai(kini) ? u.selepas : u.sebelum;
+  if(el.textContent !== teks) el.textContent = teks;
+}
+let MODAL_SIAP = null;   // diisi oleh modal ringkasan selepas trip
 setInterval(segarLangsung, 30000);
 document.addEventListener('visibilitychange', () => { if(!document.hidden) segarLangsung(); });
 const ICON = {
   radar:'<svg class="fr-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a6 6 0 0 1 6-6M12 12a10 10 0 0 1 10-10M12 12a2 2 0 0 1 2-2"/><circle cx="7" cy="17" r="2.2"/><path d="M2 22l3.4-3.4"/></svg>',
   keluar:'<svg class="fr-out" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4.5H20v5.5M20 4.5l-7.6 7.6"/><path d="M18 14v4.6a1.4 1.4 0 0 1-1.4 1.4H5.4A1.4 1.4 0 0 1 4 18.6V7.4A1.4 1.4 0 0 1 5.4 6H10"/></svg>',
+  cek:'<svg class="hl-cek" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M8.4 12.2l2.6 2.6 4.6-5"/></svg>',
   chevron:'<svg class="hl-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   car:'<svg viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-6h9L18 17M4 17v2M20 17v2M7 11l1-3h8l1 3"/><circle cx="8" cy="17" r="1.2"/><circle cx="16" cy="17" r="1.2"/></svg>',
   walk:'<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.5"/><path d="M10 21l2-6 3 3v3M8 13l2-4 3-1 3 3 2 1M12 15l-3 6"/></svg>',
@@ -205,8 +237,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 (function ucapan(){
   const u = DATA.ucapan, el = $('#ucapan'); if(!u || !el) return;
   taburConfetti(el);
-  const tukar = new Date(u.tarikh + 'T00:00:00+08:00');
-  el.textContent = new Date() >= tukar ? u.selepas : u.sebelum;
+  segarUcapan();   // teks ditetapkan di sini dan disegarkan semula setiap 30 saat
 })();
 
 /* ============================================================
@@ -266,6 +297,48 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   modal.querySelector('.rk-x').addEventListener('click', tutup);
   modal.addEventListener('click', e => { if(e.target === modal) tutup(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !modal.hidden) tutup(); });
+})();
+
+/* ============================================================
+   RINGKASAN SELEPAS TRIP — angka sahaja, semuanya dikira dari DATA
+   ============================================================ */
+// Peraturan "tempat dilawati": setiap nilai `place` yang unik pada item
+// jadual, kecuali item perjalanan (move / move2), penerbangan (flight) dan
+// nota (note), dan kecuali homestay sendiri — itu pangkalan, bukan destinasi.
+// Solat dan rehat dikira kerana Masjid Habib dan Queensbay Mall memang
+// perhentian sebenar pada jadual, bukan sekadar jeda.
+const BUKAN_TEMPAT = new Set(['move', 'move2', 'flight', 'note']);
+function kiraTempat(){
+  const set = new Set();
+  (DATA.days || []).forEach(d => (d.items || []).forEach(it => {
+    if(it.move || !it.place) return;
+    if(BUKAN_TEMPAT.has(it.type)) return;
+    if(it.place === 'homestay') return;
+    set.add(it.place);
+  }));
+  return set.size;
+}
+(function ringkasSiap(){
+  const modal = $('#siap'); if(!modal) return;
+  const angka = [
+    [DATA.groups.reduce((a, g) => a + g.pax, 0), 'orang'],
+    [DATA.days.length, 'hari'],
+    [DATA.days.reduce((a, d) => a + (d.km || 0), 0), 'km'],
+    [DATA.flights.length, 'penerbangan'],
+    [kiraTempat(), 'tempat dilawati']
+  ];
+  $('#siap-isi').innerHTML = angka
+    .map(([n, l]) => `<div class="sp-kad"><b>${esc(String(n))}</b><span>${esc(l)}</span></div>`).join('');
+
+  const buka = () => { modal.hidden = false; document.body.style.overflow = 'hidden'; modal.querySelector('.rk-x').focus({ preventScroll:true }); };
+  const tutup = () => { modal.hidden = true; document.body.style.overflow = ''; };
+  MODAL_SIAP = buka;
+  modal.querySelector('.rk-x').addEventListener('click', tutup);
+  modal.addEventListener('click', e => { if(e.target === modal) tutup(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !modal.hidden) tutup(); });
+  // Bar mungkin sudah dibina sebelum modal ini sedia — sambung butangnya sekarang
+  const btn = document.getElementById('btn-siap');
+  if(btn) btn.addEventListener('click', buka);
 })();
 
 /* ============================================================
@@ -859,7 +932,7 @@ function planbHtml(list){
   $('#codekey').innerHTML = DATA.groups.map(g => `<span><b style="--g:${g.color}">${esc(g.id)}</b>${esc(g.label)}<em>${g.pax} org</em></span>`).join('');
   const total = DATA.groups.reduce((a,g)=>a+g.pax,0);
   const g1 = G('G1').pax;
-  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 7.40 pg'],[total,'Isnin, semua berlepas dari LTAPP']];
+  const kira = [[total-g1,'Sabtu, lepas 10.20 pg'],[total,'Ahad, lepas 7.40 pg'],[total,'Isnin']];
   $('#headcount').innerHTML = kira.map(([v,l],i) => `<div><b>Day ${i+1} — ${v} pax</b><span>${esc(l)}</span></div>`).join('');
 })();
 
