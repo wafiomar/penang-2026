@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '5 September 2026, 3.01 petang',
+    updated: '6 September 2026, 7.03 malam',
     toddler: 2,
-    version: 'v5.0'
+    version: 'v5.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -24,10 +24,12 @@ const DATA = {
   ],
 
   flights: [
-    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6154', who:['F2','F3','F4','G2','S1'], note:'Fitri & Fatimah tempahan berasingan, penerbangan sama masa. 15 orang.' },
-    { iso:'2026-09-13', date:'13 Sept (Ahad)',  dep:'07:05', arr:'08:00', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'', who:['G1'], est:true, note:'Waktu berlepas 7.05 pg ialah anggaran — dikira dari waktu tiba 8.00 pg tolak 55 minit masa penerbangan. Sahkan pada tiket sebenar. Kereta 2 ambil mereka di LTAPP.' },
-    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'16:00', arr:'', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'', who:['G2:Fitri','G2:Fatimah'], note:'Fitri & Fatimah sahaja. Masa tiba dan nombor penerbangan: isi bila ada.' },
-    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'17:15', arr:'18:15', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'', who:['F2','F3','F4','G1','G2:Madno','S1'], note:'Semua yang lain. Nombor penerbangan balik: isi bila ada.' }
+    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6154', who:['F2','F3','F4','G2:Madno','S1'], note:'13 orang dalam satu penerbangan.' },
+    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6142', who:['G2:Fitri','G2:Fatimah'], note:'Tempahan berasingan, waktu sama dengan AK6154.' },
+    { iso:'2026-09-13', date:'13 Sept (Ahad)',  dep:'06:40', arr:'07:40', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6124', who:['G1'], note:'Kereta 2 (Syafi) tunggu di pintu ketibaan LTAPP.' },
+    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'16:00', arr:'17:00', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6131', who:['G2:Fitri','G2:Fatimah'], note:'Fitri & Fatimah sahaja.' },
+    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'17:15', arr:'18:15', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6154', who:['F2','F3','F4','G2:Madno','S1'], note:'13 orang.' },
+    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'20:45', arr:'21:50', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6129', who:['G1'], note:'Halima & Kak Ayman balik lewat malam.' },
   ],
 
   cutoff: {
@@ -336,6 +338,11 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'5.1', tarikh:'6 September 2026', baru:[
+      'Semua nombor penerbangan kini disahkan: AK6154, AK6142, AK6124, AK6131 dan AK6129.',
+      'Halima & Kak Ayman tiba Ahad 7.40 pg, bukan 8.00 pg.',
+      'Fitri & Fatimah ada nombor penerbangan sendiri, waktu sama dengan yang lain.'
+    ]},
     { v:'4.7', tarikh:'5 September 2026', baru:[
       'Keluarga Hadi dan Keluarga Obi kini satu cara sahaja — ERL dari Salak Tinggi. Tiada lagi pilihan lain untuk dipilih.',
       'Harga tiket Upside Down Museum dan muzium Plan B lain sudah ada dalam seksyen Kos.'

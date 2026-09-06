@@ -726,3 +726,6 @@ footer a{color:var(--ink-2)}
 .pm-isi{flex:1 1 auto;min-height:0;overflow:auto;margin-top:6px;-webkit-overflow-scrolling:touch}
 .pm-isi .planemap{max-width:none;width:auto;height:auto;min-width:260px;max-height:none}
 @media (max-width:560px){.pm-isi .planemap{height:70vh;width:auto}}
+/* Trip Summary: pil penerbangan ringkas tanpa teks ajakan */
+#ringkas .fr24>i{display:none}
+#ringkas .fr24{padding:1px 7px}

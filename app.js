@@ -179,13 +179,15 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   // Blok 1 — penerbangan
   const keLuar = DATA.flights.filter(f => f.to === 'PEN');
   const balik  = DATA.flights.filter(f => f.from === 'PEN');
+  // Kira bilangan orang bagi penerbangan yang membawa kumpulan penuh
+  const paxF = f => f.who.reduce((a, w) => a + (w.includes(':') ? 1 : G(w).pax), 0);
+  const sapa = f => { const n = nama(f); return n.length <= 2 ? n.join(' & ') : paxF(f) + ' orang'; };
   const baris1 = [];
-  if(keLuar[0]){ const f = keLuar[0];
-    baris1.push(`<b>Pergi</b> ${esc(hariPendek(f.date))}${f.flightNo?', '+pautanFr24(f):''}, ${esc(f.fromName)} ${fmtT(f.dep)} → ${esc(f.to)} ${fmtT(f.arr)}`); }
-  if(balik.length){
-    const bit = balik.map(f => `${fmtT(f.dep)} (${f.who.length > 3 ? 'lain' : esc(nama(f).join(', '))})`).join(' dan ');
-    baris1.push(`<b>Balik</b> ${esc(hariPendek(balik[0].date))}, ${bit}`); }
-  keLuar.slice(1).forEach(f => baris1.push(`${esc(nama(f).join(', '))} tiba ${esc(hariPenuh(f.date))} ${fmtT(f.arr)}`));
+  const garisF = f => `${pautanFr24(f)} ${fmtT(f.dep)} → ${fmtT(f.arr)} · ${esc(sapa(f))}`;
+  baris1.push(`<b>Pergi</b> <span class="rk-alur">${esc(hariPendek(keLuar[0].date))}</span>`);
+  keLuar.forEach(f => baris1.push(garisF(f)));
+  baris1.push(`<b>Balik</b> <span class="rk-alur">${esc(hariPendek(balik[0].date))}</span>`);
+  balik.forEach(f => baris1.push(garisF(f)));
 
   // Blok 2 — tempat utama setiap hari
   const baris2 = DATA.days.map(d => {
