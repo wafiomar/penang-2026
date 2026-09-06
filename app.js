@@ -96,6 +96,7 @@ function segarLangsung(){
   });
   segarHeroLive(kini);
   segarUcapan(kini);
+  segarCountdown(kini);
 }
 // Trip sudah tamat? Waktu pencetus ditulis dalam DATA.ucapan.tarikh dan dikira
 // pada offset +08:00 yang sama seperti tetingkap LIVE — bukan zon waktu peranti,
@@ -151,6 +152,15 @@ function segarUcapan(kini){
   if(!u || !el) return;
   const teks = tripSelesai(kini) ? u.selepas : u.sebelum;
   if(el.textContent !== teks) el.textContent = teks;
+}
+// Dalam keadaan selesai, bar "Trip selesai" jadi satu-satunya mesej penutup:
+// pil countdown dibuang terus dari DOM, bukan sekadar disembunyikan, supaya
+// tiada ruang kosong tertinggal. Sebelum dan semasa trip ia kekal seperti biasa.
+let PIL_COUNTDOWN = null, PIL_INDUK = null;
+function segarCountdown(kini){
+  if(!PIL_COUNTDOWN || !PIL_INDUK) return;
+  if(tripSelesai(kini)){ if(PIL_COUNTDOWN.parentNode) PIL_COUNTDOWN.remove(); }
+  else if(!PIL_COUNTDOWN.parentNode) PIL_INDUK.prepend(PIL_COUNTDOWN);
 }
 let MODAL_SIAP = null;   // diisi oleh modal ringkasan selepas trip
 setInterval(segarLangsung, 30000);
@@ -226,6 +236,8 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   else if(d===1) el.textContent = 'Esok bertolak';
   else if(d<=0 && d>-3) el.textContent = 'Sedang berlangsung';
   else el.textContent = 'Selesai — terima kasih semua';
+  PIL_COUNTDOWN = el; PIL_INDUK = el.parentNode;
+  segarCountdown();
   $('#foot').innerHTML = `<p>Kemas kini ${esc(DATA.trip.updated)} (${esc(DATA.trip.version)})`
     + ` · <a href="#" class="pautan-ubah" id="btn-ubah">Apa yang berubah<i class="titik-baru" hidden></i></a>`
     + `. Waktu solat zon PNG01. Peta © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, laluan oleh OSRM.</p>`;
