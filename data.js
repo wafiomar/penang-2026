@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '6 September 2026, 7.12 malam',
+    updated: '6 September 2026, 7.40 malam',
     toddler: 2,
-    version: 'v5.2'
+    version: 'v5.3'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -29,14 +29,14 @@ const DATA = {
     { iso:'2026-09-13', date:'13 Sept (Ahad)',  dep:'06:40', arr:'07:40', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6124', who:['G1'], note:'Kereta 2 (Syafi) tunggu di pintu ketibaan LTAPP.' },
     { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'16:00', arr:'17:00', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6131', who:['G2:Fitri','G2:Fatimah'], note:'Fitri & Fatimah sahaja.' },
     { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'17:15', arr:'18:15', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6154', who:['F2','F3','F4','G2:Madno','S1'], note:'13 orang.' },
-    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'20:45', arr:'21:50', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6129', who:['G1'], note:'Halima & Kak Ayman balik lewat malam.' },
+    { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'20:45', arr:'21:50', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6129', who:['G1'] },
   ],
 
   cutoff: {
-    title:'Pukul berapa disarankan sampai KLIA2',
+    title:'Sampai KLIA2',
     rows:[
-      { t:'06:00', l:'Kalau ada bagasi check-in', d:'Disarankan 3 jam sebelum berlepas. Beri ruang untuk kaunter bagasi, tag beg dan barisan keselamatan.' },
-      { t:'07:00', l:'Kalau cabin sahaja', d:'Disarankan 2 jam sebelum berlepas. Terus ke keselamatan, tiada kaunter bagasi.' }
+      { t:'06:00', l:'Ada bagasi check-in', d:'Beri ruang untuk kaunter bagasi, tag beg dan barisan keselamatan.' },
+      { t:'07:00', l:'Cabin sahaja', d:'Terus ke keselamatan, tiada kaunter bagasi.' }
     ],
     foot:'Ini saranan, bukan syarat rasmi AirAsia — ia ruang selamat berdasarkan pengalaman orang lain dengan kumpulan besar dan anak kecil. Kedua-duanya untuk penerbangan 9.25 pg. Halima & Kak Ayman hari Ahad guna kiraan sama dari waktu berlepas mereka.'
   },
@@ -177,7 +177,7 @@ const DATA = {
         { t:"22:45", type:"homestay", title:"Balik homestay", place:"homestay" }
     ]},
     { n:2, date:"2026-09-13", label:"Ahad, 13 Sept", short:"Ahad", intro:["Dua kereta berpecah pagi ini: Kereta 2 ke LTAPP ambil Halima & Kak Ayman, Kereta 1 terus ke sarapan.", "Semua bertemu semula di Roti Bakar Hutton Lane sebelum 9.00 pg.", "Selepas itu semua tempat rapat dalam George Town, kecuali Masjid Habib."], ringkas:["hill", "hameed", "armenian", "udm"], km:30, toll:"—", fuel:"±RM20", fuelNote:"termasuk larian LTAPP", items:[
-        { t:"07:30", type:"move2", title:"Kereta 2 ke LTAPP", kecil:"Syafi pandu, ambil Halima & Kak Ayman", meta:"Homestay ke LTAPP 20 minit. Flight tiba 8.00 pg. Dari LTAPP terus ke tempat sarapan, sampai kira-kira 8.45." },
+        { t:"07:30", type:"move2", title:"Kereta 2 ke LTAPP", kecil:"Syafi pandu, ambil Halima & Kak Ayman", meta:"Homestay ke LTAPP 20 minit. Flight tiba 7.40 pg, pickup 8.00 pg. Dari LTAPP terus ke tempat sarapan, sampai kira-kira 8.45." },
         { t:"07:45", type:"move2", title:"Kereta 1 ke sarapan", kecil:"Wafi pandu. Homestay ke Hutton Lane 12 minit" },
         { t:"08:00", e:"09:00", type:"meal", title:"Roti Bakar Hutton Lane", place:"hutton", pills:["Breakfast"], planB:[{ place:"fizzy", why:"Simpan untuk Isnin." }, { name:"Kopitiam 7 Pagi", rating:4.3, reviews:1430, kei:"Kopitiam, sarapan" }, { name:"Hidden Cafe Kg Tepi Pantai", kei:"Kafe, sarapan" }, { name:"Roti Canai Gemas Road", rating:4.3, reviews:3249, note:"Tutup Isnin.", kei:"Roti canai" }] },
         { move:{ km:6, min:20, via:"Jalan Air Itam" } },
@@ -338,6 +338,9 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'5.3', tarikh:'6 September 2026', baru:[
+      'Halima & Kak Ayman tiba LTAPP 7.40 pg, pickup Kereta 2 pukul 8.00 pg.'
+    ]},
     { v:'5.1', tarikh:'6 September 2026', baru:[
       'Semua nombor penerbangan kini disahkan: AK6154, AK6142, AK6124, AK6131 dan AK6129.',
       'Halima & Kak Ayman tiba Ahad 7.40 pg, bukan 8.00 pg.',

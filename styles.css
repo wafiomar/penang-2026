@@ -535,11 +535,13 @@ td small{color:var(--ink-2);display:block;font-size:.8rem}
 .fr24:hover>span,.fr24:focus-visible>span{text-decoration-color:currentColor}
 .fr-ico{width:13px;height:13px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
 .fr24:hover .fr-ico{opacity:1}
-/* Penunjuk LANGSUNG: hanya dipapar semasa penerbangan betul-betul di udara */
-.fr-live{display:inline-flex;align-items:center;gap:4px;margin-left:5px;padding:1px 7px 1px 6px;border-radius:999px;background:#B3261E;color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.04em;vertical-align:baseline}
-.fr-live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:denyut 1.6s ease-in-out infinite}
-@keyframes denyut{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
-@media (prefers-reduced-motion:reduce){.fr-live i{animation:none}}
+/* Keadaan LIVE: pil bertukar hijau semasa tetingkap aktif penerbangan itu */
+.fr24.live{border-color:#1E8E4E;background:#EAF6EF;color:#125E36}
+.fr24.live>span{text-decoration-color:#1E8E4E}
+.fr24.live .fr-ico{opacity:1}
+.fr24.live>i{color:#0F7A41;font-weight:700;letter-spacing:.05em;border-left-color:#9DD3B4;animation:denyut 1.9s ease-in-out infinite}
+@keyframes denyut{0%,100%{text-shadow:none}50%{text-shadow:0 0 8px rgba(15,122,65,.75)}}
+@media (prefers-reduced-motion:reduce){.fr24.live>i{animation:none;text-shadow:none}}
 /* Bahagian boleh buka-tutup yang dikongsi */
 .lipat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
 .lipat>summary{display:flex;align-items:center;gap:8px;padding:11px 14px;font-size:.86rem;font-weight:600;color:var(--ink);cursor:pointer;list-style:none}
@@ -682,7 +684,6 @@ footer a{color:var(--ink-2)}
 .cut-i{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--d3-soft)}
 .cut-i svg{width:17px;height:17px;fill:none;stroke:var(--d3);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .cut-l{font-size:.8rem;line-height:1.35;color:var(--ink-2)}
-.cut-pil{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--d3-soft);color:var(--d3);font-size:.7rem;font-weight:700;white-space:nowrap}
 @media (max-width:380px){#cutoff{grid-template-columns:1fr}}
 /* D) Kad tips seat pesawat */
 .kad-tips{margin-top:14px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel)}

@@ -50,36 +50,44 @@ const waze  = p => `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
 // Profil Google bagi tempat itu — cari ikut nama dan alamat, bukan koordinat.
 // q: nama berdaftar untuk carian Google bila ia berbeza daripada nama paparan
 const gprofile = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.q || p.name, p.addr].filter(Boolean).join(', '))}`;
-// Satu penerbangan sedang di udara? Kira ikut waktu Malaysia (UTC+8) pada tarikh
-// sebenar penerbangan itu. Tiada waktu tiba bermakna kita tak boleh tahu — anggap tidak.
-function diUdara(f){
-  if(!f.iso || !f.dep || !f.arr) return false;
+// Tetingkap LIVE satu penerbangan: 45 minit sebelum berlepas sehingga 15 minit
+// selepas tiba. Sentiasa dikira pada offset +08:00 yang ditulis dalam data, bukan
+// zon waktu peranti — telefon yang set zon lain tetap nampak keadaan yang sama.
+const LIVE_AWAL = 45 * 60000, LIVE_LEWAT = 15 * 60000;
+function tetingkapLangsung(f){
+  if(!f || !f.iso || !f.dep || !f.arr) return null;
   const ms = t => Date.parse(f.iso + 'T' + t + ':00+08:00');
   const mula = ms(f.dep); let tamat = ms(f.arr);
+  if(!isFinite(mula) || !isFinite(tamat)) return null;
   if(tamat < mula) tamat += 864e5;               // merentas tengah malam
-  const kini = Date.now();
-  return kini >= mula && kini <= tamat;
+  return [mula - LIVE_AWAL, tamat + LIVE_LEWAT];
 }
-// Nombor penerbangan sebagai pautan penjejakan langsung: ikon radar + titik LANGSUNG.
+function diUdara(f, kini){
+  const w = tetingkapLangsung(f);
+  if(!w) return false;
+  const t = kini == null ? Date.now() : kini;
+  return t >= w[0] && t <= w[1];
+}
+// Nombor penerbangan sebagai pautan penjejakan langsung: ikon radar + pil.
+// Tetingkap disimpan pada elemen supaya setiap penerbangan berdiri sendiri —
+// nombor yang sama boleh terbang dua hari berbeza.
 function pautanFr24(f){
   if(!f || !f.flightNo) return '';
-  return `<a class="fr24" data-flight="${esc(f.flightNo)}" href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
+  const w = tetingkapLangsung(f);
+  return `<a class="fr24" data-flight="${esc(f.flightNo)}"${w ? ` data-mula="${w[0]}" data-tamat="${w[1]}"` : ''}`
+    + ` href="https://www.flightradar24.com/data/flights/${esc(f.flightNo.toLowerCase())}"`
     + ` target="_blank" rel="noopener" title="Jejak penerbangan langsung" aria-label="Jejak penerbangan langsung ${esc(f.flightNo)}">`
-    + `${ICON.radar}<span>${esc(f.flightNo)}</span><i>tekan untuk jejak langsung</i></a>`;
+    + `${ICON.radar}<span>${esc(f.flightNo)}</span><i>live tracking</i></a>`;
 }
-// Titik LANGSUNG disegarkan berkala, supaya ia muncul dan hilang sendiri
-// walaupun halaman dibiarkan terbuka merentas waktu berlepas dan mendarat.
+// Pil disegarkan berkala supaya ia hidup dan padam sendiri walaupun halaman
+// dibiarkan terbuka merentas waktu berlepas dan mendarat.
 function segarLangsung(){
-  document.querySelectorAll('a.fr24[data-flight]').forEach(el => {
-    const f = DATA.flights.find(x => x.flightNo === el.dataset.flight);
-    const ada = el.nextElementSibling && el.nextElementSibling.classList.contains('fr-live');
-    const patut = !!f && diUdara(f);
-    if(patut && !ada){
-      const s = document.createElement('span');
-      s.className = 'fr-live'; s.title = 'Sedang di udara';
-      s.innerHTML = '<i></i>LANGSUNG';
-      el.after(s);
-    } else if(!patut && ada){ el.nextElementSibling.remove(); }
+  const kini = Date.now();
+  document.querySelectorAll('a.fr24[data-mula]').forEach(el => {
+    const hidup = kini >= +el.dataset.mula && kini <= +el.dataset.tamat;
+    el.classList.toggle('live', hidup);
+    const pil = el.querySelector('i');
+    if(pil) pil.textContent = hidup ? 'LIVE' : 'live tracking';
   });
 }
 setInterval(segarLangsung, 30000);
@@ -855,11 +863,9 @@ function planeSvg(){
     '06:00':'<rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M9 20v1M15 20v1"/>',
     '07:00':'<path d="M7 8h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9.5 13h5"/>'
   };
-  const JAM_CUT = { '06:00':'3 jam sebelum flight', '07:00':'2 jam sebelum flight' };
   $('#cutoff').innerHTML = DATA.cutoff.rows.map(c => `<div class="cut-kad">`
     + `<span class="cut-i"><svg viewBox="0 0 24 24" aria-hidden="true">${IKON_CUT[c.t]||''}</svg></span>`
     + `<b>${fmtT(c.t)}</b><span class="cut-l">${esc(c.l)}</span>`
-    + `${JAM_CUT[c.t] ? `<span class="cut-pil">${esc(JAM_CUT[c.t])}</span>` : ''}`
     + `</div>`).join('');
   // Satu butang Tips untuk kedua-dua kad, termasuk butiran setiap waktu
   $('#cut-foot').outerHTML = `<details class="cut-tipsbtn" id="cut-foot">`
