@@ -253,6 +253,54 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 })();
 
 /* ============================================================
+   TEMPAT DILAWATI + MAKAN — satu peraturan, dikongsi dua tempat
+   ============================================================ */
+// Peraturan tunggal "tempat dilawati", dipakai oleh senarai Lokasi akan pergi
+// dalam Trip Summary DAN angka tempat dalam ringkasan selepas trip: setiap
+// nilai `place` yang unik, kecuali item perjalanan (move / move2), penerbangan
+// (flight) dan nota (note), dan kecuali homestay sendiri — itu pangkalan, bukan
+// destinasi. Solat dan rehat dikira kerana Masjid Habib dan Queensbay Mall
+// memang perhentian sebenar pada jadual, bukan sekadar jeda.
+const BUKAN_TEMPAT = new Set(['move', 'move2', 'flight', 'note']);
+// Senarai tempat satu hari, ikut turutan masa, tanpa ulangan.
+function tempatHari(d){
+  const keluar = [];
+  (d.items || []).forEach(it => {
+    if(it.move || !it.place) return;
+    if(BUKAN_TEMPAT.has(it.type)) return;
+    if(it.place === 'homestay') return;
+    if(!keluar.includes(it.place)) keluar.push(it.place);
+  });
+  return keluar;
+}
+function kiraTempat(){
+  const set = new Set();
+  (DATA.days || []).forEach(d => tempatHari(d).forEach(k => set.add(k)));
+  return set.size;
+}
+// Label makan ditentukan dari waktu item itu sendiri, bukan turutan.
+// Sempadan: breakfast 05:00–10:29, lunch 10:30–15:29, dinner 17:00–23:59.
+// Waktu di luar julat itu (petang 15:30–16:59, lewat malam 00:00–04:59)
+// sengaja tidak berlabel — tiada antara tiga label itu yang jujur untuk
+// minum petang, jadi ia dibiarkan tanpa label dan bukan dipaksa masuk.
+const JULAT_MAKAN = [['breakfast', 300, 629], ['lunch', 630, 929], ['dinner', 1020, 1439]];
+function labelMakan(t){
+  if(!t) return null;
+  const [j, m] = String(t).split(':').map(Number);
+  if(!isFinite(j) || !isFinite(m)) return null;
+  const mnt = j * 60 + m;
+  const julat = JULAT_MAKAN.find(([, a, b]) => mnt >= a && mnt <= b);
+  return julat ? julat[0] : null;
+}
+// Bilangan makan sebenar hari itu, dan label slot yang dicakupinya.
+function makanHari(d){
+  const makan = (d.items || []).filter(it => !it.move && it.type === 'meal');
+  const label = [];
+  makan.forEach(it => { const l = labelMakan(it.t); if(l && !label.includes(l)) label.push(l); });
+  return { bil: makan.length, label };
+}
+
+/* ============================================================
    RINGKASAN TRIP — modal satu skrin, semua isi dibaca dari DATA
    ============================================================ */
 (function ringkasan(){
@@ -274,10 +322,14 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
   baris1.push(`<b>Balik</b> <span class="rk-alur">${esc(hariPendek(balik[0].date))}</span>`);
   balik.forEach(f => baris1.push(garisF(f)));
 
-  // Blok 2 — tempat utama setiap hari
+  // Blok 2 — SEMUA lokasi setiap hari ikut turutan masa, plus bilangan makan.
+  // Guna tempatHari(), peraturan yang sama dengan angka tempat dalam
+  // ringkasan selepas trip, supaya dua angka itu tidak boleh terpesong.
   const baris2 = DATA.days.map(d => {
-    const senarai = (d.ringkas || DATA.markers[d.n] || []).slice(0,4).map(k => DATA.places[k].short || DATA.places[k].name);
-    return `<b>Day ${d.n}</b> <span class="rk-alur">${senarai.map(esc).join(' <i>→</i> ')}</span>`;
+    const senarai = tempatHari(d).map(k => DATA.places[k].short || DATA.places[k].name);
+    const mk = makanHari(d);
+    return `<b>Day ${d.n}</b> <span class="rk-alur">${senarai.map(esc).join(' <i>→</i> ')}</span>`
+      + `<span class="rk-makan">${mk.bil} makan${mk.label.length ? ` · ${esc(mk.label.join(', '))}` : ''}</span>`;
   });
 
   // Blok 3 — kereta, guna senario semasa bercuti
@@ -296,7 +348,7 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 
   $('#ringkas-isi').innerHTML =
       `<section><h3>Penerbangan</h3>${baris1.map(x=>`<p>${x}</p>`).join('')}</section>`
-    + `<section><h3>Tiga hari</h3>${baris2.map(x=>`<p>${x}</p>`).join('')}</section>`
+    + `<section><h3>Lokasi akan pergi</h3>${baris2.map(x=>`<p>${x}</p>`).join('')}</section>`
     + `<section class="rk-kereta"><h3>Kereta</h3>${baris3.map(x=>`<p>${x}</p>`).join('')}</section>`
     + `<section><h3>Homestay</h3><p>${esc(DATA.stay.addr)}</p>`
     + `<p>Check-in ${esc(bersih(DATA.stay.checkin))} · Check-out ${esc(bersih(DATA.stay.checkout))}</p>`
@@ -314,22 +366,6 @@ const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 
 /* ============================================================
    RINGKASAN SELEPAS TRIP — angka sahaja, semuanya dikira dari DATA
    ============================================================ */
-// Peraturan "tempat dilawati": setiap nilai `place` yang unik pada item
-// jadual, kecuali item perjalanan (move / move2), penerbangan (flight) dan
-// nota (note), dan kecuali homestay sendiri — itu pangkalan, bukan destinasi.
-// Solat dan rehat dikira kerana Masjid Habib dan Queensbay Mall memang
-// perhentian sebenar pada jadual, bukan sekadar jeda.
-const BUKAN_TEMPAT = new Set(['move', 'move2', 'flight', 'note']);
-function kiraTempat(){
-  const set = new Set();
-  (DATA.days || []).forEach(d => (d.items || []).forEach(it => {
-    if(it.move || !it.place) return;
-    if(BUKAN_TEMPAT.has(it.type)) return;
-    if(it.place === 'homestay') return;
-    set.add(it.place);
-  }));
-  return set.size;
-}
 (function ringkasSiap(){
   const modal = $('#siap'); if(!modal) return;
   const angka = [

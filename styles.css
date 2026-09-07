@@ -109,12 +109,16 @@ section+section{border-top:1px solid var(--line)}
 .rk-x{position:absolute;top:9px;right:9px;display:flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--panel);color:var(--ink-2);cursor:pointer}
 .rk-x svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .rk-x:hover,.rk-x:focus-visible{color:var(--ink);border-color:var(--ink-3)}
-.rk-isi{flex:1;min-height:0;overflow:hidden;display:grid;gap:clamp(5px,1.4vh,10px);align-content:start}
+/* Senarai lokasi penuh boleh melebihi satu skrin — biar ia bergolek,
+   jangan potong senarai atau keratkan kandungan */
+.rk-isi{flex:1;min-height:0;overflow:auto;display:grid;gap:clamp(5px,1.4vh,10px);align-content:start}
 .rk-isi section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:clamp(6px,1.5vh,10px) 11px}
 .rk-isi h3{font-size:clamp(.62rem,2.5vw,.72rem);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px}
 .rk-isi p{font-size:clamp(.72rem,3vw,.85rem);line-height:1.35;color:var(--ink-2);margin-top:2px}
 .rk-isi b{color:var(--ink);font-weight:700}
 .rk-alur i{font-style:normal;color:var(--ink-3);padding:0 1px}
+/* Bilangan makan sebenar hari itu, di bawah senarai lokasi */
+.rk-makan{display:block;margin-top:2px;font-size:.72rem;color:var(--ink-3)}
 .rk-kereta i{font-style:normal;color:var(--ink-3);font-size:.92em}
 .rk-kereta span{display:block;color:var(--ink-2)}
 /* Ringkasan selepas trip: angka sahaja, satu kad setiap angka */
