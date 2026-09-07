@@ -278,13 +278,16 @@ function kiraTempat(){
   (DATA.days || []).forEach(d => tempatHari(d).forEach(k => set.add(k)));
   return set.size;
 }
-// Label makan ditentukan dari waktu item itu sendiri, bukan turutan.
-// Sempadan: breakfast 05:00–10:29, lunch 10:30–15:29, dinner 17:00–23:59.
-// Waktu di luar julat itu (petang 15:30–16:59, lewat malam 00:00–04:59)
-// sengaja tidak berlabel — tiada antara tiga label itu yang jujur untuk
-// minum petang, jadi ia dibiarkan tanpa label dan bukan dipaksa masuk.
+// Label makan datang dari pill dalam data.js dahulu, kerana pill lebih tepat
+// daripada jam: La Luna 6.40 ptg ditandakan Snacking, bukan dinner kedua.
+// Pill yang menyatakan CARA dan bukan jenis makan (contohnya "Take away")
+// diabaikan — hanya jenis makan di bawah ini diiktiraf.
+const PILL_MAKAN = { breakfast:'breakfast', lunch:'lunch', dinner:'dinner', snacking:'snack', snack:'snack' };
+// Kalau tiada pill jenis makan, barulah jatuh balik kepada sempadan jam:
+// breakfast 05:00–10:29, lunch 10:30–15:29, dinner 17:00–23:59. Waktu di luar
+// julat itu (petang 15:30–16:59, lewat malam 00:00–04:59) kekal tanpa label.
 const JULAT_MAKAN = [['breakfast', 300, 629], ['lunch', 630, 929], ['dinner', 1020, 1439]];
-function labelMakan(t){
+function labelIkutJam(t){
   if(!t) return null;
   const [j, m] = String(t).split(':').map(Number);
   if(!isFinite(j) || !isFinite(m)) return null;
@@ -292,11 +295,20 @@ function labelMakan(t){
   const julat = JULAT_MAKAN.find(([, a, b]) => mnt >= a && mnt <= b);
   return julat ? julat[0] : null;
 }
-// Bilangan makan sebenar hari itu, dan label slot yang dicakupinya.
+function labelMakan(it){
+  if(!it) return null;
+  const dariPill = (it.pills || [])
+    .map(p => PILL_MAKAN[String(p).toLowerCase().trim()])
+    .filter(Boolean);
+  return dariPill.length ? dariPill[0] : labelIkutJam(it.t);
+}
+// Bilangan makan sebenar hari itu, satu label bagi setiap makan, ikut turutan
+// masa. Label sengaja tidak dinyahduplikat supaya bilangan dan bilangan label
+// sentiasa sama — kalau ia tidak sama, ada item tanpa label dan itu patut
+// kelihatan, bukan disembunyikan.
 function makanHari(d){
   const makan = (d.items || []).filter(it => !it.move && it.type === 'meal');
-  const label = [];
-  makan.forEach(it => { const l = labelMakan(it.t); if(l && !label.includes(l)) label.push(l); });
+  const label = makan.map(labelMakan).filter(Boolean);
   return { bil: makan.length, label };
 }
 
