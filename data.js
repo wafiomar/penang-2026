@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '7 September 2026, 9.55 pagi',
+    updated: '9 September 2026, 8.33 pagi',
     toddler: 2,
-    version: 'v5.8'
+    version: 'v6.0'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -269,7 +269,9 @@ const DATA = {
   stay: {
     name:'Homestay Karpal Singh Drive',
     addr:'12, Lebuh Sungai Pinang 3, Karpal Singh Drive, Jelutong, 11600 George Town',
-    facts:[['9','bilik tidur'],['14','katil'],['9','bilik air'],['4','tingkat']],
+    // Bilangan bilik dan tingkat sengaja tiada di sini — ia dikira dari
+    // `tingkat` pada masa jalan dan disisip ke dalam senarai ini.
+    facts:[['14','katil'],['9','bilik air']],
     images:[
       { src:'img/frontviewhome.avif', alt:'Pemandangan hadapan homestay', w:1440, h:960 },
       { src:'img/postbox.webp', alt:'Peti surat di hadapan rumah', w:1440, h:960 },
@@ -294,16 +296,29 @@ const DATA = {
       { src:'img/laundry-toilet.avif', alt:'Ruang dobi dan tandas', w:1440, h:960 }
     ],
     checkin:'3.00 ptg (minta awal)', checkout:'12.00 tgh (kita keluar 8.30 pg)',
-    rooms:[
-      { n:1, g:'F1', who:'Muhd, Kak Salina, Khadijah, Alisha' },
-      { n:2, g:'F2', g2:'G2', who:'Hana & Fatimah' },
-      { n:3, g:'F2', who:'Hadi & Kak Hajar' },
-      { n:4, g:'F2', g2:'G2', who:'Hud & Fitri' },
-      { n:5, g:'F3', who:'Obi, Kak Yusra, Nasrullah, Maryam, Annur' },
-      { n:6, g:'F4', who:'Wafi & Nadian' },
-      { n:7, g:'S1', who:'Syafi' },
-      { n:8, g:'G2', who:'Madno' },
-      { n:9, g:'G1', who:'Halima & Kak Ayman', sub:'Dari Ahad' }
+    // Agihan bilik ikut tingkat. Susunan tingkat sebahagian daripada maklumat,
+    // jadi ia disimpan bertingkat, bukan sebagai senarai rata.
+    // siapa: id kumpulan (label diambil dari DATA.groups supaya nama sama di
+    // seluruh halaman) atau nama individu. Bilangan penghuni, bilik dan tingkat
+    // semuanya dikira dari struktur ini, tiada satu pun ditulis tetap.
+    tingkat:[
+      { aras:'Ground floor', bilik:[
+        { n:1, katil:'1 queen', air:'sendiri', siapa:['Halima','Kak Ayman'] },
+        { n:2, katil:'1 queen', air:'sendiri', siapa:['Fatimah','Hana'] }
+      ]},
+      { aras:'1st floor', kecil:'ruang tamu dan ruang makan', bilik:[
+        { n:3, katil:'1 super single', air:'kongsi', siapa:['Madno'], nota:'Bilik air di dapur, aras yang sama.' }
+      ]},
+      { aras:'2nd floor', bilik:[
+        { n:4, katil:'2 king', katilNota:'ada bathtub', air:'sendiri', siapa:['F1'] },
+        { n:5, katil:'2 super single', katilNota:'shower sahaja', air:'sendiri', siapa:['S1'] },
+        { n:6, katil:'3 super single', air:'kongsi', siapa:['Fitri','Hud'], nota:'Bilik air di luar bilik, aras yang sama.' }
+      ]},
+      { aras:'3rd floor', bilik:[
+        { n:7, katil:'1 queen', air:'sendiri', siapa:['Hadi','Kak Hajar'] },
+        { n:8, katil:'1 king', air:'sendiri', siapa:['F4'] },
+        { n:9, katil:'1 king + 1 super single', air:'sendiri', siapa:['F3'] }
+      ]}
     ]
   },
 
@@ -338,6 +353,9 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'6.0', tarikh:'9 September 2026', baru:[
+      'Agihan bilik dikemas kini: nama penghuni setiap bilik, susunan katil, dan status bilik air sendiri atau kongsi.'
+    ]},
     { v:'5.5', tarikh:'6 September 2026', baru:[
       'Selepas 15 September, halaman bertukar keadaan selesai: bar Trip selesai di atas dengan ringkasan angka, dan ucapan penutup Selamat Pulang.'
     ]},

@@ -213,6 +213,13 @@ const RS_ICON = {
   tol:'<path d="M3 20.5v-9M21 20.5v-9M3 11.5h18M4.5 11.5l1.5-4h12l1.5 4M9 15.5h6"/>',
   minyak:'<path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 12.5 5v15.5M3 20.5h11M6.5 9.5h4"/><path d="M12.5 9h3a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 0 3 0V8l-2.5-2.5"/>'
 };
+// Ikon lencana bilik air: pintu tertutup = bilik air dalam bilik;
+// pintu dengan anak panah keluar = bilik air di luar bilik.
+const AIR_ICON = {
+  sendiri:'<rect x="5.5" y="3.5" width="13" height="17" rx="1.4"/><circle cx="15" cy="12" r="1"/>',
+  kongsi:'<path d="M12.5 3.5H6.5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h6"/><path d="M14.5 12h6.5M18.2 9.2 21 12l-2.8 2.8"/>'
+};
+const AIR_TEKS = { sendiri:'bilik air dalam bilik', kongsi:'bilik air di luar bilik' };
 const FAKTA_ICON = {
   katil:'<path d="M3 19v-9M3 13h18v6M3 19h18M6.5 10.5h3.2M21 19v-4.5a2 2 0 0 0-2-2h-8.5"/><circle cx="7.8" cy="9.6" r="1.9"/>',
   air:'<path d="M4 12h16v2.5a4.5 4.5 0 0 1-4.5 4.5h-7A4.5 4.5 0 0 1 4 14.5Z"/><path d="M7 12V6.2A1.7 1.7 0 0 1 8.7 4.5h.4a1.7 1.7 0 0 1 1.7 1.7M7 19l-1 2.2M18 19l1 2.2"/>',
@@ -311,6 +318,36 @@ function makanHari(d){
   const label = makan.map(labelMakan).filter(Boolean);
   return { bil: makan.length, label };
 }
+
+/* ============================================================
+   BILIK HOMESTAY — semua angka dikira dari DATA.stay.tingkat
+   ============================================================ */
+// Satu entri `siapa` ialah id kumpulan (labelnya diambil dari DATA.groups,
+// jadi "Keluarga Muhd" dieja sama seperti di seluruh halaman) atau nama
+// seorang individu. Kumpulan menyumbang pax kumpulan itu, individu satu.
+const ID_KUMPULAN = new Set(DATA.groups.map(g => g.id));
+function penghuniBilik(b){
+  return (b.siapa || []).map(x => ID_KUMPULAN.has(x)
+    ? { nama: G(x).label, bil: G(x).pax }
+    : { nama: x, bil: 1 });
+}
+function semuaBilik(){
+  const keluar = [];
+  (DATA.stay.tingkat || []).forEach(t => (t.bilik || []).forEach(b => keluar.push(b)));
+  return keluar;
+}
+function kiraBilik(){ return semuaBilik().length; }
+function kiraTingkat(){ return (DATA.stay.tingkat || []).length; }
+function kiraPenghuni(){
+  return semuaBilik().reduce((a, b) => a + penghuniBilik(b).reduce((x, p) => x + p.bil, 0), 0);
+}
+// Bilangan bilik dan tingkat disisip ke dalam facts sebelum apa-apa dirender,
+// supaya setiap tempat yang membaca facts — kad fakta Penginapan dan baris
+// Homestay dalam Trip Summary — dapat angka yang dikira, bukan ditulis tetap.
+(function faktaBilik(){
+  const s = DATA.stay; if(!s || !s.facts) return;
+  s.facts = [[String(kiraBilik()), 'bilik tidur'], ...s.facts, [String(kiraTingkat()), 'tingkat']];
+})();
 
 /* ============================================================
    RINGKASAN TRIP — modal satu skrin, semua isi dibaca dari DATA
@@ -1277,8 +1314,17 @@ function carSvg(c, uid){
     <div class="facts">${s.facts.map(f=>`<div><span class="fi"><svg viewBox="0 0 24 24" aria-hidden="true">${FAKTA_ICON[FAKTA[f[1]]||'katil']}</svg></span><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>
     <p><b>Check-in</b> ${esc(s.checkin)}<br><b>Check-out</b> ${esc(s.checkout)}</p>
     <div class="ti-links" style="margin:10px 0 16px"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>
-    <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3><p class="bilik-nota">Nombor bilik di sini hanya senarai, bukan nombor bilik sebenar di rumah.</p>
-    <div class="rooms">${s.rooms.map(r => { const g = r.g ? G(r.g) : null, g2 = r.g2 ? G(r.g2) : null; return `<div class="room ${g?'':'vacant'}${g2?' dua':''}" style="--g:${g?g.color:'transparent'};--g2:${g2?g2.color:'transparent'}"><b>Bilik ${r.n}</b>${esc(r.who)}${r.sub?`<br><small>${esc(r.sub)}</small>`:''}</div>`; }).join('')}</div>`;
+    <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3>
+    ${s.tingkat.map(t => `<div class="tk">
+      <h4 class="tk-tajuk">${esc(t.aras)}${t.kecil ? `<span>${esc(t.kecil)}</span>` : ''}</h4>
+      <div class="bilik-senarai">${t.bilik.map(b => `<div class="bk">
+        <div class="bk-atas"><b>Bedroom ${b.n}</b><span class="bk-air ${esc(b.air)}"><svg viewBox="0 0 24 24" aria-hidden="true">${AIR_ICON[b.air] || ''}</svg>${esc(b.air)}</span></div>
+        <div class="bk-katil">${esc(b.katil)}${b.katilNota ? ` · ${esc(b.katilNota)}` : ''}</div>
+        <div class="bk-siapa">${penghuniBilik(b).map(x => esc(x.nama)).join(', ')}</div>
+        ${b.nota ? `<div class="bk-nota">${esc(b.nota)}</div>` : ''}
+      </div>`).join('')}</div></div>`).join('')}
+    <p class="bk-legend">${Object.keys(AIR_ICON).map(k =>
+      `<span class="bk-air ${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${AIR_ICON[k]}</svg>${esc(k)}</span> ${esc(AIR_TEKS[k])}`).join(' · ')}</p>`;
 })();
 
 (function galeri(){
