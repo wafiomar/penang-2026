@@ -213,18 +213,41 @@ const RS_ICON = {
   tol:'<path d="M3 20.5v-9M21 20.5v-9M3 11.5h18M4.5 11.5l1.5-4h12l1.5 4M9 15.5h6"/>',
   minyak:'<path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 12.5 5v15.5M3 20.5h11M6.5 9.5h4"/><path d="M12.5 9h3a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 0 3 0V8l-2.5-2.5"/>'
 };
-// Ikon lencana bilik air: pintu tertutup = bilik air dalam bilik;
-// pintu dengan anak panah keluar = bilik air di luar bilik.
-const AIR_ICON = {
-  sendiri:'<rect x="5.5" y="3.5" width="13" height="17" rx="1.4"/><circle cx="15" cy="12" r="1"/>',
-  kongsi:'<path d="M12.5 3.5H6.5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h6"/><path d="M14.5 12h6.5M18.2 9.2 21 12l-2.8 2.8"/>'
-};
-const AIR_TEKS = { sendiri:'bilik air dalam bilik', kongsi:'bilik air di luar bilik' };
 const FAKTA_ICON = {
   katil:'<path d="M3 19v-9M3 13h18v6M3 19h18M6.5 10.5h3.2M21 19v-4.5a2 2 0 0 0-2-2h-8.5"/><circle cx="7.8" cy="9.6" r="1.9"/>',
   air:'<path d="M4 12h16v2.5a4.5 4.5 0 0 1-4.5 4.5h-7A4.5 4.5 0 0 1 4 14.5Z"/><path d="M7 12V6.2A1.7 1.7 0 0 1 8.7 4.5h.4a1.7 1.7 0 0 1 1.7 1.7M7 19l-1 2.2M18 19l1 2.2"/>',
   tingkat:'<path d="M4 21V8.5l7-4 7 4V21M4 21h17M8 21v-4h6v4M7.5 11.5h2M14 11.5h2M7.5 14.5h2M14 14.5h2"/>'
 };
+// Ikon bilik: bath dan katil diguna semula dari FAKTA_ICON, anak panah keluar
+// dari ICON.keluar, kutleri dari TI_ICON.meal. Sofa dan dapur tiada dalam set
+// halaman sebelum ini, jadi kedua-duanya ditambah di sini dalam gaya yang sama.
+// Shower TIADA dalam set — lihat AIR_ICON di bawah.
+const BK_ICON = {
+  bath:    FAKTA_ICON.air,
+  katil:   FAKTA_ICON.katil,
+  keluar:  '<path d="M14.5 4.5H20v5.5M20 4.5l-7.6 7.6"/><path d="M18 14v4.6a1.4 1.4 0 0 1-1.4 1.4H5.4A1.4 1.4 0 0 1 4 18.6V7.4A1.4 1.4 0 0 1 5.4 6H10"/>',
+  kutleri: TI_ICON.meal,
+  sofa:    '<path d="M4 11.5V8.8A2.3 2.3 0 0 1 6.3 6.5h11.4A2.3 2.3 0 0 1 20 8.8v2.7"/><path d="M3 15.2a1.9 1.9 0 0 1 1.9-1.9h.2A1.9 1.9 0 0 1 7 15.2V17h10v-1.8a1.9 1.9 0 0 1 1.9-1.9h.2a1.9 1.9 0 0 1 1.9 1.9V19H3Z"/><path d="M6 19v1.5M18 19v1.5"/>',
+  dapur:   '<rect x="4.5" y="3.5" width="15" height="17" rx="1.8"/><path d="M4.5 10.5h15"/><circle cx="9" cy="7" r="1"/><circle cx="15" cy="7" r="1"/><path d="M9.5 14h5"/>'
+};
+// Tiga keadaan bilik air. Bath dan bath+keluar guna ikon sebenar.
+// shower-sendiri sepatutnya guna ikon shower, tetapi set ikon halaman ini
+// TIADA ikon shower — mengikut arahan, ia guna ikon bath buat sementara dan
+// perbezaannya dibawa oleh teks lencana sehingga ikon shower diputuskan.
+const AIR_ICON = {
+  'bath-sendiri':   [BK_ICON.bath],
+  'shower-sendiri': [BK_ICON.bath],
+  'bath-asing':     [BK_ICON.bath, BK_ICON.keluar]
+};
+const AIR_TEKS = {
+  'bath-sendiri':'bath sendiri', 'shower-sendiri':'shower sendiri', 'bath-asing':'bath asing'
+};
+const AIR_LEGEND = {
+  'bath-sendiri':'dalam bilik', 'shower-sendiri':'dalam bilik', 'bath-asing':'keluar bilik'
+};
+// Ikon kiraan dalam kad bilik: Bedroom 5 sepatutnya shower, ikut nota di atas.
+const KIRA_IKON = { 'bath-sendiri':BK_ICON.bath, 'shower-sendiri':BK_ICON.bath, 'bath-asing':BK_ICON.bath };
+
 const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3.4l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.6l5.9-.8z"/></svg>';
 
 /* ============================================================
@@ -326,10 +349,45 @@ function makanHari(d){
 // jadi "Keluarga Muhd" dieja sama seperti di seluruh halaman) atau nama
 // seorang individu. Kumpulan menyumbang pax kumpulan itu, individu satu.
 const ID_KUMPULAN = new Set(DATA.groups.map(g => g.id));
+// Warna titik pada nama diambil terus dari DATA.groups — nama individu dicari
+// dalam senarai members setiap kumpulan, id kumpulan diambil terus.
+const WARNA_ORANG = (() => {
+  const peta = {};
+  DATA.groups.forEach(g => (g.members || []).forEach(m => { peta[m] = g.color; }));
+  return peta;
+})();
 function penghuniBilik(b){
   return (b.siapa || []).map(x => ID_KUMPULAN.has(x)
-    ? { nama: G(x).label, bil: G(x).pax }
-    : { nama: x, bil: 1 });
+    ? { nama: G(x).label, bil: G(x).pax, warna: G(x).color }
+    : { nama: x, bil: 1, warna: WARNA_ORANG[x] || null });
+}
+// Bilangan katil dibaca dari teks susunan katil: "1 king + 1 super single" = 2.
+function kiraKatil(b){
+  return String(b.katil || '').split('+')
+    .reduce((a, bahagian) => { const m = bahagian.trim().match(/^(\d+)/); return a + (m ? +m[1] : 0); }, 0);
+}
+// Bilik air kepunyaan bilik itu. Bedroom 3 ditanda bilikAir:0 kerana bilik
+// airnya dikira pada kad ruang sepunya, bukan dua kali.
+function kiraAirBilik(b){ return typeof b.bilikAir === 'number' ? b.bilikAir : 1; }
+function tallyTingkat(t){
+  const katil = (t.bilik || []).reduce((a, b) => a + kiraKatil(b), 0);
+  const air = (t.bilik || []).reduce((a, b) => a + kiraAirBilik(b), 0) + ((t.ruang && t.ruang.air) || 0);
+  return { katil, air };
+}
+// Pil kiraan kecil: ikon + angka. Diguna pada tajuk tingkat, dalam kad bilik,
+// dan pada hujung kanan legend.
+function kiraPil(ik, n){
+  return `<span class="kp"><svg viewBox="0 0 24 24" aria-hidden="true">${BK_ICON[ik] || BK_ICON.bath}</svg>${n}</span>`;
+}
+// Lencana status bilik air: satu atau dua ikon, kemudian teks.
+function lencanaAir(k){
+  const ikon = (AIR_ICON[k] || []).map(d => `<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`).join('');
+  return `<span class="bk-air ${esc(k)}">${ikon}<em>${esc(AIR_TEKS[k] || k)}</em></span>`;
+}
+function tallySemua(){
+  return (DATA.stay.tingkat || []).reduce((a, t) => {
+    const x = tallyTingkat(t); return { katil: a.katil + x.katil, air: a.air + x.air };
+  }, { katil:0, air:0 });
 }
 function semuaBilik(){
   const keluar = [];
@@ -346,7 +404,9 @@ function kiraPenghuni(){
 // Homestay dalam Trip Summary — dapat angka yang dikira, bukan ditulis tetap.
 (function faktaBilik(){
   const s = DATA.stay; if(!s || !s.facts) return;
-  s.facts = [[String(kiraBilik()), 'bilik tidur'], ...s.facts, [String(kiraTingkat()), 'tingkat']];
+  const t = tallySemua();
+  s.facts = [[String(kiraBilik()), 'bilik tidur'], [String(t.katil), 'katil'],
+             [String(t.air), 'bilik air'], [String(kiraTingkat()), 'tingkat']];
 })();
 
 /* ============================================================
@@ -1303,6 +1363,7 @@ function carSvg(c, uid){
    ============================================================ */
 (function stay(){
   const s = DATA.stay, p = DATA.places.homestay;
+  const jum = tallySemua();
   // Ikon kad fakta homestay
   const FAKTA = { 'bilik tidur':'katil', 'katil':'katil', 'bilik air':'air', 'tingkat':'tingkat' };
   const btnGam = (s.images && s.images.length)
@@ -1315,16 +1376,25 @@ function carSvg(c, uid){
     <p><b>Check-in</b> ${esc(s.checkin)}<br><b>Check-out</b> ${esc(s.checkout)}</p>
     <div class="ti-links" style="margin:10px 0 16px"><a href="${waze(p)}" target="_blank" rel="noopener">Waze</a><a href="${gmaps(p)}" target="_blank" rel="noopener">Google Maps</a></div>
     <h3 style="font-size:.95rem">Agihan bilik <span style="font-weight:500;color:var(--ink-2)">(cadangan)</span></h3>
-    ${s.tingkat.map(t => `<div class="tk">
-      <h4 class="tk-tajuk">${esc(t.aras)}${t.kecil ? `<span>${esc(t.kecil)}</span>` : ''}</h4>
+    ${s.tingkat.map(t => { const tal = tallyTingkat(t); return `<div class="tk">
+      <h4 class="tk-tajuk"><span class="tk-nama">${esc(t.aras)}</span>
+        <span class="tk-tally">${kiraPil('katil', tal.katil)}${kiraPil('bath', tal.air)}</span></h4>
       <div class="bilik-senarai">${t.bilik.map(b => `<div class="bk">
-        <div class="bk-atas"><b>Bedroom ${b.n}</b><span class="bk-air ${esc(b.air)}"><svg viewBox="0 0 24 24" aria-hidden="true">${AIR_ICON[b.air] || ''}</svg>${esc(b.air)}</span></div>
+        <div class="bk-atas"><b>Bedroom ${b.n}</b>${lencanaAir(b.air)}</div>
         <div class="bk-katil">${esc(b.katil)}${b.katilNota ? ` · ${esc(b.katilNota)}` : ''}</div>
-        <div class="bk-siapa">${penghuniBilik(b).map(x => esc(x.nama)).join(', ')}</div>
+        <div class="bk-kira">${kiraPil('katil', kiraKatil(b))}${kiraAirBilik(b) ? kiraPil(b.air === 'shower-sendiri' ? 'shower' : 'bath', kiraAirBilik(b)) : ''}</div>
+        <div class="bk-siapa">${penghuniBilik(b).map(x =>
+          `<span class="bk-org"><i class="bk-titik" style="background:${esc(x.warna || 'var(--ink-3)')}"></i>${esc(x.nama)}</span>`).join('')}</div>
         ${b.nota ? `<div class="bk-nota">${esc(b.nota)}</div>` : ''}
-      </div>`).join('')}</div></div>`).join('')}
-    <p class="bk-legend">${Object.keys(AIR_ICON).map(k =>
-      `<span class="bk-air ${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${AIR_ICON[k]}</svg>${esc(k)}</span> ${esc(AIR_TEKS[k])}`).join(' · ')}</p>`;
+      </div>`).join('')}${t.ruang ? `<div class="bk sepunya">
+        <div class="sp-grid">${[...t.ruang.item, ['bath', `${t.ruang.air} bath`]].map(([ik, lb]) =>
+          `<div class="sp-item"><svg viewBox="0 0 24 24" aria-hidden="true">${BK_ICON[ik] || ''}</svg><span>${esc(lb)}</span></div>`).join('')}</div>
+      </div>` : ''}</div></div>`; }).join('')}
+    <p class="bk-legend">
+      <span class="bk-lg">${Object.keys(AIR_TEKS).map(k =>
+        `<span class="bk-lg1">${lencanaAir(k)} ${esc(AIR_LEGEND[k])}</span>`).join('')}</span>
+      <span class="bk-jum">${kiraPil('katil', jum.katil)}${kiraPil('bath', jum.air)}</span></p>`;
+
 })();
 
 (function galeri(){

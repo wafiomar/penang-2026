@@ -479,23 +479,43 @@ details.planb[open] summary::before{content:"–"}
 .stay .facts span{font-size:.72rem;line-height:1.25;color:var(--ink-2)}
 /* Agihan bilik, dikumpul ikut tingkat */
 .tk{margin-top:14px}
-.tk-tajuk{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.tk-tajuk span{display:inline;margin-left:6px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3)}
-.tk-tajuk span::before{content:"· "}
+.tk-tajuk{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.tk-tally{display:flex;align-items:center;gap:8px;flex:none}
+/* Pil kiraan: ikon sejajar menegak dengan angka, tiada kotak atau latar */
+.kp{display:inline-flex;align-items:center;gap:3px;font-size:.72rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink-2)}
+.kp svg{width:1.05em;height:1.05em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .bilik-senarai{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:7px}
 .bk{padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-size:.82rem;line-height:1.3}
 .bk-atas{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .bk-atas b{font-size:.88rem}
 .bk-katil{margin-top:3px;color:var(--ink-2);font-size:.78rem}
-.bk-siapa{margin-top:5px;color:var(--ink);font-weight:600}
-.bk-nota{margin-top:5px;padding-top:5px;border-top:1px solid var(--line-2);color:var(--ink-3);font-size:.75rem;line-height:1.4}
+.bk-kira{display:flex;align-items:center;gap:10px;margin-top:5px}
+.bk-siapa{margin-top:6px;display:flex;flex-wrap:wrap;gap:3px 11px}
+.bk-org{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--ink)}
+.bk-titik{width:8px;height:8px;flex:none;border-radius:50%}
+.bk-nota{margin-top:6px;padding-top:5px;border-top:1px solid var(--line-2);color:var(--ink-3);font-size:.75rem;line-height:1.4}
+/* Kad ruang sepunya: bukan bilik tidur, jadi sempadan putus-putus dan latar lembut */
+.bk.sepunya{border-style:dashed;background:var(--paper);display:flex;align-items:center}
+.sp-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 14px;width:100%}
+.sp-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;min-width:52px}
+.sp-item svg{width:19px;height:19px;fill:none;stroke:var(--ink-2);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sp-item span{font-size:.7rem;line-height:1.2;color:var(--ink-3)}
+/* Pada skrin paling sempit empat item pecah 3+1 dan nampak tergantung —
+   jadikan grid 2x2 supaya ia kekal seimbang. */
+@media (max-width:380px){.sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px 8px}}
 /* Lencana bilik air. Dua warna ini sengaja di luar palet kumpulan keluarga
    dan palet kategori jadual — kedua-duanya sudah membawa makna lain. */
-.bk-air{display:inline-flex;align-items:center;gap:4px;flex:none;padding:2px 8px 2px 6px;border-radius:999px;border:1px solid;font-size:.68rem;font-weight:600;white-space:nowrap}
-.bk-air svg{width:1em;height:1em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.bk-air.sendiri{background:var(--paper);border-color:var(--line);color:var(--ink-2)}
-.bk-air.kongsi{background:#F4ECF8;border-color:#DAC5E8;color:#82409F}
-.bk-legend{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:12px;font-size:.75rem;color:var(--ink-3)}
+.bk-air{display:inline-flex;align-items:center;gap:3px;flex:none;padding:2px 8px 2px 6px;border-radius:999px;border:1px solid;font-size:.68rem;font-weight:600;white-space:nowrap}
+.bk-air em{font-style:normal}
+.bk-air svg{width:1.15em;height:1.15em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bk-air svg+svg{margin-left:-1px}
+.bk-air svg+em{margin-left:2px}
+.bk-air.bath-sendiri,.bk-air.shower-sendiri{background:var(--paper);border-color:var(--line);color:var(--ink-2)}
+.bk-air.bath-asing{background:#F4ECF8;border-color:#DAC5E8;color:#82409F}
+.bk-legend{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;font-size:.75rem;color:var(--ink-3)}
+.bk-lg{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px}
+.bk-lg1{display:inline-flex;align-items:center;gap:5px}
+.bk-jum{display:flex;align-items:center;gap:10px;flex:none}
 table{width:100%;table-layout:fixed;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:.9rem}
 th,td{padding:10px 12px;min-width:0;text-align:left;border-top:1px solid var(--line-2);vertical-align:top;overflow-wrap:break-word}
 th{font-weight:600;color:var(--ink-2);font-size:.8rem;border-top:0;background:var(--paper)}

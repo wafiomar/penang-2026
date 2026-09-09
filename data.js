@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '9 September 2026, 8.33 pagi',
+    updated: '9 September 2026, 9.14 pagi',
     toddler: 2,
-    version: 'v6.0'
+    version: 'v6.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -269,9 +269,9 @@ const DATA = {
   stay: {
     name:'Homestay Karpal Singh Drive',
     addr:'12, Lebuh Sungai Pinang 3, Karpal Singh Drive, Jelutong, 11600 George Town',
-    // Bilangan bilik dan tingkat sengaja tiada di sini — ia dikira dari
-    // `tingkat` pada masa jalan dan disisip ke dalam senarai ini.
-    facts:[['14','katil'],['9','bilik air']],
+    // facts sengaja kosong: bilik tidur, katil, bilik air dan tingkat
+    // semuanya dikira dari `tingkat` pada masa jalan dan disisip di sini.
+    facts:[],
     images:[
       { src:'img/frontviewhome.avif', alt:'Pemandangan hadapan homestay', w:1440, h:960 },
       { src:'img/postbox.webp', alt:'Peti surat di hadapan rumah', w:1440, h:960 },
@@ -303,21 +303,25 @@ const DATA = {
     // semuanya dikira dari struktur ini, tiada satu pun ditulis tetap.
     tingkat:[
       { aras:'Ground floor', bilik:[
-        { n:1, katil:'1 queen', air:'sendiri', siapa:['Halima','Kak Ayman'] },
-        { n:2, katil:'1 queen', air:'sendiri', siapa:['Fatimah','Hana'] }
+        { n:1, katil:'1 queen', air:'bath-sendiri', siapa:['Halima','Kak Ayman'], nota:'Day 2 baru masuk.' },
+        { n:2, katil:'1 queen', air:'bath-sendiri', siapa:['Fatimah','Hana'] }
       ]},
-      { aras:'1st floor', kecil:'ruang tamu dan ruang makan', bilik:[
-        { n:3, katil:'1 super single', air:'kongsi', siapa:['Madno'], nota:'Bilik air di dapur, aras yang sama.' }
+      { aras:'1st floor',
+        // Kad ruang sepunya: bukan bilik tidur, jadi ia tidak masuk kiraan
+        // `bilik`. Bath-nya dikira dalam tally tingkat dan jumlah bilik air.
+        ruang:{ air:1, item:[['sofa','Ruang tamu'],['kutleri','Ruang makan'],['dapur','Dapur']] },
+        bilik:[
+        { n:3, katil:'1 super single', air:'bath-asing', bilikAir:0, siapa:['Madno'], nota:'Bilik air di dapur, aras yang sama.' }
       ]},
       { aras:'2nd floor', bilik:[
-        { n:4, katil:'2 king', katilNota:'ada bathtub', air:'sendiri', siapa:['F1'] },
-        { n:5, katil:'2 super single', katilNota:'shower sahaja', air:'sendiri', siapa:['S1'] },
-        { n:6, katil:'3 super single', air:'kongsi', siapa:['Fitri','Hud'], nota:'Bilik air di luar bilik, aras yang sama.' }
+        { n:4, katil:'2 king', katilNota:'ada bathtub', air:'bath-sendiri', siapa:['F1'] },
+        { n:5, katil:'2 super single', katilNota:'shower sahaja', air:'shower-sendiri', siapa:['S1'] },
+        { n:6, katil:'3 super single', air:'bath-asing', siapa:['Fitri','Hud'], nota:'Bilik air di luar bilik, aras yang sama.' }
       ]},
       { aras:'3rd floor', bilik:[
-        { n:7, katil:'1 queen', air:'sendiri', siapa:['Hadi','Kak Hajar'] },
-        { n:8, katil:'1 king', air:'sendiri', siapa:['F4'] },
-        { n:9, katil:'1 king + 1 super single', air:'sendiri', siapa:['F3'] }
+        { n:7, katil:'1 queen', air:'bath-sendiri', siapa:['Hadi','Kak Hajar'] },
+        { n:8, katil:'1 king', air:'bath-sendiri', siapa:['F4'] },
+        { n:9, katil:'1 king + 1 super single', air:'bath-sendiri', siapa:['F3'] }
       ]}
     ]
   },
