@@ -311,6 +311,12 @@ section+section{border-top:1px solid var(--line)}
 .pb-addr{display:block;margin-top:2px;color:var(--ink-3);font-size:.78rem}
 .pb p{margin-top:3px;color:var(--ink-2);font-size:.82rem;line-height:1.4}
 .pb-note{color:var(--ink-2);font-size:.82rem;line-height:1.45;background:var(--paper);border-style:dashed}
+/* Status halal Plan B — badge sama seperti item jadual, tiada warna baharu */
+.pb-halal{margin-top:5px}
+.pb-halal .bdg{font-size:.72rem;padding:2px 8px}
+.pb-tel{display:block;margin-top:3px;color:var(--ink-3);font-size:.78rem}
+.pb .halal-note{margin-top:6px;font-size:.78rem}
+.pb-kaki{margin:7px 0 0;color:var(--ink-3);font-size:.75rem;line-height:1.4;font-style:italic}
 
 .ti-cost{display:inline-block;margin-top:6px;font-size:.82rem;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--line-2)}
 .flag{display:inline-block;margin:6px 6px 0 0;font-size:.78rem;font-weight:600;padding:3px 8px;border-radius:6px}

@@ -887,7 +887,14 @@ const pilBintang = (rating, reviews) => rating
   : '';
 const det = (k, isi) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${DET_ICON[k]}</svg><span>${isi}</span></li>`;
 
-// Plan B: satu kad sebaris — nama berpaut, bintang Google, sebab pendek.
+// Status halal Plan B guna sistem tiga keadaan yang SAMA seperti item jadual.
+// Ambil hanya status yang sudah wujud dalam data; kalau tiada, jawapannya 'semak'.
+// Jangan sekali-kali menyimpulkan status daripada nama, kategori atau ulasan.
+const halalPlanB = (x, p) => x.halal || (p && p.halal) || 'semak';
+const halalBdg = k => `<span class="bdg ${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${HALAL[k].ic}</svg>${HALAL[k].t}</span>`;
+const HALAL_KAKI = '<p class="pb-kaki">Semak sendiri di halal.gov.my atau app Verify Halal sebelum pergi. Status boleh berubah.</p>';
+
+// Plan B: satu kad sebaris — nama berpaut, bintang Google, status halal, sebab pendek.
 function planbHtml(list){
   return `<ul class="pb-list">` + list.map(x => {
     if(x.text) return `<li class="pb pb-note">${esc(x.text)}</li>`;
@@ -899,14 +906,19 @@ function planbHtml(list){
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([nama, alamat].filter(Boolean).join(', '))}`;
     const bintang = pilBintang(rating, ulasan);
     const kei = x.kei || (p && (p.tagline || p.special));
+    const hNota = x.halalNote || (p && p.halalNote);
+    const tel = x.phone || (p && p.phone);
     return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
+         + `<div class="pb-halal">${halalBdg(halalPlanB(x, p))}</div>`
          + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
          + `${(x.hours || (p && p.hours))?`<span class="pb-hours">${esc(x.hours || p.hours)}</span>`:''}`
+         + `${tel?`<span class="pb-tel">${esc(tel)}</span>`:''}`
          + `${kei?`<p class="pb-kei"><b>Keistimewaan:</b> ${esc(kei)}</p>`:''}`
          + `${(x.cost || (p && p.cost))?`<p class="pb-kos"><b>Tiket:</b> ${esc(x.cost || p.cost)}</p>`:''}`
          + `${x.why?`<p>${esc(x.why)}</p>`:''}`
+         + `${hNota?`<div class="halal-note">${esc(hNota)}</div>`:''}`
          + `${(x.note || (p && p.note))?`<p class="pb-note-kecil">${esc(x.note || p.note)}</p>`:''}</li>`;
-  }).join('') + `</ul>`;
+  }).join('') + `</ul>` + HALAL_KAKI;
 }
 
 /* ============================================================

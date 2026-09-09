@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '9 September 2026, 9.14 pagi',
+    updated: '9 September 2026, 10.05 pagi',
     toddler: 2,
-    version: 'v6.1'
+    version: 'v6.2'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -194,7 +194,7 @@ const DATA = {
         { t:"17:30", e:"18:50", type:"homestay", title:"Balik homestay", place:"homestay", kecil:"rehat, mandi" },
         { t:"17:45", e:"18:30", type:"stop", pilihan:true, title:"Karpal Singh Drive", place:"ksd", pills:["Pilihan"], meta:"Sesiapa yang penat boleh terus rehat di homestay. Tak perlu memandu — ia betul-betul di luar homestay." },
         { t:"19:00", e:"19:45", type:"solat", title:"Solat Maghrib", place:"homestay", pills:["Solat jamak"], kecil:"Maghrib 7.21 mlm" },
-        { t:"20:00", e:"22:00", type:"meal", title:"Makan malam bersama Umi Wan", meta:"Lokasi setakat ini di tanah besar. Akan dikemas kini.", planB:[{ name:"Premium Chinese Muslim Cuisine", rating:4.3, reviews:297, kei:"Masakan Cina Muslim" }, { name:"Tok Ma Malay Kitchen", addr:"George Town", kei:"Masakan Melayu" }, { name:"The Table Penang", rating:4.4, reviews:1025, kei:"Restoran makan malam" }, { name:"Rumah Kacha", rating:4.3, reviews:710, kei:"Restoran makan malam" }, { name:"Jawi House Cafe Gallery", rating:4.5, reviews:1573, kei:"Kafe dan galeri" }] },
+        { t:"20:00", e:"22:00", type:"meal", title:"Makan malam bersama Umi Wan", meta:"Lokasi setakat ini di tanah besar. Akan dikemas kini.", planB:[{ name:"Premium Chinese Muslim Cuisine", rating:4.3, reviews:297, kei:"Masakan Cina Muslim" }, { name:"Tok Ma Malay Kitchen", addr:"George Town", kei:"Masakan Melayu" }, { name:"The Table Penang", rating:4.4, reviews:1025, kei:"Restoran makan malam" }, { name:"Rumah Kacha", rating:4.3, reviews:710, kei:"Restoran makan malam" }, { name:"Jawi House Cafe Gallery", rating:4.5, reviews:1573, kei:"Kafe dan galeri" }, { name:"Halab Penang Arabic Restaurant", addr:"381, Lebuh Chulia, George Town, 10200", rating:4.7, reviews:9178, hours:"Ahad 9.00 pg – 3.00 pg", phone:"+60 4-251 9550", halal:"muslim", note:"Ada tempahan dalam talian dan pakej kumpulan." }, { name:"Penang Steamboat and Grill (The Mualaf Kopitiam)", addr:"63, Persiaran Gurney, 10250", rating:4.2, reviews:538, hours:"Ahad 5.00 ptg – 12.00 pg", phone:"+60 16-408 9122", halal:"muslim", note:"Buffet steamboat dan grill. Parking susah." }, { name:"Restoran Deen (Jelutong)", addr:"598-D & 598-E, Jalan Jelutong, 11600", rating:4.1, reviews:8013, hours:"Ahad 4.30 ptg – 11.30 mlm", phone:"+60 4-657 5285", halal:"muslim", note:"Paling dekat dengan homestay. Parking sangat susah, jalan sempit." }, { name:"Donna Bistro @ Komtar", addr:"Lot 5, Komtar Walk, Jalan Dr Lim Chwee Leong, 10450", rating:4.7, reviews:1359, hours:"Ahad 4.00 ptg – 3.00 pg", phone:"+60 17-565 5079", halal:"muslim", note:"Tempat duduk banyak, kasual." }] },
         { t:"22:30", type:"homestay", title:"Balik homestay", place:"homestay", planB:[{ name:"Avatar Secret Garden", addr:"Tanjung Tokong", why:"Masih bertenaga: lampu malam.", kei:"Taman lampu malam" }, { name:"Gurney Bay Park", rating:4.5, reviews:893, why:"Basikal pantai.", kei:"Taman tepi laut, sesuai berbasikal" }, { name:"Feringghi Walk", why:"Basikal pantai.", kei:"Laluan tepi pantai, sesuai berbasikal" }] }
     ]},
     { n:3, date:"2026-09-14", label:"Isnin, 14 Sept", short:"Isnin", intro:["Checkout awal walaupun homestay bagi sampai 12 tgh — beg terus masuk kereta.", "Pagi lengang di George Town, dan Queensbay Mall di laluan ke lapangan terbang."], ringkas:["chowrasta", "dimsum", "queensbay"], km:23, toll:"—", fuel:"±RM10", azanTo:"17:15", items:[
@@ -357,6 +357,9 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'6.2', tarikh:'9 September 2026', baru:[
+      'Makan malam bersama Umi Wan ada Plan B: Halab Arabic, Penang Steamboat and Grill, Restoran Deen dan Donna Bistro.'
+    ]},
     { v:'6.0', tarikh:'9 September 2026', baru:[
       'Agihan bilik dikemas kini: nama penghuni setiap bilik, susunan katil, dan status bilik air sendiri atau kongsi.'
     ]},
