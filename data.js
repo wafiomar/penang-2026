@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '10 September 2026, 4.35 petang',
+    updated: '10 September 2026, 5.20 petang',
     toddler: 2,
-    version: 'v7.0'
+    version: 'v7.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -224,11 +224,16 @@ const DATA = {
   // SEMENTARA — bulatan radius untuk memilih tempat makan Hari 2.
   // Buang keseluruhan kunci `bulatan` ini dan bulatan hilang dari peta.
   // Tiada kod lain perlu disentuh. Ia tidak mengubah zum atau bounds peta.
+  //
+  // hari  : bulatan dipapar pada tapis hari ini DAN pada tapis Semua.
+  //         Nilai ini juga menentukan warna — ia mewarisi warna laluan hari
+  //         yang sama (--d1/--d2/--d3), dibaca semasa peta dibina. Sengaja
+  //         tiada kod warna ditulis di sini supaya ia tidak boleh terpesong
+  //         daripada warna laluan sebenar.
   bulatan: {
     hari: 2,
     pusat: { lat:5.3878, lng:100.4085, nama:'Permatang Pauh' },
-    warna: '#8E24AA',
-    radius: [ { km:5 }, { km:10 } ]
+    radius: [ { km:5 } ]
   },
 
   // Marker bernombor (satu setiap lokasi berhenti; homestay & LTAPP dipapar berasingan)
