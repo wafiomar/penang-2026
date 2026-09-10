@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '10 September 2026, 5.20 petang',
+    updated: '10 September 2026, 6.05 petang',
     toddler: 2,
-    version: 'v7.1'
+    version: 'v7.2'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
