@@ -567,7 +567,7 @@ const MAP = { map:null, layers:{}, all:null, marks:{}, pilihHari:null,
   garis:{},       // lapisan laluan utama setiap hari (fallback atau geometri OSRM)
   larianGaris:{}, // lapisan larian sampingan (putus-putus)
   pin:{},         // marker bernombor mengikut turutan
-  bulatan:null,   // bulatan radius sementara (DATA.bulatan), tapis satu hari sahaja
+  bulatan:null,   // bulatan radius sementara (DATA.bulatan): tapis Semua + hari sendiri
   anim:null };
 function initMap(){
   if(typeof L === 'undefined'){ $('#map').style.display='none'; $('#map-fallback').style.display='block'; $('#map-ctl').style.display='none'; $('#map-note').style.display='none'; return; }
@@ -618,17 +618,25 @@ function initMap(){
   const bl = DATA.bulatan;
   if(bl){
     MAP.bulatan = L.layerGroup();
+    const wb = colors[bl.hari];   // warna sebenar laluan hari itu, bukan nilai baharu
     bl.radius.forEach(r => {
-      L.circle([bl.pusat.lat, bl.pusat.lng], { radius:r.km*1000, color:bl.warna, weight:1.2,
-        opacity:.75, dashArray:'5 6', fillColor:bl.warna, fillOpacity:.06, interactive:false })
+      // Warna sama dengan laluan hari itu, tetapi gaya sengaja dibezakan:
+      // sempadan bertitik halus dan isian nyaris tak berwarna, supaya laluan
+      // yang melaluinya tetap menonjol di atas bulatan.
+      L.circle([bl.pusat.lat, bl.pusat.lng], { radius:r.km*1000, color:wb, weight:1,
+        opacity:.5, dashArray:'2 6', fillColor:wb, fillOpacity:.04, interactive:false })
         .addTo(MAP.bulatan);
-      // Label kecil di tepi atas setiap bulatan
+      // Label kecil di tepi atas bulatan
       L.marker([bl.pusat.lat + r.km/111, bl.pusat.lng], { interactive:false, keyboard:false,
-        icon:L.divIcon({ className:'', html:`<span class="radius-lbl" style="--rc:${bl.warna}">${r.km} km</span>`, iconSize:[44,18], iconAnchor:[22,9] }) })
+        icon:L.divIcon({ className:'', html:`<span class="radius-lbl" style="--rc:${wb}">${r.km} km</span>`, iconSize:[44,18], iconAnchor:[22,9] }) })
         .addTo(MAP.bulatan);
     });
   }
 
+  if(MAP.bulatan) MAP.bulatan.addTo(map);   // tapis mula ialah "Semua"
+
+  // Bounds dikira daripada DATA.places SAHAJA — pusat bulatan tiada di dalamnya,
+  // jadi zum dan kedudukan peta kekal sama sama ada bulatan wujud atau tidak.
   const b = L.latLngBounds(Object.values(P).filter(p=>p.lat>4).map(p=>[p.lat,p.lng]));
   map.fitBounds(b, { padding:[24,24] });
   // Sebaik peta dibuka, semua laluan tiga hari dilukis serentak. Geometri OSRM
@@ -649,7 +657,7 @@ function initMap(){
     const btn = [...$('#map-ctl').children].find(x => x.dataset.day === sel) || $('#map-ctl').children[0];
     [...$('#map-ctl').children].forEach(x=>x.classList.toggle('on', x===btn));
     [1,2,3].forEach(d => { if(sel==='all' || String(d)===sel) MAP.layers[d].addTo(map); else map.removeLayer(MAP.layers[d]); });
-    if(MAP.bulatan){ if(sel === String(DATA.bulatan.hari)) MAP.bulatan.addTo(map); else map.removeLayer(MAP.bulatan); }
+    if(MAP.bulatan){ if(sel === 'all' || sel === String(DATA.bulatan.hari)) MAP.bulatan.addTo(map); else map.removeLayer(MAP.bulatan); }
     habisAnimasi();
     const btnUlang = $('#map-ulang');
     if(btnUlang) btnUlang.hidden = false;
