@@ -567,6 +567,7 @@ const MAP = { map:null, layers:{}, all:null, marks:{}, pilihHari:null,
   garis:{},       // lapisan laluan utama setiap hari (fallback atau geometri OSRM)
   larianGaris:{}, // lapisan larian sampingan (putus-putus)
   pin:{},         // marker bernombor mengikut turutan
+  bulatan:null,   // bulatan radius sementara (DATA.bulatan), tapis satu hari sahaja
   anim:null };
 function initMap(){
   if(typeof L === 'undefined'){ $('#map').style.display='none'; $('#map-fallback').style.display='block'; $('#map-ctl').style.display='none'; $('#map-note').style.display='none'; return; }
@@ -611,6 +612,23 @@ function initMap(){
     MAP.layers[d] = lg; lg.addTo(map);
     fetchRoute(d, pts, colors[d], lg, fallback);
   });
+  // Bulatan radius sementara (lihat DATA.bulatan). Ia dilukis dalam lapisannya
+  // sendiri dan TIDAK dimasukkan ke dalam mana-mana kiraan bounds, jadi zum
+  // peta kekal sama sama ada bulatan wujud atau tidak.
+  const bl = DATA.bulatan;
+  if(bl){
+    MAP.bulatan = L.layerGroup();
+    bl.radius.forEach(r => {
+      L.circle([bl.pusat.lat, bl.pusat.lng], { radius:r.km*1000, color:bl.warna, weight:1.2,
+        opacity:.75, dashArray:'5 6', fillColor:bl.warna, fillOpacity:.06, interactive:false })
+        .addTo(MAP.bulatan);
+      // Label kecil di tepi atas setiap bulatan
+      L.marker([bl.pusat.lat + r.km/111, bl.pusat.lng], { interactive:false, keyboard:false,
+        icon:L.divIcon({ className:'', html:`<span class="radius-lbl" style="--rc:${bl.warna}">${r.km} km</span>`, iconSize:[44,18], iconAnchor:[22,9] }) })
+        .addTo(MAP.bulatan);
+    });
+  }
+
   const b = L.latLngBounds(Object.values(P).filter(p=>p.lat>4).map(p=>[p.lat,p.lng]));
   map.fitBounds(b, { padding:[24,24] });
   // Sebaik peta dibuka, semua laluan tiga hari dilukis serentak. Geometri OSRM
@@ -631,6 +649,7 @@ function initMap(){
     const btn = [...$('#map-ctl').children].find(x => x.dataset.day === sel) || $('#map-ctl').children[0];
     [...$('#map-ctl').children].forEach(x=>x.classList.toggle('on', x===btn));
     [1,2,3].forEach(d => { if(sel==='all' || String(d)===sel) MAP.layers[d].addTo(map); else map.removeLayer(MAP.layers[d]); });
+    if(MAP.bulatan){ if(sel === String(DATA.bulatan.hari)) MAP.bulatan.addTo(map); else map.removeLayer(MAP.bulatan); }
     habisAnimasi();
     const btnUlang = $('#map-ulang');
     if(btnUlang) btnUlang.hidden = false;
@@ -891,6 +910,13 @@ const det = (k, isi) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${DET_I
 // Ambil hanya status yang sudah wujud dalam data; kalau tiada, jawapannya 'semak'.
 // Jangan sekali-kali menyimpulkan status daripada nama, kategori atau ulasan.
 const halalPlanB = (x, p) => x.halal || (p && p.halal) || 'semak';
+// Tag tiket. Nilai `tiket` boleh true (tag sahaja) atau teks harga.
+// Harga hanya dipapar kalau ia ditulis dalam data — jangan sekali-kali dikira sendiri.
+const TIKET_IC = '<path d="M4 9.2V7.5h16v1.7a2.8 2.8 0 0 0 0 5.6v1.7H4v-1.7a2.8 2.8 0 0 0 0-5.6Z"/><path d="M14 8.6v6.8"/>';
+const tiketBdg = v => v
+  ? `<span class="bdg tiket"><svg viewBox="0 0 24 24" aria-hidden="true">${TIKET_IC}</svg>Perlu tiket${typeof v === 'string' ? ' · ' + esc(v) : ''}</span>`
+  : '';
+
 const halalBdg = k => `<span class="bdg ${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${HALAL[k].ic}</svg>${HALAL[k].t}</span>`;
 const HALAL_KAKI = '<p class="pb-kaki">Semak sendiri di halal.gov.my atau app Verify Halal sebelum pergi. Status boleh berubah.</p>';
 
@@ -909,7 +935,7 @@ function planbHtml(list){
     const hNota = x.halalNote || (p && p.halalNote);
     const tel = x.phone || (p && p.phone);
     return `<li class="pb"><div class="pb-h"><a href="${url}" target="_blank" rel="noopener">${esc(nama)}</a>${bintang}</div>`
-         + `<div class="pb-halal">${halalBdg(halalPlanB(x, p))}</div>`
+         + `<div class="pb-halal">${halalBdg(halalPlanB(x, p))}${tiketBdg(x.tiket || (p && p.tiket))}</div>`
          + `${alamat?`<span class="pb-addr">${esc(alamat)}</span>`:''}`
          + `${(x.hours || (p && p.hours))?`<span class="pb-hours">${esc(x.hours || p.hours)}</span>`:''}`
          + `${tel?`<span class="pb-tel">${esc(tel)}</span>`:''}`
@@ -988,6 +1014,7 @@ function planbHtml(list){
       let bdg = '';
       if(p && p.halal){ const h = HALAL[p.halal]; bdg += `<span class="bdg ${p.halal}"><svg viewBox="0 0 24 24" aria-hidden="true">${h.ic}</svg>${h.t}</span>`; }
       if(p && p.rating){ bdg += pilBintang(p.rating, p.reviews); }
+      if(p && p.tiket){ bdg += tiketBdg(p.tiket); }
       const badges = bdg ? `<div class="badges">${bdg}</div>` : '';
       const flags = (it.flags||[]).map(f => `<span class="flag ${f.k}">${esc(f.v)}</span>`).join('');
       // Pil piawai di bawah tajuk
