@@ -620,11 +620,12 @@ function initMap(){
     MAP.bulatan = L.layerGroup();
     const wb = colors[bl.hari];   // warna sebenar laluan hari itu, bukan nilai baharu
     bl.radius.forEach(r => {
-      // Warna sama dengan laluan hari itu, tetapi gaya sengaja dibezakan:
-      // sempadan bertitik halus dan isian nyaris tak berwarna, supaya laluan
-      // yang melaluinya tetap menonjol di atas bulatan.
-      L.circle([bl.pusat.lat, bl.pusat.lng], { radius:r.km*1000, color:wb, weight:1,
-        opacity:.5, dashArray:'2 6', fillColor:wb, fillOpacity:.04, interactive:false })
+      // Warna sama dengan laluan hari itu, gaya dibezakan dengan sempadan
+      // putus-putus. Kepekatan .04/.5 sebelum ini terlalu lemah untuk dilihat
+      // di atas tile peta — bulatan ada, cuma tidak kelihatan. Nilai sekarang
+      // dinaikkan supaya ia jelas dahulu; boleh diturunkan semula kemudian.
+      L.circle([bl.pusat.lat, bl.pusat.lng], { radius:r.km*1000, color:wb, weight:2,
+        opacity:.8, dashArray:'6 5', fillColor:wb, fillOpacity:.12, interactive:false })
         .addTo(MAP.bulatan);
       // Label kecil di tepi atas bulatan
       L.marker([bl.pusat.lat + r.km/111, bl.pusat.lng], { interactive:false, keyboard:false,
