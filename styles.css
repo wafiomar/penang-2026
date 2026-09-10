@@ -282,6 +282,10 @@ section+section{border-top:1px solid var(--line)}
 .bdg.muslim{background:#EEF3FA;color:#2B5B94;border-color:#CFDFF0}
 .bdg.semak{background:var(--warn-soft);color:var(--warn);border-color:#EFC6BB}
 .bdg.rate{background:var(--panel);color:var(--ink-2);border-color:var(--line)}
+.bdg.tiket{background:#F4EAF7;color:#6B2480;border-color:#E0CCE8}
+/* Label radius pada peta — hiasan sementara, lihat DATA.bulatan */
+.radius-lbl{display:block;text-align:center;font-size:.68rem;font-weight:700;line-height:18px;
+  color:var(--rc);background:rgba(255,255,255,.88);border:1px solid var(--rc);border-radius:999px;white-space:nowrap}
 .bdg svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .bdg.rate svg{fill:#D9A21B;stroke:none}
 .ti-meta{color:var(--ink-2);font-size:.88rem;margin-top:3px}
