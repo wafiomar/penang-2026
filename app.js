@@ -1223,7 +1223,7 @@ function planeSvg(){
     const satu = k.opts.length === 1;
     const opts = k.opts.map(o => `<div class="opt${!satu && o.main ? ' main' : ''}">
         <div class="opt-h">${satu ? '' : `<span class="opt-k">${esc(o.k)}</span>`}<b>${esc(o.name)}</b>${!satu && o.main ? '<em>Pilihan utama</em>' : ''}${o.link ? '<i class="lk">berkait</i>' : ''}</div>
-        <details class="opt-lagi"><summary>More info</summary><table class="opt-tbl"><thead><tr><th>Langkah</th><th class="num">Masa</th><th class="num">Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join('')}</tbody></table>
+        <details class="opt-lagi"><summary>More info</summary>${(o.steps && o.steps.length) ? `<table class="opt-tbl"><thead><tr><th>Langkah</th><th class="num">Masa</th><th class="num">Kos</th></tr></thead><tbody>${o.steps.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join('')}</tbody></table>` : ''}
         ${o.nota?`<div class="opt-nota">${esc(o.nota)}</div>`:''}
         ${o.link?`<div class="opt-link">${esc(o.link)}</div>`:''}</details>
       </div>`).join('');

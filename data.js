@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '11 September 2026, 10.30 pagi',
+    updated: '11 September 2026, 3.15 petang',
     toddler: 2,
-    version: 'v8.0'
+    version: 'v8.1'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -46,13 +46,8 @@ const DATA = {
 // Peraturan lajur: Langkah = tindakan sahaja; Masa = satu tempoh atau waktu jam;
 // Kos = wang sahaja. Apa-apa nasihat atau syarat masuk medan 'nota' di bawah jadual.
   klSide: [
-    { g:'F2', title:'Keluarga Hadi', sub:'4 orang, dari Cyberjaya', opts:[
-      { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[
-        ["Pandu dari Cyberjaya ke Salak Tinggi Park & Ride","\u00b120 minit","\u2014"],
-        ["Parking Salak Tinggi Park & Ride","\u2014","RM36 berbumbung / RM30 terbuka"],
-        ["KLIA Transit ke KLIA2","11 minit","RM4.90 dewasa, RM2.20 kanak-kanak 6\u201315"],
-        ["Naik tren","5.00 pg","\u2014"]
-      ], nota:'Hujung minggu tren setiap 30 minit. Naik tren 5.00 pg atau 5.30 pg supaya sampai KLIA2 sebelum 6.00 pg. Bayar parking dengan Touch \u2019n Go atau kad. Kanak-kanak bawah 6 tahun percuma.' },
+    { g:'F2', title:'Keluarga Hadi', sub:'4 orang, dari Seremban', opts:[
+      { k:'A', name:'Pandu terus ke KLIA2', main:true, steps:[], nota:'Butiran perjalanan akan dikemaskini.' },
     ]},
     { g:'F3', title:'Keluarga Obi', sub:'5 orang, dari Seremban', opts:[
       { k:'A', name:'ERL dari Salak Tinggi', main:true, steps:[
@@ -371,6 +366,10 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'8.1', tarikh:'11 September 2026',
+      ganti:[
+        { sebelum:'Keluarga Hadi: ERL dari Salak Tinggi, dari Cyberjaya', selepas:'Pandu terus ke KLIA2, dari Seremban' }
+      ]},
     { v:'8.0', tarikh:'11 September 2026',
       ganti:[
         { sebelum:'Dua penerbangan pergi Sabtu: AK6154 dan AK6142', selepas:'Satu penerbangan sahaja: AK6142, 15 orang' }
