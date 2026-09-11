@@ -7,9 +7,9 @@ const DATA = {
     start: '2026-09-12',
     dates: '12 – 14 September 2026',
     base: 'Homestay Karpal Singh Drive',
-    updated: '10 September 2026, 6.05 petang',
+    updated: '11 September 2026, 10.30 pagi',
     toddler: 2,
-    version: 'v7.2'
+    version: 'v8.0'
   },
 
   // Kumpulan. color = warna pada carta pergerakan, seat map & bilik.
@@ -24,8 +24,7 @@ const DATA = {
   ],
 
   flights: [
-    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6154', who:['F2','F3','F4','G2:Madno'], note:'12 orang dalam satu penerbangan.' },
-    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6142', who:['G2:Fitri','G2:Fatimah','S1'], note:'3 orang. Tempahan berasingan, waktu sama dengan AK6154.' },
+    { iso:'2026-09-12', date:'12 Sept (Sabtu)', dep:'09:25', arr:'10:20', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6142', who:['F2','F3','F4','G2:Madno','G2:Fitri','G2:Fatimah','S1'], note:'15 orang dalam satu penerbangan.' },
     { iso:'2026-09-13', date:'13 Sept (Ahad)',  dep:'06:40', arr:'07:40', from:'KUL', to:'PEN', fromName:'KLIA2', toName:'Pulau Pinang', flightNo:'AK6124', who:['G1'], note:'Kereta 2 (Syafi) tunggu di pintu ketibaan LTAPP.' },
     { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'16:00', arr:'17:00', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6131', who:['G2:Fitri','G2:Fatimah'], note:'Fitri & Fatimah sahaja.' },
     { iso:'2026-09-14', date:'14 Sept (Isnin)', dep:'17:15', arr:'18:15', from:'PEN', to:'KUL', fromName:'Pulau Pinang', toName:'KLIA2', flightNo:'AK6154', who:['F2','F3','F4','G2:Madno','S1'], note:'13 orang.' },
@@ -158,7 +157,7 @@ const DATA = {
     { n:1, date:"2026-09-12", label:"Sabtu, 12 Sept", short:"Sabtu", intro:["Kampung Agong di Penaga tutup 6.00 ptg — tiada peluang kedua.", "Satu-satunya hari kita keluar pulau, dan hari paling banyak memandu.", "Kira masa ikut keadaan trafik semasa."], ringkas:["kgagong", "laluna", "padang"], km:126, toll:"RM14", tollNote:"2 kereta masuk pulau", fuel:"±RM53", azanFrom:"10:20", items:[
         { t:"04:30", type:"note", title:"Bertolak dari rumah", kecil:"Waktu bertolak berbeza ikut kumpulan", metaLink:{ text:"Pagi Sabtu: cara ke KLIA2", href:"#pagi-sabtu" } },
         { t:"05:45", e:"08:45", type:"flight", title:"KLIA2", place:"klia2", pills:["Check-in bagasi", "Breakfast"], kecil:"check-in bagasi, Subuh, sarapan", meta:"Kaunter bagasi sebelum 6.00 pg. Cabin sahaja boleh sampai sebelum 7.00 pg. Subuh masuk lebih kurang 6.00 pg — surau di Aras 2 dan 3. Sarapan selepas melepasi keselamatan." },
-        { t:"09:25", type:"flight", title:"Berlepas", flightRef:"AK6154", kecil:"Tempoh 55 minit" },
+        { t:"09:25", type:"flight", title:"Berlepas", flightRef:"AK6142", kecil:"Tempoh 55 minit" },
         { t:"10:20", type:"flight", title:"Tiba Pulau Pinang", place:"lta", kecil:"ambil bagasi" },
         { t:"11:30", type:"move2", title:"Ambil kereta sewa", kecil:"Kereta 1 Wafi, Kereta 2 Syafi", meta:"Kereta 1 starting driver Wafi, Kereta 2 starting driver Syafi. Semak kereta, ambil gambar sekeliling badan kereta sebelum bergerak." },
         { move:{ km:9.9, min:6 } },
@@ -372,6 +371,10 @@ const DATA = {
   // Apa yang berubah, untuk ahli keluarga. Terbaru di atas.
   // Catat perubahan besar sahaja: tempat, masa, susunan orang, seksyen baru.
   changelog: [
+    { v:'8.0', tarikh:'11 September 2026',
+      ganti:[
+        { sebelum:'Dua penerbangan pergi Sabtu: AK6154 dan AK6142', selepas:'Satu penerbangan sahaja: AK6142, 15 orang' }
+      ]},
     { v:'7.0', tarikh:'10 September 2026',
       ganti:[
         { sebelum:'Makan malam Umi Wan 8.00 malam', selepas:'Petang 6.00 di kawasan Permatang Pauh' },
